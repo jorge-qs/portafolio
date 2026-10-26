@@ -1,6 +1,6 @@
 # F7 · Segundo idioma (inglés)
 
-**Estado:** en revisión
+**Estado:** aprobada
 **Rama solicitada:** `f7-idiomas`, desde `main` · **Checkout de trabajo:** `F7` (Git no permitió crear la rama) · **Depende de:** F6 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F7-idiomas.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -295,4 +295,30 @@ Ve rellenándolo **durante** el trabajo (una línea por paso del § 3) y complé
 **No verificado:** no se probó un contenido real de la colección `notas` porque está vacía; el helper admite notas y respaldo por idioma. La revisión editorial de las traducciones queda pendiente para Jorge.
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-26.** Una entrega completa y fiel al encargo: los 7 pasos registrados, 17 páginas generadas, 192/192 e2e y 105/105 en la prueba de estabilidad.
+
+### Auditoría de Claude (más allá de los tests)
+- **Texto en español en las páginas inglesas:** limpio. Solo apareció el proyecto de respaldo sin `lang="es"` en la franja de evidencia de Tecnologías (corregido).
+- **Enlaces internos de las 8 páginas en inglés:** ninguno lleva a español, salvo el selector.
+- **`hreflang`/canonical:** recíprocos. La página de respaldo apunta su canonical al español y no declara alternativa inglesa. `x-default` → español.
+- **404 bilingüe** con enlaces a `/` y a `/en/`; aviso «Available in Spanish only.» con `role="note"`.
+- **Barra a 1024 px** (el ancho más justo): 56 px, sin saltar de línea, con «ES · EN» antes de CV.
+
+### Correcciones de Claude
+1. **«1 · Summary» visible en inglés.** El CSS ocultaba el título del capítulo 1 por su id en español (`h2[id='1--resumen']`), así que en inglés se veía. Ahora usa un selector estructural (`> h2:first-of-type`), con su prueba de regresión.
+2. **El selector del menú móvil quedaba asimétrico** («ES   · EN»): el idioma activo es un `span` y no recibía el ancho táctil de 44 px.
+3. **`lang="es"` en la tarjeta de evidencia** de los proyectos de respaldo.
+
+Las capturas `barra-articulo-*.png` y `menu-movil-390.png` son anteriores a las correcciones 1 y 2.
+
+### Para Jorge: revisar las traducciones
+Son fieles y no añaden información. Dos sugerencias de naturalidad:
+- `perfil.frase_contacto`: «let us talk» → «let's talk»;
+- `portada.indice_entradilla`: «the three projects told above» → «featured above».
+
+Lista completa en el Informe.
+
+### Pendiente fuera de F7
+- `site: 'https://example.com'` → dominio real en F8 (D5).
+
+**Recomendación:** aprobada.

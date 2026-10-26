@@ -91,7 +91,10 @@ const rutaOtro = rutaEquivalente(Astro.url.pathname, otro);
   .separador {
     color: var(--muted);
   }
-  .tactil a {
+  /* El idioma activo no es enlace (span): necesita el mismo ancho para que
+     «ES · EN» quede simétrico. */
+  .tactil a,
+  .tactil .activo {
     min-width: var(--touch-min);
   }
 </style>

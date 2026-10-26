@@ -287,7 +287,8 @@ html[data-movimiento='reducido'] *::after {
   }
 }
 /* Resumen y ficha conservan sus anclas y encabezados para navegación asistida. */
-.articulo[data-plantilla='A'] .cuerpo-articulo h2[id='1--resumen'],
+/* Por estructura y no por id: el id cambia con el idioma (1--resumen, 1--summary). */
+.articulo[data-plantilla='A'] .cuerpo-articulo > h2:first-of-type,
 .apertura h2 {
   position: absolute;
   width: 1px;

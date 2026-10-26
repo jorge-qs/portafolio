@@ -179,3 +179,18 @@ test('idioma: axe en portada, artículo y respaldo, en Cosmos y Dawn', async ({
     }
   }
 });
+
+test('el capítulo 1 del artículo A se oculta igual en los dos idiomas', async ({
+  page,
+}) => {
+  for (const ruta of [
+    '/proyectos/coordinacion-multiagente/',
+    '/en/proyectos/coordinacion-multiagente/',
+  ]) {
+    await page.goto(ruta);
+    const primero = page.locator('.cuerpo-articulo > h2').first();
+    // Oculto visualmente (solo para lectores de pantalla), no eliminado.
+    expect((await primero.boundingBox())!.width).toBeLessThan(2);
+    await expect(primero).toHaveAttribute('id', /^1--/);
+  }
+});

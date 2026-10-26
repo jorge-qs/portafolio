@@ -3,7 +3,7 @@ import { ruta } from '../i18n';
 import type { Idioma } from '../i18n/config';
 import type { EntradaProyecto } from '../content/validacion';
 interface Props {
-  proyecto: EntradaProyecto & { slug: string };
+  proyecto: EntradaProyecto & { slug: string; esRespaldo?: boolean };
   codigo: string;
   activa: boolean;
   idioma: Idioma;
@@ -21,7 +21,9 @@ const { proyecto, codigo, activa, idioma } = Astro.props;
     <i class={proyecto.data.tipo} aria-hidden="true"></i>
     {codigo}
   </span>
-  <span>{proyecto.data.titulo}</span>
+  <span lang={proyecto.esRespaldo ? 'es' : undefined}>
+    {proyecto.data.titulo}
+  </span>
 </a>
 <style>
   .evidencia {
