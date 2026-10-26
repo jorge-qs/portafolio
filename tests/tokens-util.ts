@@ -25,7 +25,15 @@ export function coloresTema(tema: 'cosmos' | 'dawn') {
   postcss
     .parse(readFileSync('src/styles/tokens.css', 'utf8'))
     .walkRules((regla) => {
-      if (regla.selector.includes(`[data-theme="${tema}"]`)) {
+      if (
+        regla.selector
+          .split(',')
+          .some(
+            (selector) =>
+              selector.trim() === ':root' ||
+              selector.trim() === `[data-theme="${tema}"]`,
+          )
+      ) {
         regla.walkDecls(/^--/, (d) => {
           colores[d.prop.slice(2)] = d.value;
         });

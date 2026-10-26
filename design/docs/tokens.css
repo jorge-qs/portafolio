@@ -62,3 +62,47 @@
   html { scroll-behavior: auto !important; }
 }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* F1 · navegación, encabezados y alturas reservadas. */
+:root {
+  --nav-bg: color-mix(in srgb, var(--bg) 94%, transparent);
+  --text-kicker: 13px;
+  --text-meta: 14px;
+  --text-ui: 15px;
+  --section-title: 40px;
+  --section-title-mobile: 30px;
+  --section-leading: 1.15;
+  --section-tracking: -0.02em;
+  --kicker-gap: 14px;
+  --menu-title: 24px;
+  --menu-row: 60px;
+  --menu-entry: 16px;
+  --touch-min: 44px;
+  --button-h: 48px;
+  --press-scale: .98;
+  --line-width: 1px;
+  --active-line: 2px;
+  --underline-offset: 3px;
+  --brand-tracking: .2em;
+  --nav-margin: 64px;
+  --nav-article-margin: 56px;
+  --nav-hero-padding: 28px;
+  --nav-link-gap: 28px;
+  --theme-slot: 120px;
+  --page-margin: 40px;
+  --page-margin-mobile: 20px;
+  --anchor-offset: 72px;
+  --z-nav: 10;
+  --z-skip: 20;
+  --section-gap: 160px;
+  --index-gap: 144px;
+  --section-gap-tablet: 128px;
+  --section-gap-mobile: 96px;
+  --hero-min: 100svh;
+  --stories-min: 1200svh;
+  --index-min: 900px;
+  --about-min: 850px;
+  --technologies-min: 800px;
+  --notes-min: 450px;
+  --contact-min: 880px;
+}

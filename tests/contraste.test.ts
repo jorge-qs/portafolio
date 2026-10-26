@@ -56,6 +56,17 @@ const pares: [string, string, number?][] = [
 for (const tema of ['cosmos', 'dawn'] as const) {
   describe(tema, () => {
     const tokens = coloresTema(tema);
+    for (const rol of ['muted', 'heading', 'text', 'accent']) {
+      test(`${rol} sobre la barra translúcida: AA 4,5:1`, () => {
+        const opacidad = Number(tokens['nav-bg'].match(/(\d+)%/)![1]) / 100;
+        const fondoBarra = color(tokens.bg);
+        fondoBarra[3] = opacidad;
+        const compuesto = componer(fondoBarra, color(tokens['surface-hover']));
+        expect(contraste(color(tokens[rol]), compuesto)).toBeGreaterThanOrEqual(
+          4.5,
+        );
+      });
+    }
     for (const [texto, fondo, alfa] of pares) {
       test(`${texto} sobre ${fondo}${alfa ? ' al 8 %' : ''}: AA 4,5:1`, () => {
         const bg = color(tokens.bg);
