@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** F0 y F1 en `main` · F2 y F3 encargadas, en paralelo
+**Actualizado:** 2026-10-25 · **Estado general:** F0–F3 en `main` (H2 alcanzado) · F4 por encargar
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -49,8 +49,8 @@ La v1 se publica cuando se cumple todo esto:
 | F0 | Base técnica | — | M | **aprobada** | [F0-base.md](encargos/F0-base.md) |
 | F0.5 | Previsualizaciones en Cloudflare Pages | F0, cuentas (D7) | S | pendiente | — |
 | F1 | Barra global, menú móvil, pie y anclas | F0 | M | **aprobada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
-| F2 | Portada estática: 03–07 | F1 | L | **encargada** | [F2-portada.md](encargos/F2-portada.md) |
-| F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | **encargada** | [F3-articulos.md](encargos/F3-articulos.md) |
+| F2 | Portada estática: 03–07 | F1 | L | **aprobada** | [F2-portada.md](encargos/F2-portada.md) |
+| F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | **aprobada** | [F3-articulos.md](encargos/F3-articulos.md) |
 | F4 | Interacciones de la portada y de los artículos | F2, F3 | L | pendiente | — |
 | F5 | Scrollytelling | F4 | L | pendiente | — |
 | F6 | Hero y transición | F5 | L | pendiente | — |
@@ -306,6 +306,9 @@ Cada una indica qué fase bloquea y se resuelve antes de escribir ese encargo.
 | D6 | **Repositorio público o privado** | F0.5 | Público: la CI es gratis y el código sirve de muestra. **Nada privado en el historial** |
 | D7 | **Cuentas de GitHub y Cloudflare** | F0.5 | Las crea Jorge |
 | D8 | **Contenido real** | F8 | Ver § 5 |
+| D10 | **«Figuras» en la hoja «Aa».** La maqueta muestra un apartado sin especificar | F4 | Quitarlo, salvo que controle Diagrama/Texto en todas las figuras |
+| D11 | **Barra de artículo en tablet (834 px).** F3 la compactó sin los enlaces de sección; no hay maqueta de tablet | F4 | Aceptarla |
+| D12 | **Listado `/notas/`** para «Todas las notas →». No está en ningún encargo | Cuando haya más de 3 notas | Añadirlo a F4 o a F8: lista con el patrón del índice |
 | D9 | **Isla de React o TS vanilla** para diagramas y relato | F4 | TS vanilla con SVG |
 
 ## 9. Riesgos

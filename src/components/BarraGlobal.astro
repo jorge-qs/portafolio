@@ -1,4 +1,5 @@
 ---
+import SelectorTema from './articulo/SelectorTema.astro';
 import { seccionesBarra, enlaceSeccion } from '../config/secciones';
 import type { CollectionEntry } from 'astro:content';
 import type { Idioma } from '../i18n/config';
@@ -10,8 +11,19 @@ interface Props {
   hayNotas: boolean;
   portada?: boolean;
   tipo?: 'ing' | 'inv' | 'hib';
+  nota?: boolean;
+  capitulos?: { slug: string; text: string }[];
 }
-const { perfil, idioma, hayNotas, portada = false, tipo } = Astro.props;
+const {
+  perfil,
+  idioma,
+  hayNotas,
+  portada = false,
+  tipo,
+  nota = false,
+  capitulos = [],
+} = Astro.props;
+const articulo = !!tipo || nota;
 const enlaces = seccionesBarra(hayNotas);
 const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
 ---
@@ -25,15 +37,17 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
     <a class="marca" href={ruta(idioma)}>
       {marca}
     </a>
-    {tipo && (
+    {articulo && (
       <nav class="miga" aria-label={t(idioma, 'migaPan')}>
-        <a href={enlaceSeccion(idioma, 'indice', false)}>
-          {t(idioma, 'seccionProyectos')}
+        <a href={enlaceSeccion(idioma, nota ? 'notas' : 'indice', false)}>
+          {t(idioma, nota ? 'articulo.notas' : 'seccionProyectos')}
         </a>
-        <span aria-hidden="true">/</span>
-        <span class:list={['tipo', tipo]}>
-          {t(idioma, `tipo${tipo[0].toUpperCase()}${tipo.slice(1)}`)}
-        </span>
+        {tipo && <span aria-hidden="true">/</span>}
+        {tipo && (
+          <span class:list={['tipo', tipo]}>
+            {t(idioma, `tipo${tipo[0].toUpperCase()}${tipo.slice(1)}`)}
+          </span>
+        )}
       </nav>
     )}
   </div>
@@ -55,12 +69,10 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
         {t(idioma, seccion.clave)}
       </a>
     ))}
-    {tipo && (
-      <span
-        class="hueco-tema"
-        data-reservado="selector-tema"
-        aria-hidden="true"
-      ></span>
+    {articulo && (
+      <div class="hueco-tema" data-reservado="selector-tema">
+        <SelectorTema idioma={idioma} />
+      </div>
     )}
     <a
       class="cv"
@@ -72,7 +84,7 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
     </a>
   </nav>
   <button
-    class="abrir-menu"
+    class:list={['abrir-menu', { 'menu-portada': articulo }]}
     type="button"
     aria-expanded="false"
     aria-controls="menu-movil"
@@ -80,15 +92,79 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
   >
     {t(idioma, 'menu')}
   </button>
-  {tipo && (
-    <div
-      class="hueco-progreso"
-      data-reservado="progreso-lectura"
-      aria-hidden="true"
-    ></div>
+  {articulo && (
+    <>
+      <a
+        class="volver-articulo"
+        href={`${ruta(idioma)}#indice`}
+        data-enlace-proyectos
+      >
+        {t(idioma, 'articulo.proyectos')}
+      </a>
+      <div class="controles-articulo">
+        {capitulos.length > 0 && (
+          <button
+            type="button"
+            data-abrir-capitulos
+            aria-expanded="false"
+            aria-controls="capitulos"
+          >
+            {t(idioma, 'articulo.capitulos')}{' '}
+            <span data-cuenta-capitulos>
+              {new Intl.NumberFormat(idioma).format(1)}/
+              {new Intl.NumberFormat(idioma).format(capitulos.length)}
+            </span>{' '}
+            <span aria-hidden="true">▾</span>
+          </button>
+        )}
+        <button
+          class="aa"
+          type="button"
+          aria-label={t(idioma, 'articulo.opciones')}
+          aria-expanded="false"
+          aria-controls="opciones-lectura"
+        >
+          {t(idioma, 'articulo.aa')}
+        </button>
+      </div>
+      <div
+        class="hueco-progreso"
+        data-reservado="progreso-lectura"
+        aria-hidden="true"
+      >
+        <div data-progreso-lectura></div>
+      </div>
+    </>
   )}
 </div>
 <style>
+  .volver-articulo,
+  .controles-articulo {
+    display: none;
+  }
+  .controles-articulo button {
+    border: 0;
+    background: none;
+    color: var(--text);
+    min-height: var(--touch-min);
+    padding: 0 var(--space-2);
+    font-size: var(--text-meta);
+    cursor: pointer;
+  }
+  [data-progreso-lectura] {
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .controles-articulo {
+      display: flex;
+    }
+    .controles-articulo .aa {
+      display: none;
+    }
+  }
   .barra-global {
     position: fixed;
     inset: 0 0 auto;
@@ -216,8 +292,11 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
     [data-estado='articulo'] .enlaces {
       gap: var(--space-3);
     }
+    [data-estado='articulo'] .enlaces > a:not(.cv) {
+      display: none;
+    }
     .hueco-tema {
-      width: 0;
+      width: auto;
     }
   }
   @media (max-width: 767px) {
@@ -228,11 +307,24 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
     [data-estado='hero'] {
       padding-block: var(--space-3);
     }
+    [data-estado='articulo'] .identidad,
+    .menu-portada {
+      display: none;
+    }
+    .volver-articulo,
+    .controles-articulo {
+      display: flex;
+      align-items: center;
+    }
+    .controles-articulo .aa {
+      color: var(--accent);
+      min-width: var(--touch-min);
+    }
     .enlaces,
     .miga {
       display: none;
     }
-    .abrir-menu {
+    .abrir-menu:not(.menu-portada) {
       display: inline-flex;
       align-items: center;
       justify-content: center;

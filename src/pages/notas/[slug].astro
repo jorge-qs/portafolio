@@ -1,0 +1,27 @@
+---
+import Codigo from '../../components/articulo/Codigo.astro';
+import Tabla from '../../components/articulo/Tabla.astro';
+import { getCollection, render } from 'astro:content';
+import NotaLayout from '../../layouts/NotaLayout.astro';
+import { IDIOMA_BASE } from '../../i18n/config';
+export async function getStaticPaths() {
+  if (!Object.keys(import.meta.glob('../../content/notas/*/*.{md,mdx}')).length)
+    return [];
+  return (await getCollection('notas'))
+    .filter((n) => n.id.startsWith(`${IDIOMA_BASE}/`))
+    .map((nota) => ({
+      params: { slug: nota.id.split('/').slice(1).join('/') },
+      props: { nota },
+    }));
+}
+const { nota } = Astro.props;
+const { Content } = await render(nota);
+---
+
+<NotaLayout
+  titulo={nota.data.titulo}
+  fecha={nota.data.fecha}
+  idioma={IDIOMA_BASE}
+>
+  <Content components={{ pre: Codigo, table: Tabla }} />
+</NotaLayout>

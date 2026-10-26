@@ -114,11 +114,7 @@ test('carga con hash y enlace de artículo a Índice', async ({ page }) => {
   await page.goto(articulo);
   await expect(barra(page)).toHaveAttribute('data-estado', 'articulo');
   if (page.viewportSize()!.width < 768) {
-    await menuMovil(page);
-    await page
-      .getByRole('dialog')
-      .getByRole('link', { name: 'Índice', exact: true })
-      .click();
+    await page.getByRole('link', { name: '← Proyectos', exact: true }).click();
   } else {
     await page
       .getByRole('navigation', { name: 'Ruta del proyecto' })
@@ -258,7 +254,10 @@ test('360 px sin desbordamiento y objetivos táctiles', async ({ page }) => {
           document.documentElement.clientWidth,
       ),
     ).toBe(true);
-    const boton = page.getByRole('button', { name: 'Menú' });
+    const boton =
+      ruta === '/'
+        ? page.getByRole('button', { name: 'Menú' })
+        : page.getByRole('button', { name: 'Opciones de lectura' });
     expect((await boton.boundingBox())!.height).toBeGreaterThanOrEqual(
       TACTIL_MIN,
     );
@@ -275,7 +274,7 @@ test('360 px sin desbordamiento y objetivos táctiles', async ({ page }) => {
     ).toBe(true);
     for (const enlace of await page
       .getByRole('dialog')
-      .locator('a, button')
+      .locator('a, button, input')
       .all()) {
       expect((await enlace.boundingBox())!.height).toBeGreaterThanOrEqual(
         TACTIL_MIN,
@@ -284,7 +283,7 @@ test('360 px sin desbordamiento y objetivos táctiles', async ({ page }) => {
   }
 });
 
-test('placeholders desactivados, huecos F3 y portada siempre Cosmos', async ({
+test('placeholders desactivados, controles F3 y portada siempre Cosmos', async ({
   page,
 }) => {
   await page.goto(articulo);
@@ -292,8 +291,12 @@ test('placeholders desactivados, huecos F3 y portada siempre Cosmos', async ({
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dawn');
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-  await expect(page.locator('[data-reservado="selector-tema"]')).toBeEmpty();
-  await expect(page.locator('[data-reservado="progreso-lectura"]')).toBeEmpty();
+  await expect(
+    page.locator('[data-reservado="selector-tema"] [data-tema]'),
+  ).toHaveCount(2);
+  await expect(
+    page.locator('[data-reservado="progreso-lectura"] [data-progreso-lectura]'),
+  ).toHaveCount(1);
   for (const enlace of await page.locator('a[aria-disabled="true"]').all())
     await expect(enlace).toHaveAttribute('href', '#');
   await page.goto('/');

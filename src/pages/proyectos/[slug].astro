@@ -1,29 +1,39 @@
 ---
+import Codigo from '../../components/articulo/Codigo.astro';
+import Tabla from '../../components/articulo/Tabla.astro';
 import { render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticuloLayout from '../../layouts/ArticuloLayout.astro';
+import Capitulo from '../../components/articulo/Capitulo.astro';
 import { obtenerProyectos } from '../../content/consultas';
+import { ordenarProyectos } from '../../content/validacion';
 import { IDIOMA_BASE } from '../../i18n/config';
 import { t } from '../../i18n';
-
 export async function getStaticPaths() {
-  return (await obtenerProyectos(IDIOMA_BASE)).map((proyecto) => ({
+  const proyectos = ordenarProyectos(await obtenerProyectos(IDIOMA_BASE));
+  return proyectos.map((proyecto, i) => ({
     params: { slug: proyecto.slug },
-    props: { proyecto },
+    props: {
+      proyecto,
+      anterior: proyectos[i - 1],
+      siguiente: proyectos[i + 1],
+    },
   }));
 }
-const { proyecto } = Astro.props;
-const { Content } = await render(proyecto);
+const { proyecto, anterior, siguiente } = Astro.props;
+const { Content, headings } = await render(proyecto);
 ---
 
-<BaseLayout
+<ArticuloLayout
   titulo={proyecto.data.titulo}
   descripcion={proyecto.data.resumen}
   idioma={proyecto.idioma}
-  tema="elegible"
   tipo={proyecto.data.tipo}
+  fecha={proyecto.data.fecha}
+  lectura={proyecto.data.lectura_min}
+  capitulos={headings.filter((h) => h.depth === 2)}
+  anterior={anterior}
+  siguiente={siguiente}
 >
   {proyecto.esRespaldo && <p>{t(proyecto.idioma, 'idiomaRespaldo')}</p>}
-  <h1>{proyecto.data.titulo}</h1>
-  <p>{proyecto.data.resumen}</p>
-  <Content />
-</BaseLayout>
+  <Content components={{ h2: Capitulo, pre: Codigo, table: Tabla }} />
+</ArticuloLayout>

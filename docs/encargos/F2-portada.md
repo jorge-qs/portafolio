@@ -1,6 +1,6 @@
 # F2 · Portada estática (secciones 03–07)
 
-**Estado:** en revisión
+**Estado:** aprobada
 **Rama:** `f2-portada` (worktree propio) · **Depende de:** F1 (en `main`) · **En paralelo con:** F3 · **Escrito por:** Claude · **Fecha:** 2026-10-25
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F2-portada.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -231,4 +231,17 @@ Diagnósticos persistentes de axe: [`1280`](capturas/F2/axe-1280.json), [`834`](
 - No hay foto final, CV ni datos de contacto reales con los que verificar descarga o enlaces externos; se comprobó el patrón de placeholders deshabilitados.
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-26.** Una entrega cuidadosa: respeta el alcance y la coordinación con F3, y el informe es fiel. Codex se detuvo correctamente ante el conflicto entre el 30 % de la maqueta y la regla AA, en lugar de saltarse axe.
+
+### Correcciones de Claude
+1. **Contraste de la evidencia atenuada** (el bloqueo del informe). Se aplica la propuesta de Codex: el texto de las tarjetas que no aplican pasa a `--muted` (AA en los dos temas) y solo el punto decorativo usa `--evidence-opacity`. Se lee igual de «apagado», sin texto ilegible. Queda registrado en `design/docs/DECISIONES.md`.
+2. **El test de reduced motion** comparaba `transitionDuration === '0s'`. Con dos transiciones, el valor es una lista, así que ahora se comprueba cada duración.
+3. **Integración con F3:** el puerto de los e2e queda unificado en `PORTAFOLIO_E2E_PORT`, con 4325 por defecto y sin reutilizar un servidor ajeno.
+
+### Verificación (después de integrar F2 + F3 en `main`)
+`npm ci`, `check` (0 errores y 0 advertencias), `npm test` (97/97), `build` (9 páginas, sin advertencias) y `npm run e2e` (93/93 en los tres tamaños).
+
+### Pendiente
+- **«Todas las notas»** no tiene destino, porque ningún encargo crea `/notas/`. Queda en `PLAN.md` y no afecta mientras haya 3 notas o menos.
+
+**Recomendación:** aprobada e integrada en `main`.
