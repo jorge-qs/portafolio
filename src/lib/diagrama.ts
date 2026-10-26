@@ -13,3 +13,13 @@ export interface ModeloDiagrama {
   aristas: [string, string][];
   seleccionado?: string;
 }
+
+// Estado visual de un diagrama (C8). Lo fija el artículo (seleccionado), F4 al
+// interactuar y F5 en cada capítulo del relato (posiciones, recorrido, atenuados).
+export interface EstadoDiagrama {
+  seleccionado?: string;
+  recorrido?: string[];
+  atenuados?: string[];
+  aristasResaltadas?: [string, string][];
+  posiciones?: Record<string, { x: number; y: number }>;
+}

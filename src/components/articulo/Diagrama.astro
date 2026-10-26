@@ -3,6 +3,7 @@ import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
 import type { ModeloDiagrama } from '../../lib/diagrama';
 import Enlace from '../Enlace.astro';
+import DiagramaSVG from '../DiagramaSVG.astro';
 interface Props {
   modelo: ModeloDiagrama;
   descripcion: string;
@@ -11,41 +12,13 @@ interface Props {
 const { modelo, descripcion, idioma = 'es' } = Astro.props;
 const seleccionado =
   modelo.nodos.find((n) => n.id === modelo.seleccionado) ?? modelo.nodos[0];
-const porId = new Map(modelo.nodos.map((n) => [n.id, n]));
 ---
 
 <figure class="diagrama ancho">
   <div class="miniatura">
-    <svg viewBox="-12 0 490 400" aria-hidden="true">
-      <g class="aristas">
-        {modelo.aristas.map(([a, b]) => (
-          <line
-            x1={porId.get(a)!.x}
-            y1={porId.get(a)!.y}
-            x2={porId.get(b)!.x}
-            y2={porId.get(b)!.y}
-          />
-        ))}
-      </g>
-      <g class="nodos">
-        {modelo.nodos.map((n) => (
-          <g
-            class:list={['nodo', { seleccionado: n.id === seleccionado.id }]}
-            data-nodo={n.id}
-          >
-            <rect x={n.x - 52} y={n.y - 20} width="104" height="40" rx="8" />
-            <text
-              x={n.x}
-              y={n.y}
-              text-anchor="middle"
-              dominant-baseline="central"
-            >
-              {n.etiqueta}
-            </text>
-          </g>
-        ))}
-      </g>
-    </svg>
+    <div class="lienzo">
+      <DiagramaSVG modelo={modelo} />
+    </div>
     <figcaption>{t(idioma, 'articulo.diagrama', { n: 1 })}</figcaption>
     <button type="button" hidden>
       {t(idioma, 'articulo.explorar')}
@@ -86,35 +59,13 @@ const porId = new Map(modelo.nodos.map((n) => [n.id, n]));
     min-width: 0;
     padding: var(--space-4);
   }
-  svg {
-    width: 100%;
+  .lienzo {
     height: calc(var(--diagram-height) - 2 * var(--space-4));
   }
   figcaption {
     position: absolute;
     bottom: var(--space-4);
     left: var(--space-4);
-  }
-  .aristas line {
-    stroke: var(--edge);
-    stroke-width: var(--line-width);
-  }
-  .nodo rect {
-    fill: var(--surface-2);
-    stroke: none;
-  }
-  .nodo text {
-    fill: var(--text);
-    font: var(--text-kicker) var(--font-sans);
-  }
-  .seleccionado rect {
-    fill: var(--selected);
-    stroke: var(--accent);
-    stroke-width: var(--line-width);
-  }
-  .seleccionado text {
-    fill: var(--heading);
-    font-weight: 600;
   }
   .panel {
     background: var(--surface-2);
@@ -147,7 +98,7 @@ const porId = new Map(modelo.nodos.map((n) => [n.id, n]));
     figure {
       display: block;
     }
-    svg {
+    .lienzo {
       height: calc(var(--diagram-mobile-height) - 2 * var(--space-4));
     }
     .panel {

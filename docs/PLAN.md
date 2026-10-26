@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** F0–F3 en `main` (H2 alcanzado) · F4 por encargar
+**Actualizado:** 2026-10-25 · **Estado general:** F0–F3 en `main` · F4 y F5 encargadas, en paralelo
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -51,11 +51,12 @@ La v1 se publica cuando se cumple todo esto:
 | F1 | Barra global, menú móvil, pie y anclas | F0 | M | **aprobada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
 | F2 | Portada estática: 03–07 | F1 | L | **aprobada** | [F2-portada.md](encargos/F2-portada.md) |
 | F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | **aprobada** | [F3-articulos.md](encargos/F3-articulos.md) |
-| F4 | Interacciones de la portada y de los artículos | F2, F3 | L | pendiente | — |
-| F5 | Scrollytelling | F4 | L | pendiente | — |
+| F4 | Interacciones de la portada y de los artículos | F2, F3 | L | **encargada** | [F4-interacciones.md](encargos/F4-interacciones.md) |
+| F5 | Scrollytelling | F2, F3 (en paralelo con F4) | L | **encargada** | [F5-relato.md](encargos/F5-relato.md) |
+| F5.1 | Selección de nodos dentro del relato (bugs 4, 5 y 6) | F4, F5 | S | pendiente | — |
 | F6 | Hero y transición | F5 | L | pendiente | — |
 | F7 | Segundo idioma (EN) | F3, D2 | M | pendiente | — |
-| F8 | Lanzamiento | todas, contenido real | M | pendiente | — |
+| F8 | Pulido UX/UI y lanzamiento | todas, contenido real | L | pendiente | — |
 
 **Tamaño:** S = una sesión corta del agente · M = una sesión · L = una o dos sesiones, posiblemente con un encargo de corrección.
 
@@ -187,6 +188,8 @@ Ver [F0-base.md](encargos/F0-base.md). Incluye:
   - sin JS, el índice muestra «Todos», el acordeón funciona y el contenido está completo (casuística V4).
 
 ### F5 · Scrollytelling
+> **Ajuste del 2026-10-26:** F5 se hace en paralelo con F4. La selección de nodos dentro del relato y los bugs 4, 5 y 6 pasan a **F5.1**, que conecta el módulo `diagrama-interactivo` de F4 cuando las dos estén en `main`. La base común (`DiagramaSVG` con estados) la dejó Claude en `main` antes de lanzar las dos fases.
+
 - **Leer:** `INTERACCIONES.md` § Scrollytelling; `DECISIONES.md` § Proyectos destacados; **`BUGS_CONOCIDOS.md` completo**; `scrollytelling-v1.html`; Maqueta 1 § 02.
 - **Entregables:**
   - **los 3 relatos**, generados desde `capitulos_relato` de los proyectos destacados:
@@ -241,7 +244,18 @@ Ver [F0-base.md](encargos/F0-base.md). Incluye:
   - `en.json` completo.
 - **Necesita de Jorge:** aprobar la traducción de su contenido. Claude puede proponerla, pero Jorge la revisa antes de publicarla.
 
-### F8 · Lanzamiento
+### F8 · Pulido UX/UI y lanzamiento
+F8 tiene dos partes, en este orden: **primero el pulido y después el lanzamiento.** El pulido convierte una implementación fiel a las maquetas en el producto final, y solo tiene sentido con contenido real.
+
+**Parte A · Pulido UX/UI.** Pedido por Jorge el 2026-10-26.
+- **Con contenido real:** se revisa el sitio entero con los textos, los proyectos y las figuras definitivos. Se ajustan el ritmo vertical, la longitud de líneas y resúmenes, la jerarquía tipográfica y los espacios donde el texto real se comporte distinto que los placeholders.
+- **Movimiento:** se afinan las duraciones, los retardos y las curvas del hero, el relato y las transiciones, sobre el sitio funcionando, con `animation-vocabulary`, `improve-animations` y `animation-performance`. Se respetan las reglas de `AGENTS.md` (sin rebotes ni zoom). Si Jorge quiere más intensidad en alguna zona, se registra como decisión antes de implementarla.
+- **Detalle de interacción:** estados de hover, foco y pulsado, tiempos de respuesta, mensajes, estados vacíos y de error, y objetivos táctiles, con `emil-design-eng`.
+- **Dispositivos reales:** un iPhone y un Mac con Safari y Chrome, VoiceOver, el teclado y una conexión lenta (con `mobile-native`).
+- **Revisión de diseño:** Claude (o Claude Design) compara con las maquetas y propone una lista priorizada de ajustes. Jorge elige cuáles entran y Codex los implementa en uno o dos encargos cortos.
+- **Criterio de salida:** Jorge, mirando el sitio en su teléfono y en su ordenador, lo da por terminado.
+
+**Parte B · Lanzamiento.**
 - **Entregables:**
   - **SEO:** título y descripción por página, canonical, `sitemap.xml` con los idiomas y `robots.txt`;
   - el **favicon** y las **imágenes OG** generadas en el build (propuesta: el detalle de la punta con el cursor sobre Cosmos);

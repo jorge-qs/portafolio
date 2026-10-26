@@ -117,6 +117,7 @@
   --press-scale: .98;
   --line-width: 1px;
   --active-line: 2px;
+  --node-dimmed: .4;            /* nodo de diagrama atenuado (C8) */
   --underline-offset: 3px;
   --brand-tracking: .2em;
   --nav-margin: 64px;
