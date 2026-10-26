@@ -1,29 +1,109 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { obtenerProyectos } from '../content/consultas';
-import { ruta } from '../i18n';
+import EncabezadoSeccion from '../components/EncabezadoSeccion.astro';
+import { hayNotasPublicadas } from '../content/consultas';
+import { seccionesVisibles } from '../config/secciones';
+import { t } from '../i18n';
 import { IDIOMA_BASE } from '../i18n/config';
-
-const perfil = (await getEntry('perfil', IDIOMA_BASE))!;
-const proyectos = await obtenerProyectos(IDIOMA_BASE);
+const idioma = IDIOMA_BASE;
+const perfil = (await getEntry('perfil', idioma))!.data;
+const secciones = seccionesVisibles(await hayNotasPublicadas(idioma));
 ---
 
 <BaseLayout
-  titulo={perfil.data.frase_hero}
-  descripcion={perfil.data.presentacion}
-  idioma={IDIOMA_BASE}
+  titulo={perfil.nombre}
+  descripcion={perfil.presentacion}
+  idioma={idioma}
   tema="cosmos"
+  portada
 >
-  <h1>{perfil.data.frase_hero}</h1>
-  <ul>
-    {proyectos.map((proyecto) => (
-      <li>
-        <a href={ruta(IDIOMA_BASE, `/proyectos/${proyecto.slug}`)}>
-          {proyecto.data.titulo}
-        </a>
-        <span>{proyecto.data.tipo}</span>
-      </li>
-    ))}
-  </ul>
+  {secciones.map((seccion) => (
+    <section
+      id={seccion.ancla || 'inicio'}
+      class:list={['seccion', seccion.id]}
+      aria-labelledby={`${seccion.id}-titulo`}
+      data-seccion-portada={seccion.id}
+      data-hero={seccion.id === 'hero' || undefined}
+    >
+      <div class="interior">
+        {seccion.id === 'hero' ? (
+          <h1 id="hero-titulo" class="visualmente-oculto">
+            {perfil.nombre}
+          </h1>
+        ) : seccion.id === 'proyectos' ? (
+          <h2 id="proyectos-titulo" class="visualmente-oculto" tabindex="-1">
+            {t(idioma, seccion.clave)}
+          </h2>
+        ) : (
+          <EncabezadoSeccion seccion={seccion} idioma={idioma} />
+        )}
+        <div
+          data-reservado={
+            seccion.id === 'hero'
+              ? 'F6'
+              : seccion.id === 'proyectos'
+                ? 'F5'
+                : 'F2'
+          }
+          aria-hidden="true"
+        ></div>
+      </div>
+    </section>
+  ))}
 </BaseLayout>
+<style>
+  .seccion {
+    padding-top: var(--section-gap);
+  }
+  .interior {
+    max-width: calc(var(--content-max) + 2 * var(--page-margin));
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+  .hero {
+    min-height: var(--hero-min);
+    padding: 0;
+  }
+  .proyectos {
+    min-height: var(--stories-min);
+  }
+  .indice {
+    min-height: var(--index-min);
+    padding-top: var(--index-gap);
+  }
+  .sobre-mi {
+    min-height: var(--about-min);
+  }
+  .tecnologias {
+    min-height: var(--technologies-min);
+  }
+  .notas {
+    min-height: var(--notes-min);
+  }
+  .contacto {
+    min-height: var(--contact-min);
+  }
+  @media (max-width: 1199px) {
+    .seccion {
+      padding-top: var(--section-gap-tablet);
+    }
+    .hero {
+      padding-top: 0;
+    }
+    .interior {
+      padding-inline: var(--space-6);
+    }
+  }
+  @media (max-width: 767px) {
+    .seccion {
+      padding-top: var(--section-gap-mobile);
+    }
+    .hero {
+      padding-top: 0;
+    }
+    .interior {
+      padding-inline: var(--page-margin-mobile);
+    }
+  }
+</style>

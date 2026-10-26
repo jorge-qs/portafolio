@@ -3,14 +3,30 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import { t } from '../i18n';
 import type { Idioma } from '../i18n/config';
+import { getEntry } from 'astro:content';
+import { hayNotasPublicadas } from '../content/consultas';
+import BarraGlobal from '../components/BarraGlobal.astro';
+import MenuMovil from '../components/MenuMovil.astro';
+import PiePagina from '../components/PiePagina.astro';
 
 interface Props {
   titulo: string;
   descripcion: string;
   idioma: Idioma;
   tema: 'cosmos' | 'elegible';
+  portada?: boolean;
+  tipo?: 'ing' | 'inv' | 'hib';
 }
-const { titulo, descripcion, idioma, tema } = Astro.props;
+const {
+  titulo,
+  descripcion,
+  idioma,
+  tema,
+  portada = false,
+  tipo,
+} = Astro.props;
+const perfil = (await getEntry('perfil', 'es'))!.data;
+const hayNotas = await hayNotasPublicadas(idioma);
 ---
 
 <!doctype html>
@@ -55,8 +71,34 @@ const { titulo, descripcion, idioma, tema } = Astro.props;
     <a class="saltar-contenido" href="#contenido">
       {t(idioma, 'saltarContenido')}
     </a>
-    <main id="contenido" tabindex="-1">
+    <header>
+      <slot name="header">
+        <BarraGlobal
+          perfil={perfil}
+          idioma={idioma}
+          hayNotas={hayNotas}
+          portada={portada}
+          tipo={tipo}
+        />
+      </slot>
+    </header>
+    <main id="contenido" class:list={{ portada }} tabindex="-1">
       <slot />
     </main>
+    <footer>
+      <slot name="footer">
+        <PiePagina perfil={perfil} idioma={idioma} portada={portada} />
+      </slot>
+    </footer>
+    <MenuMovil
+      perfil={perfil}
+      idioma={idioma}
+      hayNotas={hayNotas}
+      portada={portada}
+    />
+    <script>
+      import { iniciarNavegacion } from '../lib/navegacion';
+      iniciarNavegacion();
+    </script>
   </body>
 </html>

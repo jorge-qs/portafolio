@@ -1,0 +1,243 @@
+---
+import { seccionesVisibles, enlaceSeccion } from '../config/secciones';
+import type { CollectionEntry } from 'astro:content';
+import type { Idioma } from '../i18n/config';
+import { t, ruta } from '../i18n';
+import { esPlaceholder, destinoPerfil } from '../lib/enlaces';
+interface Props {
+  perfil: CollectionEntry<'perfil'>['data'];
+  idioma: Idioma;
+  hayNotas: boolean;
+  portada?: boolean;
+  tipo?: 'ing' | 'inv' | 'hib';
+}
+const { perfil, idioma, hayNotas, portada = false, tipo } = Astro.props;
+const enlaces = seccionesVisibles(hayNotas).filter((s) =>
+  ['proyectos', 'notas', 'sobre-mi', 'contacto'].includes(s.id),
+);
+const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
+---
+
+<div
+  class="barra-global"
+  data-barra-global
+  data-estado={portada ? 'hero' : 'articulo'}
+>
+  <div class="identidad">
+    <a class="marca" href={ruta(idioma)}>
+      {marca}
+    </a>
+    {tipo && (
+      <nav class="miga" aria-label={t(idioma, 'migaPan')}>
+        <a href={enlaceSeccion(idioma, 'indice', false)}>
+          {t(idioma, 'seccionProyectos')}
+        </a>
+        <span aria-hidden="true">/</span>
+        <span class:list={['tipo', tipo]}>
+          {t(idioma, `tipo${tipo[0].toUpperCase()}${tipo.slice(1)}`)}
+        </span>
+      </nav>
+    )}
+  </div>
+  <nav class="enlaces" aria-label={t(idioma, 'navegacionPrincipal')}>
+    {enlaces.map((seccion) => (
+      <a
+        href={enlaceSeccion(
+          idioma,
+          portada
+            ? seccion.ancla
+            : seccion.id === 'proyectos'
+              ? 'indice'
+              : seccion.ancla,
+          portada,
+        )}
+        data-seccion={seccion.id}
+        data-enlace-proyectos={seccion.id === 'proyectos' || undefined}
+      >
+        {t(idioma, seccion.clave)}
+      </a>
+    ))}
+    {tipo && (
+      <span
+        class="hueco-tema"
+        data-reservado="selector-tema"
+        aria-hidden="true"
+      ></span>
+    )}
+    <a
+      class="cv"
+      href={destinoPerfil(perfil.cv.url)}
+      aria-disabled={esPlaceholder(perfil.cv.url) ? 'true' : undefined}
+      tabindex={esPlaceholder(perfil.cv.url) ? -1 : undefined}
+    >
+      {t(idioma, 'cv')}
+    </a>
+  </nav>
+  <button
+    class="abrir-menu"
+    type="button"
+    aria-expanded="false"
+    aria-controls="menu-movil"
+    data-abrir-menu
+  >
+    {t(idioma, 'menu')}
+  </button>
+  {tipo && (
+    <div
+      class="hueco-progreso"
+      data-reservado="progreso-lectura"
+      aria-hidden="true"
+    ></div>
+  )}
+</div>
+<style>
+  .barra-global {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: var(--z-nav);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-inline: var(--nav-margin);
+    min-height: var(--nav-h);
+    font-size: var(--text-meta);
+    line-height: normal;
+    transition: transform var(--dur) var(--ease-inout);
+  }
+  [data-estado='hero'] {
+    padding-block: var(--nav-hero-padding);
+  }
+  [data-estado='fija'],
+  [data-estado='articulo'] {
+    height: var(--nav-h);
+    background: var(--nav-bg);
+    border-bottom: var(--line-width) solid var(--line);
+  }
+  [data-estado='articulo'] {
+    padding-inline: var(--nav-article-margin);
+  }
+  [data-estado='relato'],
+  [data-oculta] {
+    transform: translateY(-100%);
+  }
+  .identidad,
+  .miga,
+  .enlaces {
+    display: flex;
+    align-items: center;
+  }
+  .identidad,
+  .miga {
+    gap: var(--space-5);
+  }
+  .miga {
+    gap: var(--space-2);
+    white-space: nowrap;
+  }
+  .marca {
+    color: var(--heading);
+    letter-spacing: var(--brand-tracking);
+    font-weight: 600;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .enlaces {
+    gap: var(--nav-link-gap);
+  }
+  .enlaces a {
+    position: relative;
+  }
+  [data-estado='fija'] .enlaces a {
+    min-height: var(--nav-h);
+  }
+  a:hover {
+    color: var(--text);
+  }
+  a[aria-current='location'] {
+    color: var(--heading);
+  }
+  a[aria-current='location']::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    inset-inline: 0;
+    height: var(--active-line);
+    background: var(--accent);
+  }
+  .cv,
+  .cv:hover {
+    color: var(--accent);
+  }
+  .ing {
+    color: var(--eng);
+  }
+  .inv {
+    color: var(--res);
+  }
+  .hib {
+    color: var(--muted);
+  }
+  .abrir-menu {
+    display: none;
+    min-width: var(--touch-min);
+    min-height: var(--touch-min);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+    font-size: var(--text-meta);
+  }
+  .hueco-tema {
+    width: var(--theme-slot);
+  }
+  .hueco-progreso {
+    position: absolute;
+    inset: auto 0 0;
+    height: var(--active-line);
+  }
+  @media (min-width: 768px) {
+    [data-estado='hero'] a {
+      min-height: 0;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .barra-global,
+    [data-estado='articulo'] {
+      padding-inline: var(--space-6);
+    }
+    .identidad {
+      gap: var(--space-3);
+    }
+    [data-estado='articulo'] .enlaces {
+      gap: var(--space-3);
+    }
+    .hueco-tema {
+      width: 0;
+    }
+  }
+  @media (max-width: 767px) {
+    .barra-global,
+    [data-estado='articulo'] {
+      padding-inline: var(--page-margin-mobile);
+    }
+    [data-estado='hero'] {
+      padding-block: var(--space-3);
+    }
+    .enlaces,
+    .miga {
+      display: none;
+    }
+    .abrir-menu {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+</style>

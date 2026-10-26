@@ -46,6 +46,8 @@ export const notaSchema = z.object({
 });
 
 export const perfilSchema = z.object({
+  nombre: texto,
+  anio_copyright: z.union([z.number().int(), placeholder]),
   frase_hero: texto,
   presentacion: texto,
   preguntas: z.array(z.object({ tipo: texto, texto })),

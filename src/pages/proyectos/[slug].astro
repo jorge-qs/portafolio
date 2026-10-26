@@ -20,6 +20,7 @@ const { Content } = await render(proyecto);
   descripcion={proyecto.data.resumen}
   idioma={proyecto.idioma}
   tema="elegible"
+  tipo={proyecto.data.tipo}
 >
   {proyecto.esRespaldo && <p>{t(proyecto.idioma, 'idiomaRespaldo')}</p>}
   <h1>{proyecto.data.titulo}</h1>
