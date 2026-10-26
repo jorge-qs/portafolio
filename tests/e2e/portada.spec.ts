@@ -151,7 +151,11 @@ test('F2: reduced motion mantiene contenido y duraciones a cero', async ({
     .evaluateAll((els) =>
       els.map((el) => getComputedStyle(el).transitionDuration),
     );
-  expect(duraciones.every((duracion) => duracion === '0s')).toBe(true);
+  expect(
+    duraciones.every((lista) =>
+      lista.split(',').every((duracion) => duracion.trim() === '0s'),
+    ),
+  ).toBe(true);
   expect(
     await page
       .locator('.comando span')
