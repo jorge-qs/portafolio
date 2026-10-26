@@ -18,6 +18,13 @@ export function seccionesVisibles(hayNotas: boolean) {
 }
 export type Seccion = ReturnType<typeof seccionesVisibles>[number];
 
+// La barra no sigue el orden de la portada: Notas va antes que Sobre mí (Maqueta 3 § N).
+const ordenBarra = ['proyectos', 'notas', 'sobre-mi', 'contacto'];
+export function seccionesBarra(hayNotas: boolean) {
+  const visibles = seccionesVisibles(hayNotas);
+  return ordenBarra.flatMap((id) => visibles.filter((s) => s.id === id));
+}
+
 export function enlaceSeccion(idioma: Idioma, ancla: string, portada: boolean) {
   return (
     `${portada ? '' : ruta(idioma)}${ancla ? `#${ancla}` : ''}` || ruta(idioma)

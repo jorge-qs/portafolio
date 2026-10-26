@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import { seccionesVisibles, enlaceSeccion } from '../src/config/secciones';
+import {
+  seccionesVisibles,
+  seccionesBarra,
+  enlaceSeccion,
+} from '../src/config/secciones';
 import { esPlaceholder, destinoPerfil } from '../src/lib/enlaces';
 
 test('Notas es condicional y Contacto se renumera sin huecos', () => {
@@ -13,6 +17,19 @@ test('Notas es condicional y Contacto se renumera sin huecos', () => {
   ]);
   expect(seccionesVisibles(true).at(-1)?.numero).toBe(7);
   expect(seccionesVisibles(true).find((s) => s.id === 'notas')?.numero).toBe(6);
+});
+test('la barra ordena Proyectos · Notas · Sobre mí · Contacto', () => {
+  expect(seccionesBarra(true).map((s) => s.id)).toEqual([
+    'proyectos',
+    'notas',
+    'sobre-mi',
+    'contacto',
+  ]);
+  expect(seccionesBarra(false).map((s) => s.id)).toEqual([
+    'proyectos',
+    'sobre-mi',
+    'contacto',
+  ]);
 });
 test('anclas locales y entre páginas respetan las rutas por idioma', () => {
   expect(enlaceSeccion('es', 'indice', true)).toBe('#indice');

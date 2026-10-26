@@ -1,5 +1,5 @@
 ---
-import { seccionesVisibles, enlaceSeccion } from '../config/secciones';
+import { seccionesBarra, enlaceSeccion } from '../config/secciones';
 import type { CollectionEntry } from 'astro:content';
 import type { Idioma } from '../i18n/config';
 import { t, ruta } from '../i18n';
@@ -12,9 +12,7 @@ interface Props {
   tipo?: 'ing' | 'inv' | 'hib';
 }
 const { perfil, idioma, hayNotas, portada = false, tipo } = Astro.props;
-const enlaces = seccionesVisibles(hayNotas).filter((s) =>
-  ['proyectos', 'notas', 'sobre-mi', 'contacto'].includes(s.id),
-);
+const enlaces = seccionesBarra(hayNotas);
 const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
 ---
 
