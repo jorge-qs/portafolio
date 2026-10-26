@@ -109,8 +109,9 @@ export function iniciarNavegacion() {
       evento.key === ' '
     ) {
       raiz.dataset.teclado = '';
-      // Permite llegar a la barra aunque estaba oculta e inert al bajar.
-      mostrarBarra();
+      // Permite llegar a la barra aunque estaba oculta e inert al bajar. Solo con
+      // Tab: las flechas y el espacio desplazan la página y harían parpadear la barra.
+      if (evento.key === 'Tab') mostrarBarra();
     }
   });
   document.addEventListener('pointerdown', () =>

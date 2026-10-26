@@ -2,6 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const articulo = '/proyectos/coordinacion-multiagente/';
+// 44 px menos un margen de subpíxel: el layout puede dar 43,999… al cambiar el viewport.
+const TACTIL_MIN = 44 - 0.01;
 const barra = (page: Page) => page.locator('[data-barra-global]');
 async function menuMovil(page: Page) {
   if (page.viewportSize()!.width >= 768) {
@@ -55,6 +57,33 @@ test('hero → fija; umbral de descenso, subida y sección activa', async ({
   await expect(
     barra(page).locator('[data-seccion="proyectos"]'),
   ).toHaveAttribute('aria-current', 'location');
+});
+
+test('bajar con flechas o espacio no hace parpadear la barra', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.evaluate(() =>
+    window.scrollTo({ top: innerHeight + 40, behavior: 'instant' }),
+  );
+  await expect(barra(page)).toHaveAttribute('data-estado', 'fija');
+  await page.evaluate(() => window.scrollBy({ top: 40, behavior: 'instant' }));
+  await expect(barra(page)).toHaveAttribute('data-oculta', '');
+  await page.evaluate(() => {
+    const el = document.querySelector('[data-barra-global]')!;
+    (window as unknown as { vista: boolean }).vista = false;
+    new MutationObserver(() => {
+      if (!el.hasAttribute('data-oculta'))
+        (window as unknown as { vista: boolean }).vista = true;
+    }).observe(el, { attributes: true, attributeFilter: ['data-oculta'] });
+  });
+  for (const tecla of ['ArrowDown', 'ArrowDown', 'Space']) {
+    await page.keyboard.press(tecla);
+    await page.waitForTimeout(150);
+  }
+  expect(
+    await page.evaluate(() => (window as unknown as { vista: boolean }).vista),
+  ).toBe(false);
 });
 
 test('ancla Índice, foco al h2 y barra visible durante el salto', async ({
@@ -160,7 +189,9 @@ test('menú: elegir sección cierra, navega y enfoca; sin Notas, Contacto es 06'
     '06',
   );
   for (const elemento of await dialogo.locator('a, button').all()) {
-    expect((await elemento.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await elemento.boundingBox())!.height).toBeGreaterThanOrEqual(
+      TACTIL_MIN,
+    );
   }
   await dialogo.locator('[data-seccion="sobre-mi"]').click();
   await expect(dialogo).toBeHidden();
@@ -228,8 +259,12 @@ test('360 px sin desbordamiento y objetivos táctiles', async ({ page }) => {
       ),
     ).toBe(true);
     const boton = page.getByRole('button', { name: 'Menú' });
-    expect((await boton.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    expect((await boton.boundingBox())!.width).toBeGreaterThanOrEqual(44);
+    expect((await boton.boundingBox())!.height).toBeGreaterThanOrEqual(
+      TACTIL_MIN,
+    );
+    expect((await boton.boundingBox())!.width).toBeGreaterThanOrEqual(
+      TACTIL_MIN,
+    );
     await boton.click();
     expect(
       await page.evaluate(
@@ -242,7 +277,9 @@ test('360 px sin desbordamiento y objetivos táctiles', async ({ page }) => {
       .getByRole('dialog')
       .locator('a, button')
       .all()) {
-      expect((await enlace.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      expect((await enlace.boundingBox())!.height).toBeGreaterThanOrEqual(
+        TACTIL_MIN,
+      );
     }
   }
 });
