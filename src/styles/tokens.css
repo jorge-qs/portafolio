@@ -1,0 +1,65 @@
+/* Origen: design/docs/tokens.css. Mantener sus variables y valores sincronizados. */
+/* Kairos · tokens semánticos. La portada usa siempre Cosmos; los artículos permiten cambiar de tema. */
+:root, [data-theme="cosmos"] {
+  --bg: #0A0D14;
+  --surface: #10141D;
+  --surface-2: #151A25;
+  --surface-hover: #1C2230;
+  --line: rgba(232, 220, 196, .08);
+  --text: #E8DCC4;
+  --heading: #F4F1EA;
+  --muted: #8C929D;
+  --accent: #C9A06A;          /* acción, estado activo, foco */
+  --accent-hover: #D6B07C;
+  --on-accent: #0A0D14;       /* texto sobre --accent (botón primario) */
+  --accent-tint: rgba(201, 160, 106, .16);
+  --eng: #B08C5C;             /* etiqueta Ingeniería */
+  --res: #6F9DE3;             /* etiqueta Investigación y enlace en el texto */
+  --link: #6F9DE3;
+  --selected: #2A2418;        /* nodo de diagrama seleccionado */
+  --pending-bg: rgba(176, 140, 92, .16);
+  --pending-fg: #B08C5C;
+}
+[data-theme="dawn"] {
+  --bg: #F7F3EA;
+  --surface: #FFFDF8;
+  --surface-2: #EFE9DC;
+  --surface-hover: #E8E1D2;
+  --line: rgba(20, 28, 48, .12);
+  --text: #141C30;
+  --heading: #0E1424;
+  --muted: #4E586F;
+  --accent: #7A5824;
+  --accent-hover: #5E4318;
+  --on-accent: #FFFDF8;       /* 2026-10-25: #0A0D14 daba 3,0:1 sobre --accent y 2,1:1 en hover; este da 6,4 y 9,0 */
+  --accent-tint: rgba(122, 88, 36, .16);
+  --eng: #7A5824;             /* igual a --accent: pendiente de decidir, ver docs/PLAN.md § Decisiones abiertas */
+  --res: #2E5487;
+  --link: #2E5487;
+  --selected: #EFE9DC;
+  --pending-bg: rgba(122, 88, 36, .12);
+  --pending-fg: #7A5824;
+}
+:root {
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 144px; --space-11: 160px;
+
+  --radius-tag: 4px; --radius-sm: 8px; --radius-md: 10px; --radius-lg: 12px;
+  --radius-sheet: 20px;
+
+  --dur-fast: 150ms; --dur: 200ms; --dur-layout: 240ms;
+  --ease-out: cubic-bezier(.215, .61, .355, 1);   /* cúbica */
+  --ease-inout: cubic-bezier(.645, .045, .355, 1);
+
+  --nav-h: 56px;
+  --content-max: 1200px;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur: 0ms; --dur-layout: 0ms; }
+  html { scroll-behavior: auto !important; }
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

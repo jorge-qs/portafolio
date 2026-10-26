@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n';
+import { IDIOMA_BASE } from '../i18n/config';
+---
+
+<BaseLayout titulo={t(IDIOMA_BASE, 'error404Titulo')} descripcion={t(IDIOMA_BASE, 'error404Descripcion')} idioma={IDIOMA_BASE} tema="cosmos">
+  <h1>{t(IDIOMA_BASE, 'error404Titulo')}</h1>
+  <p>{t(IDIOMA_BASE, 'error404Descripcion')}</p>
+</BaseLayout>

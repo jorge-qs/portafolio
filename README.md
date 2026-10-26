@@ -2,7 +2,7 @@
 
 Portafolio público de proyectos de ingeniería e investigación, multilingüe con el español como base.
 
-> **Estado:** especificación lista, sin código todavía. La implementación empieza con el encargo F0.
+> **Estado:** F0 parcial, en revisión. La verificación quedó bloqueada por permisos de Astro; consulta `docs/encargos/F0-base.md`.
 
 ## Cómo está organizado
 | Ruta | Qué es |
@@ -22,4 +22,28 @@ Portafolio público de proyectos de ingeniería e investigación, multilingüe c
 4. **Fusionar:** Jorge fusiona en `main`, o se prepara un encargo de corrección `Fn.1`.
 
 ## Desarrollo
-> Lo completa F0.
+Requiere Node 24.22.1 LTS (`.nvmrc`) y npm. Con nvm:
+
+```sh
+nvm install
+nvm use
+npm ci
+npm run dev
+```
+
+| Comando | Función |
+|---|---|
+| `npm run dev` | Servidor de desarrollo de Astro |
+| `npm run build` | Generación estática en `dist/` |
+| `npm run preview` | Servidor del build |
+| `npm run check` | Astro Check, ESLint con accesibilidad y detector de tokens sueltos |
+| `npm test` | Vitest: contraste, tokens, i18n, esquemas y respaldo de idioma |
+| `npm run format` | Prettier con soporte de Astro |
+| `npm run contenido:pendientes` | Informe de placeholders y borradores |
+| `npm run contenido:pendientes -- --estricto` | Falla si quedan placeholders o borradores |
+
+Solo el español está activo. Los datos semilla de la maqueta son borradores, no contenido personal confirmado. Las páginas son comprobaciones temporales de las colecciones; las secciones y las plantillas se implementan en fases posteriores.
+
+Las fuentes estáticas de Fontsource están en `public/fonts/`, con sus licencias OFL. No necesitan conexión a un CDN en ejecución.
+
+Estos comandos están definidos pero no se han validado de extremo a extremo: el primer `npm run check` se detuvo con `EPERM` al crear la configuración de telemetría de Astro fuera del repositorio. El informe de F0 detalla las comprobaciones pendientes.

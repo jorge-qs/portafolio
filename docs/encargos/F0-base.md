@@ -1,6 +1,6 @@
 # F0 · Base técnica
 
-**Estado:** encargada
+**Estado:** en revisión
 **Rama:** `f0-base` · **Depende de:** — · **Escrito por:** Claude · **Fecha:** 2026-10-25
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F0-base.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -187,7 +187,88 @@ Añádelo al final de este archivo, en la sección «Informe»:
 ---
 
 ## Informe
-‹Lo escribe Codex.›
+### Hecho (entrega parcial)
+
+Se prepararon los siguientes archivos en `f0-base`, sin tocar `main` ni fusionar:
+
+- Proyecto estático: `package.json`, `package-lock.json`, `.nvmrc`, `astro.config.ts`, `tsconfig.json` y `.gitignore`.
+- Colecciones y validadores: `src/content.config.ts`, `src/content/esquemas.ts`, `src/content/validacion.ts` y `src/content/consultas.ts`.
+- Semilla: siete MDX en `src/content/proyectos/es/`, tres destacados, `perfil/es.json`, `tecnologias/es.json` y las carpetas vacías requeridas con `.gitkeep`.
+- Infraestructura i18n: `src/i18n/{config.ts,index.ts,es.json,en.json}`; español activo, inglés preparado y selección con respaldo español.
+- Tokens, CSS base, fuentes locales con licencia, `src/layouts/BaseLayout.astro` y las tres páginas temporales requeridas.
+- Scripts de tokens y pendientes en `scripts/`, suites de Vitest en `tests/`, configuración de ESLint/Prettier y `.github/workflows/ci.yml`.
+- Comandos e instalación documentados en `README.md` y `AGENTS.md`.
+
+Los archivos están escritos, pero **no se declara que compilen ni que satisfagan todos los criterios**. Se interrumpió el trabajo al aparecer el bloqueo de permisos descrito a continuación.
+
+### Verificación real y bloqueo
+
+- Inicio: `git status --short --branch` mostró `## f0-base`, sin cambios previos.
+- Entorno inicial: Node `v26.11.1`, npm `11.20.0`. Se obtuvo Node `v24.22.1` con `npm exec --yes --package=node@24 -- node -p 'process.version + " " + process.execPath'`. Las instalaciones y el intento de check usaron ese ejecutable mediante `PATH`; no se modificó Node global.
+- `npm view astro version engines`: Astro `7.4.2` estable. Se fijaron versiones exactas y lockfile.
+- Instalación de Astro/MDX: exit 0, 186 paquetes añadidos, 0 vulnerabilidades.
+- La primera instalación de herramientas falló con `ERESOLVE`: `eslint-plugin-jsx-a11y@6.10.2` admite ESLint hasta 9 y el plugin Astro actual requiere ESLint 10. Se usó la alternativa compatible documentada `eslint-plugin-jsx-a11y-x`, sin `--force` ni `--legacy-peer-deps`.
+- Instalación de herramientas con esa alternativa: exit 0, 210 paquetes añadidos, 0 vulnerabilidades. Emitió una advertencia de npm sobre el script de instalación de `fsevents@2.3.3` no cubierto por `allowScripts`. No se ha resuelto ni se afirma instalación sin advertencias.
+- `npm run check`: **exit 1, bloqueado antes del análisis**. Salida:
+
+```text
+> portafolio-jorge-quenta@0.0.0 check
+> astro check && eslint . --max-warnings 0 && node scripts/verificar-tokens.mjs
+
+EPERM: operation not permitted, mkdir '/Users/pobidau/Library/Preferences/astro'
+  Location:
+    /Users/pobidau/2nd Brain/portafolio/node_modules/@astrojs/telemetry/dist/config.js:54:6
+  Stack trace:
+    at Object.mkdirSync (node:fs:1410:26)
+    at get store (file:///Users/pobidau/2nd%20Brain/portafolio/node_modules/@astrojs/telemetry/dist/config.js:37:8)
+    at AstroTelemetry.getConfigWithFallback (file:///Users/pobidau/2nd%20Brain/portafolio/node_modules/@astrojs/telemetry/dist/index.js:47:36)
+    at get isDisabled (file:///Users/pobidau/2nd%20Brain/portafolio/node_modules/@astrojs/telemetry/dist/index.js:78:15)
+    at notify (file:///Users/pobidau/2nd%20Brain/portafolio/node_modules/astro/dist/cli/telemetry/index.js:5:18)
+```
+
+La ruta está fuera de las raíces de escritura autorizadas. Siguiendo la instrucción de Jorge de documentar y terminar ante un bloqueo de permisos, no se amplió acceso ni se intentó una configuración alternativa para continuar.
+
+- Se intentó el primer commit pequeño con `git add` de la infraestructura seguido de `git commit -m 'Prepara la base de Astro y las herramientas de calidad'`. `git add` terminó con **exit 128**, por lo que no llegó a ejecutarse el commit:
+
+```text
+fatal: Unable to create '/Users/pobidau/2nd Brain/portafolio/.git/index.lock': Operation not permitted
+```
+
+La política del entorno permite leer `.git`, pero no escribir en él. No se han creado commits, incluido el commit final solicitado. Los cambios y este informe quedan guardados en el árbol de trabajo de `f0-base`; `main` no se modificó.
+
+- `git diff --check`: exit 0.
+- `npm run build`: **no ejecutado**.
+- `npm test`: **no ejecutado**.
+- `npm ci`: **no ejecutado**; la instalación realizada fue `npm install`.
+- No se ejecutaron las pruebas de romper contenido ni la mutación de tokens; por ello no hay salidas que adjuntar ni mutaciones temporales pendientes de deshacer.
+
+### Desviaciones y decisiones de implementación
+
+- Entrega incompleta por el bloqueo: los criterios de aceptación siguen sin marcar.
+- Astro `7.4.2` y MDX `8.1.1`, versiones estables consultadas en npm. Referencia de API: [colecciones de Astro](https://docs.astro.build/en/guides/content-collections/).
+- Node `24.22.1`: rama LTS vigente; Node 26 figura como Current en la [tabla oficial de versiones](https://nodejs.org/en/about/previous-releases).
+- Fuentes: Fontsource (`@fontsource/geist` y `@fontsource/geist-mono`, ambas `5.3.0`) permite copiar los cinco pesos estáticos woff2 latinos pedidos y sus licencias OFL, sin integración de framework ni peticiones externas en ejecución. Los paquetes son dependencias de desarrollo; los archivos publicados están en `public/fonts/`.
+- Accesibilidad: se eligió `eslint-plugin-jsx-a11y-x`, alternativa admitida por la [documentación de eslint-plugin-astro](https://ota-meshi.github.io/eslint-plugin-astro/user-guide/), por compatibilidad con ESLint 10. Su configuración aún no se ha ejecutado.
+- Se conservaron literalmente el título «Coordinación multiagente», su resumen y las herramientas/relaciones presentes en la maqueta. Todo está marcado `borrador: true`; no se presenta como información personal confirmada. Para datos ausentes se usó `‹…›`, incluida `frase_hero`, ya que F0 solo autoriza extraer contenido de las secciones señaladas.
+- `trayectoria` y `capitulos_relato` se modelaron como listas de texto; el encargo no especifica una estructura interna adicional.
+- La validación cruzada se invoca desde `obtenerProyectos`, utilizado por la portada y las rutas de artículos durante el build. No se ha comprobado todavía su fallo real en Astro.
+
+### Preguntas abiertas
+
+- ¿Cómo desea Jorge resolver el acceso de Astro a su configuración de telemetría para reanudar la verificación? Se necesita una nueva indicación antes de continuar desde este bloqueo.
+- Hace falta un entorno con escritura autorizada en `.git` para crear los commits pendientes y el commit final del informe.
+
+### No verificado y trabajo pendiente
+
+- Compilación, tipos, lint, formato, contraste (los 38 pares están escritos pero no ejecutados), igualdad de tokens, esquemas, paridad i18n y respaldo de idioma.
+- El cargador `glob` de Astro registra una advertencia cuando una colección está vacía. Se detectó leyendo su implementación instalada; aún queda resolver el caso esperado de `notas/es/` vacío para cumplir el requisito de cero advertencias, sin ocultar otros avisos.
+- Instalación reproducible con `npm ci` y advertencia de `fsevents`.
+- `contenido:pendientes` en ambos modos, y las cinco pruebas negativas solicitadas (cuatro de contenido/CSS y una de igualdad de tokens).
+- HTML de `dist`, ausencia de CDN, pesos publicados y render MDX.
+- Playwright: foco del primer Tab, tema en primer fotograma, Cosmos fijo en portada, Sistema, storage bloqueado y reduced motion.
+- No hay capturas en `docs/encargos/capturas/F0/`: no se llegó a ejecutar el sitio ni el navegador. No se realizó comparación a 1280, 834, 390 o 360 px. F0 no implementa las secciones visuales de la referencia.
+- CI remota no ejecutada.
+
 
 ## Revisión
 ‹Lo escribe Claude.›

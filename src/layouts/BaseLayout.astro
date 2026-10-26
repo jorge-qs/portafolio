@@ -1,0 +1,43 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import { t } from '../i18n';
+import type { Idioma } from '../i18n/config';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  idioma: Idioma;
+  tema: 'cosmos' | 'elegible';
+}
+const { titulo, descripcion, idioma, tema } = Astro.props;
+---
+
+<!doctype html>
+<html lang={idioma} data-theme="cosmos">
+  <head>
+    <meta charset="UTF-8" />
+    {tema === 'elegible' && (
+      <script is:inline>
+        try {
+          const preferencia = localStorage.getItem('tema');
+          const tema = preferencia === 'sistema'
+            ? (matchMedia('(prefers-color-scheme: light)').matches ? 'dawn' : 'cosmos')
+            : preferencia === 'dawn' ? 'dawn' : 'cosmos';
+          document.documentElement.dataset.theme = tema;
+        } catch {
+          document.documentElement.dataset.theme = 'cosmos';
+        }
+      </script>
+    )}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={descripcion} />
+    <title>{titulo}</title>
+    <link rel="preload" href="/fonts/geist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="saltar-contenido" href="#contenido">{t(idioma, 'saltarContenido')}</a>
+    <main id="contenido" tabindex="-1"><slot /></main>
+  </body>
+</html>

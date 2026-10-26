@@ -76,7 +76,7 @@ Si dos fuentes se contradicen y esta lista no resuelve el conflicto, **detente y
 Astro con TypeScript estricto, MDX y colecciones de contenido con esquemas Zod. Los estilos son CSS con tokens y el alcance de Astro, sin Tailwind. La interactividad se hace con TS vanilla en `<script>`; para una isla de React o Preact hace falta que el encargo lo justifique. Se despliega en Cloudflare Pages. El detalle está en `docs/ARQUITECTURA.md`.
 
 ## Comandos
-> Los completa el encargo F0. Hasta entonces no hay proyecto que ejecutar.
+> Scripts definidos en F0. Su verificación quedó bloqueada por permisos; ver el informe de `docs/encargos/F0-base.md`.
 
 | Comando | Qué hace |
 |---|---|
@@ -84,7 +84,9 @@ Astro con TypeScript estricto, MDX y colecciones de contenido con esquemas Zod. 
 | `npm run build` | Build estático. Debe terminar sin errores ni advertencias |
 | `npm run check` | `astro check` + lint + prueba de tokens sueltos |
 | `npm test` | Tests (contraste AA, paridad de claves i18n, esquemas) |
-| `npm run contenido:pendientes` | Lista los placeholders `‹…›` que quedan |
+| `npm run preview` | Sirve el build estático local |
+| `npm run format` | Formatea el código con Prettier y el plugin de Astro |
+| `npm run contenido:pendientes` | Lista placeholders y borradores; con `-- --estricto`, sale con 1 si quedan |
 
 ## Forma de trabajar
 1. Lee el encargo completo y los documentos que indica en «Leer antes». No leas `design/referencias/` enteras si el encargo te señala una sección.
