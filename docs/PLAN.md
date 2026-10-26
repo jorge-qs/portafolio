@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** F0–F6 en `main` · F7 encargada · F5.1 pendiente
+**Actualizado:** 2026-10-25 · **Estado general:** F0–F7 en `main` (H5 alcanzado) · quedan F5.1, F0.5 y F8
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -55,7 +55,7 @@ La v1 se publica cuando se cumple todo esto:
 | F5 | Scrollytelling | F2, F3 (en paralelo con F4) | L | **aprobada** | [F5-relato.md](encargos/F5-relato.md) |
 | F5.1 | Selección de nodos dentro del relato (bugs 4, 5 y 6) | F4, F5 | S | pendiente | — |
 | F6 | Hero y transición | F5 | L | **aprobada** | [F6-hero.md](encargos/F6-hero.md) |
-| F7 | Segundo idioma (EN) | F6 | L | **encargada** | [F7-idiomas.md](encargos/F7-idiomas.md) |
+| F7 | Segundo idioma (EN) | F6 | L | **aprobada** | [F7-idiomas.md](encargos/F7-idiomas.md) |
 | F8 | Pulido UX/UI y lanzamiento | todas, contenido real | L | pendiente | — |
 
 **Tamaño:** S = una sesión corta del agente · M = una sesión · L = una o dos sesiones, posiblemente con un encargo de corrección.
