@@ -1,7 +1,7 @@
 # F6 · Hero: las dos manos, su entrada y la transición al relato
 
-**Estado:** encargada
-**Rama:** `f6-hero` (worktree propio) · **Depende de:** F5 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
+**Estado:** en revisión
+**Rama:** solicitada `f6-hero` (no se pudo crear porque `.git` está fuera de las rutas escribibles; cambios en checkout `F6`, sin commits) · **Depende de:** F5 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F6-hero.md. Implementa solo ese encargo y termina con el informe que pide.»*
 
@@ -400,7 +400,42 @@ Ve rellenándolo **durante** el trabajo (una línea por paso de § 2) y complét
 ---
 
 ## Informe
-‹Lo escribe Codex, paso a paso.›
+- Paso 1 — Implementé `azar`, `ventanasBase` y `estrellasBase` en `src/lib/hero/geometria.ts`, con 26 ventanas deterministas y textos de fuente; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (107 pruebas). No se modificó el orden de consumo de la semilla.
+- Paso 2 — Implementé `configuracion` y `composicion` en `src/lib/hero/composicion.ts`, incluyendo M, ambas manos, lienzo de estrellas y fijación por viewport; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (116 pruebas, incluidos los 9 tamaños solicitados).
+- Paso 3 — Implementé `clamp`, `ease`, `entrada`, `transicion`, `cursorVisible` y las fórmulas por capa en `src/lib/hero/animacion.ts`; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (117 pruebas, con valores concretos de entrada, transición, móvil y cursor).
+- Paso 4 — Añadí la colección y el esquema del hero, los datos ilustrativos, campos de perfil, claves i18n, tokens iguales en las dos hojas e integré el marcado estático en `Hero.astro` y `index.astro`; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (117 pruebas). La composición está en HTML inicial y usa la mano vía `astro:assets`.
+- Paso 5 — Añadí la entrada CSS de estrellas, mano, ventanas, texto y cursor, con envoltorios separados de las propiedades de transición y respeto a las preferencias de movimiento reducido; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (117 pruebas). La clase que activa la entrada se añadirá en el paso 6.
+- Paso 6 — Añadí `src/lib/hero/transicion.ts` y el arranque del controlador: fijación de 60/40 vh, scroll pasivo agrupado por `requestAnimationFrame`, cacheo de medidas, fase del anticipo y `will-change` solo durante la transición. `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (117 pruebas); queda validar el comportamiento real con e2e.
+- Paso 7 — Dejé el HTML en su composición final sin JS ni movimiento reducido, desactivé la fijación y las animaciones en ambos modos reducidos, y ajusté las reglas responsive para escritorio, tableta, móvil y horizontal. Amplié `contenido:pendientes` para listar y contar los textos ilustrativos; `npm run check` pasó (0 errores, advertencias ni hints) y `npm test` pasó (117 pruebas).
+- Paso 8 — Añadí los e2e y capturas en `tests/e2e/hero.spec.ts`, `tests/e2e/axe-hero.ts` y `scripts/capturar-hero.mjs`; las ventanas decorativas solo se filtran de la regla `color-contrast` de Axe. Ajusté la prueba de transición para comprobar el paso real del borde del hero en tablet. Tras esos cambios, `npm run check` pasó (0 errores, advertencias ni hints), `npm test` pasó (117 pruebas), `npm run build` pasó (9 páginas, sin advertencias), `PORTAFOLIO_E2E_PORT=4381 npm run e2e` pasó (168/168) y `PORTAFOLIO_E2E_PORT=4381 npm run e2e -- -g "hero" --repeat-each=5` pasó (90/90). Generé las capturas solicitadas en `docs/encargos/capturas/F6/`; `npm run contenido:pendientes` lista el contenido ilustrativo y reporta 287 pendientes totales. Cerré los servidores de 4381, 4382 y 8765.
+
+### Hecho
+- Geometría determinista, composición responsive y fórmulas de animación en `src/lib/hero/`.
+- Marcado, imagen provisional y estilos en `src/components/hero/Hero.astro`; integración en `src/pages/index.astro`.
+- Esquemas y textos ilustrativos, campos de perfil, claves i18n y tokens en ambas hojas.
+- Control de fijación y transición, soporte responsive, reduced motion y sin JavaScript.
+- Tests unitarios, e2e y capturas comparativas en `tests/` y `docs/encargos/capturas/F6/comparacion.html`.
+
+### Verificación
+- `npm ci`: completó, 522 paquetes instalados, 0 vulnerabilidades. `npm run e2e:instalar`: completó tras reintentos por timeout de descarga de FFmpeg.
+- `npm run check`: pasó; 115 archivos, 0 errores, advertencias ni hints; tokens y formato correctos.
+- `npm test`: pasó; 12 archivos, 117 pruebas.
+- `npm run build`: pasó; 9 páginas estáticas, sin errores ni advertencias.
+- `PORTAFOLIO_E2E_PORT=4381 npm run e2e`: pasó; 168 pruebas.
+- `PORTAFOLIO_E2E_PORT=4381 npm run e2e -- -g "hero" --repeat-each=5`: pasó; 90 pruebas.
+- Capturas: composiciones de 1280×800, 834×1112, 390×844 y 844×390; entrada en cuatro tiempos; transición en cuatro avances; reduced motion. No quedó ningún servidor escuchando en 4381, 4382 ni 8765.
+
+### Desviaciones
+- La rama `f6-hero` no se pudo crear: el sandbox permite leer `.git`, pero no escribir allí. El checkout sigue en `F6`, cuyo HEAD coincide con `main`; no se creó ningún commit ni se movió `main`.
+- En 844×390 no hay una captura horizontal equivalente en `hero-final.html`; se comparó con la sección responsive H4. El bloque de texto horizontal usa un ajuste de un píxel hacia el lado seguro para evitar la superposición detectada por el e2e.
+- Tokens añadidos bajo `/* F6 · hero */` en las dos hojas: geometría de fijación, tiempos y retardos, superficies marfil, filtro de la mano y medidas tipográficas. Claves añadidas en ambos idiomas: `hero.descripcion`, `hero.verProyectos` y `hero.proyectoNdeM`.
+- Se conservaron la mano provisional y los textos marcados `borrador`/`ilustrativo`, como pide el alcance.
+
+### Preguntas abiertas
+- Ninguna sobre implementación. Al revisar visualmente la comparación horizontal, tener en cuenta que su referencia es la sección H4 responsive, no un diseño horizontal dedicado.
+
+### No verificado
+- No se creó ni verificó una rama Git separada por la restricción de escritura en `.git`; todas las verificaciones listadas sí se ejecutaron en el checkout actual.
 
 ## Revisión
 ‹Lo escribe Claude.›

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { analizarAxe } from './axe-hero';
 
 const articulo = '/proyectos/coordinacion-multiagente/';
 // 44 px menos un margen de subpíxel: el layout puede dar 43,999… al cambiar el viewport.
@@ -31,7 +32,10 @@ for (const ruta of ['/', articulo]) {
     await expect(
       page.getByRole('link', { name: 'Saltar al contenido' }),
     ).toBeFocused();
-    const resultado = await new AxeBuilder({ page }).analyze();
+    const resultado =
+      ruta === '/'
+        ? await analizarAxe(page)
+        : await new AxeBuilder({ page }).analyze();
     expect(resultado.violations).toEqual([]);
     await page.keyboard.press('Enter');
     await expect(page.locator('main')).toBeFocused();

@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { analizarAxe } from './axe-hero';
 import { build } from 'vite';
 import type * as Fixture from '../fixtures/interacciones';
 
@@ -40,7 +40,7 @@ async function fixture(page: Page) {
   await page.addStyleTag({ content: css });
 }
 async function axe(page: Page) {
-  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  expect((await analizarAxe(page)).violations).toEqual([]);
 }
 const ing = '/proyectos/coordinacion-multiagente/';
 const inv = '/proyectos/proyecto-02/';

@@ -7,6 +7,7 @@ import SobreMi from '../components/portada/SobreMi.astro';
 import Tecnologias from '../components/portada/Tecnologias.astro';
 import Notas from '../components/portada/Notas.astro';
 import Contacto from '../components/portada/Contacto.astro';
+import Hero from '../components/hero/Hero.astro';
 import { hayNotasPublicadas, obtenerProyectos } from '../content/consultas';
 import { ordenarProyectos, seleccionarDestacados } from '../content/validacion';
 import { seccionesVisibles } from '../config/secciones';
@@ -21,6 +22,7 @@ const proyectos = ordenarProyectos(
 const destacados = seleccionarDestacados(proyectos);
 const relatos = await getCollection('relatos');
 const tecnologias = (await getEntry('tecnologias', idioma))!.data;
+const ventanasHero = (await getEntry('hero', idioma))!.data;
 const notas = secciones.some((s) => s.id === 'notas')
   ? (await getCollection('notas'))
       .filter((n) => n.id.startsWith(`${idioma}/`) && !n.data.borrador)
@@ -45,9 +47,14 @@ const notas = secciones.some((s) => s.id === 'notas')
     >
       <div class="interior">
         {seccion.id === 'hero' ? (
-          <h1 id="hero-titulo" class="visualmente-oculto">
-            {perfil.nombre}
-          </h1>
+          <Hero
+            idioma={idioma}
+            perfil={perfil}
+            ventanas={ventanasHero}
+            proyecto={destacados[0].data}
+            relato={relatos.find((r) => r.id === destacados[0].id)!.data}
+            total={destacados.length}
+          />
         ) : seccion.id === 'proyectos' ? (
           <>
             <h2 id="proyectos-titulo" class="visualmente-oculto" tabindex="-1">
@@ -80,9 +87,6 @@ const notas = secciones.some((s) => s.id === 'notas')
         ) : (
           <Contacto seccion={seccion} idioma={idioma} perfil={perfil} />
         )}
-        {seccion.id === 'hero' && (
-          <div data-reservado="F6" aria-hidden="true"></div>
-        )}
       </div>
     </section>
   ))}
@@ -102,6 +106,10 @@ const notas = secciones.some((s) => s.id === 'notas')
     max-width: calc(var(--content-max) + 2 * var(--page-margin));
     margin-inline: auto;
     padding-inline: var(--page-margin);
+  }
+  .hero .interior {
+    max-width: none;
+    padding-inline: 0;
   }
   .hero {
     min-height: var(--hero-min);

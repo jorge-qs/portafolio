@@ -56,6 +56,8 @@ export const notaSchema = z.object({
 
 export const perfilSchema = z.object({
   nombre: texto,
+  nombre_corto: texto,
+  rol_hero: texto,
   anio_copyright: z.union([z.number().int(), placeholder]),
   frase_hero: texto,
   presentacion: texto,
@@ -70,6 +72,15 @@ export const perfilSchema = z.object({
     linkedin: enlace,
   }),
   borrador: z.boolean(),
+});
+
+export const heroSchema = z.object({
+  ventanas: z.array(z.array(texto)).min(1),
+  radio: z.array(texto).min(1),
+  cubito: z.array(texto).min(1),
+  punta: z.array(texto).min(1),
+  borrador: z.boolean(),
+  ilustrativo: z.boolean(),
 });
 
 export const tecnologiasSchema = z.object({

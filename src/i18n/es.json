@@ -145,5 +145,8 @@
   "relato.figura": "Fig. {n}",
   "relato.sin": "Sin orquestador",
   "relato.con": "Con orquestador",
-  "relato.sinteticos": "Datos sintéticos · solo demostrativos"
+  "relato.sinteticos": "Datos sintéticos · solo demostrativos",
+  "hero.descripcion": "Una mano humana pintada y una mano hecha de ventanas de terminal se acercan sin llegar a tocarse.",
+  "hero.verProyectos": "Ver proyectos ↓",
+  "hero.proyectoNdeM": "Proyecto {n} de {total}"
 }

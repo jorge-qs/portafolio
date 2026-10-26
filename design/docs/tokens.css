@@ -278,3 +278,56 @@ html[data-movimiento="reducido"] {
   --relato-mobile-h: 34svh;
   --relato-mobile-max: 260px;
 }
+
+:root {
+  /* F6 · hero */
+  --dur-hero: 350ms;
+  --dur-hero-estrellas: 600ms;
+  --dur-hero-mano: 900ms;
+  --retardo-hero-mano: 200ms;
+  --dur-hero-texto: 500ms;
+  --retardo-hero-texto: 1800ms;
+  --dur-hero-cursor: 2500ms;
+  --hero-fijacion: 60vh;
+  --hero-fijacion-movil: 40vh;
+  --hero-cabecera: rgba(232, 220, 196, 0.09);
+  --hero-cabecera-punta: rgba(232, 220, 196, 0.14);
+  --hero-fondo-punta: rgba(232, 220, 196, 0.07);
+  --hero-mascara-opaca: #000;
+  --hero-filtro-mano: sepia(0.18) saturate(0.85) brightness(0.96);
+  --hero-nombre: 96px;
+  --hero-nombre-tablet: 88px;
+  --hero-nombre-movil: 56px;
+  --hero-nombre-horizontal: 48px;
+  --hero-arte-z: 0;
+  --hero-texto-z: 1;
+  --hero-max-texto: 300px;
+  --hero-max-anticipo: 560px;
+  --hero-ventana-radio: 6px;
+  --hero-ventana-cabecera-max: 12px;
+  --hero-ventana-cabecera-min: 4px;
+  --hero-ventana-cuerpo-gap: 4px;
+  --hero-ventana-texto-min: 4.5px;
+  --hero-ventana-texto-max: 8.5px;
+  --hero-ventana-texto-factor: 0.24;
+  --hero-ventana-linea: 1.3;
+  --hero-entrada-y: 6px;
+  --hero-texto-entrada-y: 8px;
+  --hero-human-entrada-x: 28px;
+  --hero-human-salida-x: 110px;
+  --hero-estrellas-salida-y: -40px;
+  --hero-texto-salida-y: -30px;
+  --hero-anticipo-entrada-y: 40px;
+  --hero-nombre-tracking: -0.025em;
+  --hero-texto-tracking: -0.02em;
+  --hero-fondo-cabecera: var(--hero-cabecera);
+}
+@media (max-width: 1199px) {
+  :root { --hero-nombre: var(--hero-nombre-tablet); }
+}
+@media (max-width: 767px) {
+  :root { --hero-nombre: var(--hero-nombre-movil); }
+}
+@media (max-height: 559px) {
+  :root { --hero-nombre: var(--hero-nombre-horizontal); }
+}

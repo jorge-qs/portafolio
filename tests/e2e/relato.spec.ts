@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { analizarAxe } from './axe-hero';
 import { readFileSync } from 'node:fs';
 import type { Relato } from '../../src/content/esquemas';
 const semilla = JSON.parse(
@@ -50,7 +50,7 @@ test('capítulos y recorrido al 40 %, rail, barra global, axe en cada capítulo'
     await expect
       .poll(() => barra.evaluate((el) => el.getBoundingClientRect().bottom))
       .toBeLessThanOrEqual(0);
-    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+    expect((await analizarAxe(page)).violations).toEqual([]);
   }
   await capitulo(page, 3, 2);
   await expect(
@@ -101,7 +101,7 @@ test('bug 3: Texto vuelve inert la figura, sin elementos enfocables; axe', async
   await expect(page.locator(`${selector} [data-relato-texto]`)).toContainText(
     semilla.equivalente_texto[1],
   );
-  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  expect((await analizarAxe(page)).violations).toEqual([]);
   await page.locator(`${selector} [data-relato-modo="diagrama"]`).click();
   await expect(visual).toBeVisible();
 });

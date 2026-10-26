@@ -22,6 +22,18 @@ for (const archivo of await archivosEn('src/content')) {
           console.log(`  borrador · ${campo}: ${valor}`);
       }
     }
+    if (datos.ilustrativo === true) {
+      const textos = Object.entries(datos)
+        .filter(([campo]) => !['borrador', 'ilustrativo'].includes(campo))
+        .flatMap(([campo, valor]) =>
+          Array.isArray(valor)
+            ? valor.flat(Infinity).map((texto) => [campo, texto])
+            : [],
+        );
+      for (const [campo, texto] of textos)
+        console.log(`  ilustrativo · ${campo}: ${texto}`);
+      total += textos.length;
+    }
   }
   total += pendientes.length;
 }

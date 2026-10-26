@@ -8,6 +8,7 @@ import {
   perfilSchema,
   proyectoSchema,
   tecnologiasSchema,
+  heroSchema,
 } from './content/esquemas';
 
 // Notas es opcional (la sección 06 no se renderiza sin notas): sin archivos, la colección queda
@@ -68,4 +69,16 @@ const relatos = defineCollection({
   schema: relatoSchema,
 });
 
-export const collections = { proyectos, notas, perfil, tecnologias, relatos };
+const hero = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/hero' }),
+  schema: heroSchema,
+});
+
+export const collections = {
+  proyectos,
+  notas,
+  perfil,
+  tecnologias,
+  relatos,
+  hero,
+};

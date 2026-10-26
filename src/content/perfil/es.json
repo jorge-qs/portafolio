@@ -1,7 +1,9 @@
 {
   "nombre": "Jorge Quenta",
+  "nombre_corto": "Jorge",
+  "rol_hero": "AI Engineer · data scientist · investigador",
   "anio_copyright": "‹año›",
-  "frase_hero": "‹…›",
+  "frase_hero": "Construyo sistemas de IA y explico cómo funcionan.",
   "presentacion": "Soy Jorge Quenta, AI Engineer, data scientist e investigador. ‹Dos frases con tu voz: dónde trabajas o estudias hoy y qué te despierta curiosidad.›",
   "preguntas": [
     {
