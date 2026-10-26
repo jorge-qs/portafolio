@@ -309,6 +309,7 @@ Cada una indica qué fase bloquea y se resuelve antes de escribir ese encargo.
 | D10 | **«Figuras» en la hoja «Aa».** La maqueta muestra un apartado sin especificar | F4 | Quitarlo, salvo que controle Diagrama/Texto en todas las figuras |
 | D11 | **Barra de artículo en tablet (834 px).** F3 la compactó sin los enlaces de sección; no hay maqueta de tablet | F4 | Aceptarla |
 | D12 | **Listado `/notas/`** para «Todas las notas →». No está en ningún encargo | Cuando haya más de 3 notas | Añadirlo a F4 o a F8: lista con el patrón del índice |
+| — | **Detalles visuales para F4** (vistos al revisar el sitio integrado): al cargar con `#ancla`, el h2 muestra el marco de foco; arriba del todo de un artículo, el índice lateral marca «2 · Ficha» en vez de «1 · Resumen» | F4 | Corregirlos en F4 |
 | D9 | **Isla de React o TS vanilla** para diagramas y relato | F4 | TS vanilla con SVG |
 
 ## 9. Riesgos
