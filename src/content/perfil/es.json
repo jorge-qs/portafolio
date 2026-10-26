@@ -31,5 +31,6 @@
     "github": "github.com/‹usuario›",
     "linkedin": "linkedin.com/in/‹usuario›"
   },
-  "borrador": true
+  "borrador": true,
+  "frase_contacto": "Si estás construyendo algo parecido, hablemos."
 }

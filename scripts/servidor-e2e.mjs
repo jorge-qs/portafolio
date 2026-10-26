@@ -4,6 +4,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 
 const raiz = resolve('dist');
+const puerto = Number(process.env.PORTAFOLIO_E2E_PORT ?? 4321);
 const tipos = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -12,6 +13,8 @@ const tipos = {
   '.svg': 'image/svg+xml',
   '.json': 'application/json',
   '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
   '.pdf': 'application/pdf',
 };
 createServer(async (peticion, respuesta) => {
@@ -33,4 +36,6 @@ createServer(async (peticion, respuesta) => {
     respuesta.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     respuesta.end('404');
   }
-}).listen(4321, '127.0.0.1', () => console.log('E2E: http://127.0.0.1:4321'));
+}).listen(puerto, '127.0.0.1', () =>
+  console.log(`E2E: http://127.0.0.1:${puerto}`),
+);

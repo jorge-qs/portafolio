@@ -3,6 +3,8 @@ import { defineConfig } from '@playwright/test';
 // El entorno del agente fija NO_COLOR; Playwright fija FORCE_COLOR en sus hijos.
 // Evita el aviso de Node por la colisión de ambas opciones.
 delete process.env.NO_COLOR;
+const puerto = Number(process.env.PORTAFOLIO_E2E_PORT ?? 4325);
+const baseURL = `http://127.0.0.1:${puerto}`;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -11,7 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
-  use: { baseURL: 'http://127.0.0.1:4321', trace: 'retain-on-failure' },
+  use: { baseURL, trace: 'retain-on-failure' },
   projects: [
     {
       name: 'escritorio',
@@ -33,7 +35,8 @@ export default defineConfig({
   ],
   webServer: {
     command: 'node scripts/servidor-e2e.mjs',
-    url: 'http://127.0.0.1:4321',
-    reuseExistingServer: !process.env.CI,
+    env: { PORTAFOLIO_E2E_PORT: String(puerto) },
+    url: baseURL,
+    reuseExistingServer: false,
   },
 });

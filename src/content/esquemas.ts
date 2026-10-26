@@ -50,6 +50,8 @@ export const perfilSchema = z.object({
   anio_copyright: z.union([z.number().int(), placeholder]),
   frase_hero: texto,
   presentacion: texto,
+  foto: z.object({ ruta: texto, alt: texto }).optional(),
+  frase_contacto: texto,
   preguntas: z.array(z.object({ tipo: texto, texto })),
   trayectoria: z.array(texto),
   cv: z.object({ url: enlace, fecha }),

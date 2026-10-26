@@ -14,6 +14,15 @@ for (const archivo of await archivosEn('src/content')) {
     const linea = contenido.slice(0, pendiente.index).split('\n').length;
     console.log(`  ${linea}: ${pendiente[0]}`);
   }
+  if (archivo.endsWith('.json')) {
+    const datos = JSON.parse(contenido);
+    if (datos.borrador === true) {
+      for (const [campo, valor] of Object.entries(datos)) {
+        if (typeof valor === 'string' && !/‹[^‹›]+›/u.test(valor))
+          console.log(`  borrador · ${campo}: ${valor}`);
+      }
+    }
+  }
   total += pendientes.length;
 }
 console.log(`${total} pendientes.`);

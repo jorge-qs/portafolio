@@ -1,6 +1,6 @@
 # F2 · Portada estática (secciones 03–07)
 
-**Estado:** encargada
+**Estado:** en revisión
 **Rama:** `f2-portada` (worktree propio) · **Depende de:** F1 (en `main`) · **En paralelo con:** F3 · **Escrito por:** Claude · **Fecha:** 2026-10-25
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F2-portada.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -142,14 +142,14 @@ Hay otro Codex trabajando en F3 en otra rama. Para que las dos ramas se fusionen
 ## Criterios de aceptación
 - [ ] `npm ci && npm run check && npm test && npm run build && npm run e2e` termina sin errores ni advertencias.
 - [ ] axe no encuentra violaciones en `/` en los tres tamaños.
-- [ ] El orden y los códigos del índice y de la franja de evidencia salen de `ordenarProyectos()` y `codigoProyecto()`.
-- [ ] Los recuentos (filtro y herramientas) se derivan del contenido y lo comprueba un test.
-- [ ] Sin JS (Playwright con `javaScriptEnabled: false`), las secciones 03–07 muestran todo el contenido y los acordeones abren.
-- [ ] Sin notas no existe la sección 06, y con una nota temporal aparece con un máximo de 3 filas. La nota no se sube.
-- [ ] El layout con foto de Sobre mí se comprobó con una imagen temporal, que no se sube.
-- [ ] A 390 y 360 px no hay scroll horizontal, nada se corta y los objetivos táctiles miden ≥ 44 px.
-- [ ] Las capturas de 03–07 a 1280, 834 y 390 px están junto a la maqueta, y el informe lista las diferencias visibles.
-- [ ] `npm run contenido:pendientes` incluye los textos de borrador nuevos.
+- [x] El orden y los códigos del índice y de la franja de evidencia salen de `ordenarProyectos()` y `codigoProyecto()`.
+- [x] Los recuentos (filtro y herramientas) se derivan del contenido y lo comprueba un test.
+- [x] Sin JS (Playwright con `javaScriptEnabled: false`), las secciones 03–07 muestran todo el contenido y los acordeones abren.
+- [x] Sin notas no existe la sección 06, y con una nota temporal aparece con un máximo de 3 filas. La nota no se sube.
+- [x] El layout con foto de Sobre mí se comprobó con una imagen temporal, que no se sube.
+- [x] A 390 y 360 px no hay scroll horizontal, nada se corta y los objetivos táctiles miden ≥ 44 px.
+- [x] Las capturas de 03–07 a 1280, 834 y 390 px están junto a la maqueta, y el informe lista las diferencias visibles.
+- [x] `npm run contenido:pendientes` incluye los textos de borrador nuevos.
 
 ## Si te bloqueas
 Si una fuente se contradice, falta un dato o algo exige rediseñar, **no lo decidas tú**. Implementa lo que no dependa de eso y deja la pregunta en el informe.
@@ -165,7 +165,70 @@ Añádelo al final de este archivo, en la sección «Informe»:
 ---
 
 ## Informe
-‹Lo escribe Codex.›
+
+Entrega de Codex · 2026-10-26. **Lista para revisión con dos bloqueos: contraste de la evidencia al 30 % y destino de «Todas las notas».** Los dos primeros criterios de aceptación siguen sin marcar; no se han silenciado ni excluido comprobaciones de axe.
+
+### 1. Hecho
+
+- Integradas las secciones de F2 en [`src/pages/index.astro`](../../src/pages/index.astro). Los bloques reservados de F5 y F6 conservan su contenido y sus alturas. Sin Notas publicadas, Contacto se numera como 06.
+- Componentes nuevos en `src/components/`: `Reticula`, `EtiquetaTipo`, `FiltroSegmentado`, `FilaIndice`, `Herramienta`, `TarjetaEvidencia`, `Acordeon`, `FilaContacto` y `Estrellas`. Las composiciones están separadas en [`src/components/portada/`](../../src/components/portada/). Se reutilizan C1, C2, C3, `esPlaceholder()`, `ordenarProyectos()` y `codigoProyecto()`. C1 recibe únicamente una prop opcional para el titular narrativo.
+- Índice editorial con siete proyectos, un enlace al artículo por fila y enlaces hermanos a `/#proyectos` para los destacados. Filtro en Todos. Recuentos derivados, sin manejadores de interacción de F4. La evidencia mantiene todos sus enlaces, incluidos los atenuados. La primera herramienta seleccionada es PyTorch.
+- Sobre mí sin foto, centrado en ocho columnas en escritorio; variante con foto, preguntas, trayectoria nativa plegable y CV deshabilitado mientras su URL sea un placeholder.
+- Notas condicionales, ordenadas por fecha, con máximo de tres filas y fechas formateadas con el helper existente. Contacto incluye sus cuatro filas, «Copiar» con `hidden`, terminal sin parpadeo, descripción alternativa y mano provisional optimizada mediante `astro:assets` a WebP (aproximadamente 13 kB frente a 111 kB del PNG).
+- En [`src/content/esquemas.ts`](../../src/content/esquemas.ts), el perfil solo añade `foto? { ruta, alt }` y `frase_contacto`. La frase exacta de la maqueta vive en `perfil/es.json`, cuyo `borrador` sigue siendo `true`. La entradilla y el titular narrativo exactos están en [`src/content/portada/es.json`](../../src/content/portada/es.json), también en borrador.
+- Derivación de recuentos en [`src/lib/portada.ts`](../../src/lib/portada.ts); unitarios en `tests/portada.test.ts` y e2e en `tests/e2e/portada.spec.ts`. `tests/proyectos-contenido.ts` lee el frontmatter real; se declara `yaml@2.9.1` como dependencia de desarrollo explícita (esa versión ya estaba en el lockfile como dependencia transitiva).
+- [`scripts/capturar-f2.mjs`](../../scripts/capturar-f2.mjs) reproduce las pruebas temporales, restaura los archivos y reconstruye el build final incluso si falla una comprobación. `contenido:pendientes` ahora imprime también los textos sin placeholders de los JSON marcados como borrador.
+
+### 2. Verificación real
+
+| Comando | Resultado |
+|---|---|
+| `npm ci` | Correcto: 397 paquetes instalados, 398 auditados, cero vulnerabilidades. Repetido al final con `--cache .cache/npm`, también correcto. |
+| `npm run e2e:instalar` | Correcto: Chromium, headless shell y FFmpeg instalados en `.cache/ms-playwright`. El primer intento se lanzó mientras `npm ci` aún terminaba y salió con 127; se repitió correctamente después. |
+| `npm run check` | Correcto: 57 archivos, cero errores, advertencias e indicaciones de Astro; ESLint, tokens y Prettier correctos. Repetido tras el último ajuste del script de capturas. |
+| `npm test` | Correcto: 67 tests en 8 archivos. Incluye contraste de los roles existentes en Cosmos/Dawn, paridad i18n, esquemas y recuentos de F2. |
+| `npm run build` | Correcto: 9 páginas, sin errores ni advertencias. El script de capturas también reconstruyó correctamente el estado final sin fixtures. |
+| `npm run e2e` | **Salida 1: 49 correctos y 2 fallidos**, en 14,4 s. Ambos fallos son `axe AA y primer Tab en /`, por el contraste de la evidencia atenuada. |
+| `PLAYWRIGHT_BROWSERS_PATH=.cache/ms-playwright node scripts/capturar-f2.mjs` | Correcto a 1280, 834 y 390 px: foto temporal, cuatro notas → tres filas, una nota → una fila, cero notas → sección ausente; también comprobadas las notas sin JavaScript. Fixtures retiradas y build restaurado. |
+| `npm run contenido:pendientes` | Correcto: 67 pendientes; incluye la frase de Contacto, la entradilla, el titular de Sobre mí y la URL pendiente del índice de notas. |
+| `git diff --check` | Correcto. |
+
+E2e por proyecto:
+
+| Proyecto | Correctos | Fallidos |
+|---|---:|---:|
+| escritorio · 1280 | 16 | 1 |
+| tablet · 834 | 16 | 1 |
+| móvil · 390 | 17 | 0 |
+
+Comprobados el orden y los destinos del índice y la evidencia, sus códigos y recuentos, ausencia de Notas, navegación nativa de acordeones con Enter/Espacio, contenido con JavaScript desactivado y paridad de contenido con reduced motion. A 390 y 360 px se abren las áreas y se comprueban los objetivos visibles de F2 con `TACTIL_MIN`, tanto en alto como en ancho, además de ausencia de desbordamiento horizontal. La imagen de Contacto tiene `aria-hidden`, WebP y una descripción alternativa fuera del bloque decorativo.
+
+La foto temporal se comprobó a 4:5 en escritorio, con 240 px de ancho en tablet y a 4:3 entre el titular y el texto en móvil. Las medidas están en [`verificacion-temporales.json`](capturas/F2/verificacion-temporales.json). El perfil final no tiene `foto`; no quedan el SVG ni las notas temporales.
+
+**Capturas:** 44 PNG en [`capturas/F2/`](capturas/F2/), reunidos lado a lado en [`comparacion.html`](capturas/F2/comparacion.html): las cinco secciones en los tres anchos, los cinco márgenes de escritorio, variantes con foto y notas temporales y Tecnologías con reduced motion. La referencia se sirvió por HTTP y se bloquearon sus conexiones externas. Solo durante las capturas se oculta la barra de F1 y se amplía la altura de la ventana manteniendo el ancho solicitado, para evitar recortes de Chromium por el margen de scroll.
+
+Diagnósticos persistentes de axe: [`1280`](capturas/F2/axe-1280.json), [`834`](capturas/F2/axe-834.json), [`390`](capturas/F2/axe-390.json). Móvil tiene cero violaciones. En escritorio y tablet hay una regla fallida (`color-contrast`) con ocho nodos: código y título de las cuatro tarjetas atenuadas. Los contrastes medidos son 1,57:1 y 2,44:1, frente a 4,5:1 requerido.
+
+### 3. Desviaciones y coordinación
+
+- **Git:** `git switch -c f2-portada main` falló al crear `index.lock` por el sandbox. Se siguió sin commits, según AGENTS.md y la instrucción del usuario. La rama sigue llamándose `F2`. Al inicio y al cierre, `HEAD` y `main` apuntan a `127d2928208c5af0b3d6747f6a94761e787f9fe8`. No se ha tocado `main` ni fusionado nada.
+- **Aislamiento de pruebas:** 4321 ya servía otro checkout. Los primeros resultados obtenidos reutilizando ese servidor se descartaron. Playwright ahora usa 4325 por defecto, admite `PORTAFOLIO_E2E_PORT` y tiene `reuseExistingServer: false`; el servidor auxiliar conserva 4321 como predeterminado para mantener compatibles los scripts anteriores. Las capturas usan 4326/4327. Chromium necesita ejecutarse fuera del sandbox por el bloqueo de MachPortRendezvous; las ejecuciones con escalación fueron autorizadas. No se modificó el servidor ajeno.
+- **Contraste bloqueado:** se conserva la opacidad del 30 % pedida para toda la tarjeta. Cumplir simultáneamente esa apariencia y AA para su texto es imposible con esos colores. La corrección propuesta, aún sin aplicar, es atenuar únicamente fondo y adornos y mantener el texto con contraste AA. Se solicitó esta decisión durante la tarea y no se recibió respuesta antes de entregar.
+- **«Todas las notas»:** no hay una ruta de listado definida en las fuentes ni incluida en F3. En lugar de inventarla, `portada/es.json` contiene `‹URL del índice de notas›`; con más de tres publicaciones el enlace aparece con `aria-disabled` siguiendo C3. No aparece en el contenido final porque no hay notas.
+- **Diferencias visibles respecto de la maqueta:** se respetan los márgenes de F1 (40 px en escritorio, frente a los 80 efectivos del marco de referencia); Sobre mí no muestra el recuadro de fotografía y centra el texto; se conserva el contenido completo del repo, más largo que los placeholders abreviados de tablet/móvil. El índice móvil conserva la entradilla y las acciones requeridas por el encargo, por lo que sus filas y la sección son más altas que en la maqueta móvil. Los chips de proyecto son enlaces de 44 px, mayores que las pequeñas fichas decorativas de la referencia. C1 conserva sus escalas de F1 (40/30 px); algunas variantes de la maqueta usan 34/36 o 28 px. Los números de las áreas van en `--muted` para reservar el oro a acción/estado/foco. Los bordes activos usan el token de acento sólido. Las notas usan C1, fechas reales de fixture y no llevan el marco punteado; Contacto queda como 06 sin notas. La terminal conserva `$ contacto` y el cursor también en móvil. El pie de F1 permanece fuera de la sección capturada y no se modificó.
+- **Tokens e i18n:** se añaden 62 tokens de medidas, retícula, tipografía, geometría, capas y opacidades, al final del bloque correspondiente bajo `/* F2 · portada */`, sincronizados en ambas copias. No se añaden colores. Las 24 claves nuevas se añaden al final de ambos JSON y todas empiezan por `portada.`. El inventario exacto de nombres y valores está en [`inventario.json`](capturas/F2/inventario.json).
+- No se modificaron `BaseLayout.astro`, `BarraGlobal.astro`, `src/pages/proyectos/[slug].astro` ni `src/content/validacion.ts`. En el esquema de perfil solo se añadieron los dos campos autorizados.
+
+### 4. Preguntas abiertas
+
+1. ¿Se autoriza atenuar al 30 % solo fondo/adornos de las tarjetas que no corresponden, conservando sus textos con contraste AA? Hasta resolverlo, los dos e2e de axe seguirán fallando.
+2. ¿Cuál será el destino de «Todas las notas» y qué encargo implementará ese listado? La URL queda como placeholder deshabilitado.
+
+### 5. No verificado
+
+- No se declara axe limpio ni aceptación completa en escritorio/tablet: el incumplimiento de contraste está reproducido y documentado.
+- Las páginas finales de notas y artículos de F3 quedan fuera de esta entrega. Las fixtures de Notas verifican presentación, límite y destinos generados, no el lector de F3.
+- No hay foto final, CV ni datos de contacto reales con los que verificar descarga o enlaces externos; se comprobó el patrón de placeholders deshabilitados.
 
 ## Revisión
 ‹Lo escribe Claude.›
