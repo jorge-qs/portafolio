@@ -1,6 +1,6 @@
 # F1 · Navegación global
 
-**Estado:** encargada
+**Estado:** en revisión
 **Rama:** `f1-navegacion` · **Depende de:** F0 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-25
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F1-navegacion.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -136,16 +136,16 @@ La portada tiene el esqueleto de sus 7 secciones, con el encabezado C1 y alturas
 - **Ningún valor suelto en el CSS.** Si necesitas un valor que no está en los tokens (por ejemplo el 94 % del fondo), créalo como token en `tokens.css` **y** en `design/docs/tokens.css`, y menciónalo en el informe.
 
 ## Criterios de aceptación
-- [ ] `npm ci && npm run check && npm test && npm run build && npm run e2e` termina sin errores ni advertencias.
-- [ ] Todas las pruebas e2e del punto 12 existen y pasan en los tres tamaños.
-- [ ] axe no encuentra violaciones en `/` ni en `/proyectos/<slug>`.
-- [ ] La CI incluye el trabajo `e2e`.
-- [ ] Sin notas, el menú, la barra y C1 no muestran Notas y numeran Contacto como 06. Hay un test que lo comprueba.
-- [ ] Todos los textos nuevos están en `es.json` y `en.json`, y pasa la paridad.
-- [ ] Con `prefers-reduced-motion: reduce`: no hay scroll suave, el menú aparece sin animación y la barra se oculta y aparece por corte.
-- [ ] A 390 y 360 px no hay scroll horizontal y el botón «Menú», «Cerrar» y los enlaces del menú miden ≥ 44 px de alto.
-- [ ] Las capturas de 1280, 834 y 390 px están en `docs/encargos/capturas/F1/`, junto a su maqueta.
-- [ ] `npm run contenido:pendientes` no cuenta textos de interfaz como placeholders.
+- [x] `npm ci && npm run check && npm test && npm run build && npm run e2e` termina sin errores ni advertencias.
+- [x] Todas las pruebas e2e del punto 12 existen y pasan en los tres tamaños.
+- [x] axe no encuentra violaciones en `/` ni en `/proyectos/<slug>`.
+- [x] La CI incluye el trabajo `e2e`.
+- [x] Sin notas, el menú, la barra y C1 no muestran Notas y numeran Contacto como 06. Hay un test que lo comprueba.
+- [x] Todos los textos nuevos están en `es.json` y `en.json`, y pasa la paridad.
+- [x] Con `prefers-reduced-motion: reduce`: no hay scroll suave, el menú aparece sin animación y la barra se oculta y aparece por corte.
+- [x] A 390 y 360 px no hay scroll horizontal y el botón «Menú», «Cerrar» y los enlaces del menú miden ≥ 44 px de alto.
+- [x] Las capturas de 1280, 834 y 390 px están en `docs/encargos/capturas/F1/`, junto a su maqueta.
+- [x] `npm run contenido:pendientes` no cuenta textos de interfaz como placeholders.
 
 ## Si te bloqueas
 Si una fuente se contradice, falta un dato o algo exige rediseñar, **no lo decidas tú**. Implementa lo que no dependa de eso y deja la pregunta en el informe.
@@ -161,7 +161,72 @@ Añádelo al final de este archivo, en la sección «Informe»:
 ---
 
 ## Informe
-‹Lo escribe Codex.›
+### Hecho
+
+- `src/config/secciones.ts`: configuración ordenada, claves i18n, rutas y numeración condicional. `src/content/consultas.ts` determina si existen notas publicadas del idioma, sin advertencias por la colección vacía.
+- `src/components/EncabezadoSeccion.astro`, `Boton.astro` y `Enlace.astro`: C1–C3, variantes, foco, pulsación y movimiento reducido. Enlaces externos con aviso accesible; placeholders desactivados mediante `src/lib/enlaces.ts`.
+- `src/components/BarraGlobal.astro`, `MenuMovil.astro` y `PiePagina.astro`: estados hero/fija/artículo, preparación de relato, navegación responsive, miga según tipo, huecos vacíos para F3 y pies de portada/artículo.
+- `src/lib/navegacion.ts`: IntersectionObserver para hero y sección activa; ocultación direccional con umbral de más de 8 px; protección del foco y del scroll de anclas; URL, desfase de 72 px y foco final; menú modal con ciclos de foco, Esc, fondo inert y restauración de scroll tras fijar body.
+- `src/layouts/BaseLayout.astro` y `src/pages/proyectos/[slug].astro`: header/footer fuera de main, slots, primer enlace de salto y navegación de artículo. `src/pages/index.astro`: esqueleto con alturas reservadas, encabezados y bloques F2/F5/F6; sin Notas, Contacto es 06. El contenido previsto para otras fases sigue vacío.
+- `src/i18n/es.json` y `en.json`: todas las nuevas etiquetas. `src/content/perfil/es.json` y su esquema incorporan el nombre ya confirmado y `anio_copyright: ‹año›`; no se toma el año del sistema ni se sustituyen enlaces pendientes.
+- `playwright.config.ts`, `tests/e2e/navegacion.spec.ts`, `scripts/servidor-e2e.mjs`, scripts npm y `.github/workflows/ci.yml`: Chromium en `.cache/ms-playwright` (ya ignorada), servidor estático en primer plano, axe y trabajo e2e de CI con artefacto del informe. `tsconfig.json` y ESLint excluyen los artefactos generados.
+- Tests de secciones, rutas y placeholders en `tests/secciones.test.ts`; contraste adicional de la barra translúcida en ambos temas. Capturas reproducibles con `scripts/capturar-f1.mjs`.
+
+### Verificación
+
+Entorno: Node 26.11.1. Resultados finales reales:
+
+| Comando | Resultado |
+|---|---|
+| `npm ci` (primera acción de instalación) | Correcto; 396 paquetes instalados sobre F0. |
+| `npm run e2e:instalar` (al añadir el script) | Correcto con red autorizada: Chromium v1248 y recursos instalados dentro de `.cache/ms-playwright`. |
+| `npm ci --cache .cache/npm` (lockfile final) | Salida 0; 397 paquetes instalados, 398 auditados, 0 vulnerabilidades. |
+| `npm run check` | Salida 0; Astro: 37 archivos, 0 errores, 0 advertencias y 0 indicaciones; lint, tokens y Prettier correctos. |
+| `npm test` | Salida 0; 61 pruebas en 6 archivos, todas aprobadas. Incluye contraste AA en Cosmos/Dawn, paridad i18n, esquemas, tokens y configuración de navegación. |
+| `npm run build` | Salida 0; 9 páginas generadas, sin errores ni advertencias. |
+| `npm run e2e` | Salida 0; 33 pruebas aprobadas en 11,7 s, sin advertencias en la ejecución final. |
+| `npm run contenido:pendientes` | Salida 0; 65 pendientes de contenido, todos bajo `src/content/`; ningún texto de interfaz contado como placeholder. No se ejecutó el modo estricto, pues esos datos siguen pendientes por diseño. |
+| `git diff --check` | Salida 0. |
+| `PLAYWRIGHT_BROWSERS_PATH=.cache/ms-playwright node scripts/capturar-f1.mjs` | Salida 0; capturas a 1280, 834 y 390; «Volver arriba» devuelve scroll a 0 y enfoca el enlace de salto en los tres anchos. |
+
+| Proyecto Playwright | Viewport | Resultado |
+|---|---|---|
+| escritorio | 1280 × 800 | 11/11 aprobadas |
+| tablet | 834 × 1112 | 11/11 aprobadas |
+| movil | 390 × 844 | 11/11 aprobadas |
+
+Se comprobó axe sin violaciones en portada y artículo de ingeniería en los tres tamaños, también en Dawn y con el menú abierto. Los e2e cubren primer Tab y activación del salto, anclas locales y desde artículo, cargas con hash, foco al h2 y posición bajo la barra, estado/ocultación/subida, sección activa, foco por teclado, inert, bloqueo/restauración del scroll, ciclos Tab/Shift+Tab, Esc, botón Cerrar, selección de sección, ausencia de Notas, Contacto 06, color activo y movimiento reducido. A 360 px se comprueban portada, artículo y menú, sin desbordamiento horizontal y con objetivos táctiles mínimos.
+
+El botón de menú solo existe visualmente por debajo de 768 px. En los proyectos escritorio/tablet se comprueba primero que está oculto y se cambia el viewport a 390 para ejecutar los casos del menú. Las auditorías de las páginas y las pruebas de barra/anclas conservan el viewport propio del proyecto.
+
+**Capturas y comparación:** 32 PNG en [capturas/F1](capturas/F1/README.md), emparejadas con las secciones equivalentes de las maquetas 1, 2 y 3. Revisadas visualmente las barras de los tres tamaños, el menú de 390, su equivalente reducido y los pies. Se sirven las referencias por HTTP con Python y se bloquean sus conexiones externas. Las capturas muestran los estados finales de las animaciones. Las comparativas documentan qué referencias solo existen en escritorio o móvil.
+
+Durante la implementación se corrigieron la advertencia de colección Notas vacía, la serialización del ancla local, un selector de prueba del diálogo cerrado, la inclusión accidental del informe de Playwright en Astro check y la especificidad del color activo del menú. Los resultados de la tabla corresponden a la versión corregida.
+
+### Desviaciones
+
+- **Git bloqueado:** `git switch -c f1-navegacion main` falló con `Unable to create .../.git/index.lock: Operation not permitted`. Se continuó sin commits conforme a AGENTS.md. Los cambios quedan sin commit en `f0-base`, sobre `a88e5b1` (F0), que en la comprobación final también es la referencia de `main`. Este agente no hizo commits, fusiones ni escrituras sobre `main`. Falta situar los cambios en `f1-navegacion` durante la revisión.
+- **Referencias y precedencia:** se conserva «Menú» textual, que sí aparece en el hero móvil de la Maqueta 1. A 834 se mantiene la navegación de escritorio, como esa maqueta; el margen es de 32 px conforme a TOKENS.md, que prevalece sobre los 40 px del hero importado. Los números inactivos del menú van en `--muted`; el oro queda para activo/acción/foco. El pie de portada no incluye Tema por la decisión aplicada D10. Los enlaces del pie móvil mantienen objetivos de 44 px.
+- **Capturas:** los estados fija y artículo solo tienen referencia de escritorio, y el menú solo una de 390. Se emparejan con esas referencias originales. Para aportar también imágenes del componente menú a 1280 y 834 se abre el diálogo directamente en el script de capturas; no se habilita el botón a esos tamaños ni se presenta como interacción de escritorio.
+- **Tokens nuevos:** sincronizados en `src/styles/tokens.css` y `design/docs/tokens.css`; sin nuevos colores literales. `--nav-bg` deriva `--bg` al 94 % y pasa contraste AA de texto, metadatos, títulos y acción en ambos temas. Se añadieron estos roles:
+
+| Grupo | Tokens |
+|---|---|
+| Tipografía | `--text-kicker`, `--text-meta`, `--text-ui`, `--section-title`, `--section-title-mobile`, `--section-leading`, `--section-tracking`, `--kicker-gap`, `--menu-title`, `--brand-tracking` |
+| Controles y menú | `--menu-row`, `--menu-entry`, `--touch-min`, `--button-h`, `--press-scale`, `--line-width`, `--active-line`, `--underline-offset` |
+| Barra y retícula | `--nav-bg`, `--nav-margin`, `--nav-article-margin`, `--nav-hero-padding`, `--nav-link-gap`, `--theme-slot`, `--page-margin`, `--page-margin-mobile`, `--anchor-offset`, `--z-nav`, `--z-skip` |
+| Ritmo y reservas | `--section-gap`, `--index-gap`, `--section-gap-tablet`, `--section-gap-mobile`, `--hero-min`, `--stories-min`, `--index-min`, `--about-min`, `--technologies-min`, `--notes-min`, `--contact-min` |
+
+### Preguntas abiertas
+
+- La revisión debe crear `f1-navegacion` y recoger los cambios sin commit, una vez disponible la escritura en Git.
+- Sigue pendiente la confirmación final de Jorge sobre D10, ya aplicada por este encargo. También siguen pendientes el año de copyright y los enlaces reales del perfil; se conservan como placeholders. No hubo decisiones nuevas de diseño.
+
+### No verificado
+
+- El trabajo de CI está configurado, pero no se ha ejecutado remotamente ni se ha publicado o fusionado la entrega.
+- No se probó Safari/iOS físico. El bloqueo con body fijo y la restauración se verificaron en Chromium, incluida la emulación móvil.
+
 
 ## Revisión
 ‹Lo escribe Claude.›
