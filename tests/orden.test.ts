@@ -24,9 +24,9 @@ test('destacados primero, luego año descendente, placeholders y archivados al f
     p('archivado', { anio: 2030, estado: 'archivado' }),
     p('sin-anio'),
     p('viejo', { anio: 2021 }),
-    p('d2', { destacado: true, orden_destacado: 2, capitulos_relato: ['‹…›'] }),
+    p('d2', { destacado: true, orden_destacado: 2 }),
     p('nuevo', { anio: 2025 }),
-    p('d1', { destacado: true, orden_destacado: 1, capitulos_relato: ['‹…›'] }),
+    p('d1', { destacado: true, orden_destacado: 1 }),
   ]).map((x) => x.slug);
   expect(orden).toEqual([
     'd1',

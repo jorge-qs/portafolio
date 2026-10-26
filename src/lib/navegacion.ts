@@ -31,13 +31,33 @@ export function iniciarNavegacion() {
   }
 
   if (hero) {
-    const observarHero = new IntersectionObserver(([entrada]) => {
-      barra.dataset.estado = entrada.isIntersecting ? 'hero' : 'fija';
+    // F5 · estado de barra según el borde superior, también al cargar con hash.
+    const relatos = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-relato]'),
+    );
+    function actualizarContexto() {
+      const enRelato = relatos.some((relato) => {
+        const caja = relato.getBoundingClientRect();
+        return (
+          caja.top <= parseFloat(getComputedStyle(raiz).scrollPaddingTop) &&
+          caja.bottom >
+            parseFloat(getComputedStyle(raiz).scrollPaddingTop) + 0.5
+        );
+      });
+      const estado = enRelato
+        ? 'relato'
+        : hero!.getBoundingClientRect().bottom > 0
+          ? 'hero'
+          : 'fija';
+      if (barra!.dataset.estado === estado) return;
+      barra!.dataset.estado = estado;
       mostrarBarra();
       actualizarProyectos();
       ultimoY = scrollY;
-    });
-    observarHero.observe(hero);
+    }
+    addEventListener('scroll', actualizarContexto, { passive: true });
+    addEventListener('resize', actualizarContexto);
+    actualizarContexto();
 
     // Banda justo debajo de la barra, independiente del tamaño de las secciones.
     let observarSecciones: IntersectionObserver;
@@ -201,8 +221,8 @@ export function iniciarNavegacion() {
     if (!destino) return;
     const titulo = arriba
       ? document.querySelector<HTMLElement>('.saltar-contenido')
-      : destino.matches('section')
-        ? (destino.querySelector<HTMLElement>('h2') ?? destino)
+      : destino.matches('section, [data-relato]')
+        ? (destino.querySelector<HTMLElement>('h2, h3') ?? destino)
         : destino;
     if (!titulo) return;
     const operacion = ++operacionAncla;

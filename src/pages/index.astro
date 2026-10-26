@@ -1,5 +1,6 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
+import Relato from '../components/Relato.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Indice from '../components/portada/Indice.astro';
 import SobreMi from '../components/portada/SobreMi.astro';
@@ -7,7 +8,7 @@ import Tecnologias from '../components/portada/Tecnologias.astro';
 import Notas from '../components/portada/Notas.astro';
 import Contacto from '../components/portada/Contacto.astro';
 import { hayNotasPublicadas, obtenerProyectos } from '../content/consultas';
-import { ordenarProyectos } from '../content/validacion';
+import { ordenarProyectos, seleccionarDestacados } from '../content/validacion';
 import { seccionesVisibles } from '../config/secciones';
 import { t } from '../i18n';
 import { IDIOMA_BASE } from '../i18n/config';
@@ -17,6 +18,8 @@ const secciones = seccionesVisibles(await hayNotasPublicadas(idioma));
 const proyectos = ordenarProyectos(
   (await obtenerProyectos(idioma)).filter((p) => p.data.estado !== 'archivado'),
 );
+const destacados = seleccionarDestacados(proyectos);
+const relatos = await getCollection('relatos');
 const tecnologias = (await getEntry('tecnologias', idioma))!.data;
 const notas = secciones.some((s) => s.id === 'notas')
   ? (await getCollection('notas'))
@@ -46,9 +49,21 @@ const notas = secciones.some((s) => s.id === 'notas')
             {perfil.nombre}
           </h1>
         ) : seccion.id === 'proyectos' ? (
-          <h2 id="proyectos-titulo" class="visualmente-oculto" tabindex="-1">
-            {t(idioma, seccion.clave)}
-          </h2>
+          <>
+            <h2 id="proyectos-titulo" class="visualmente-oculto" tabindex="-1">
+              {t(idioma, seccion.clave)}
+            </h2>
+            {destacados.map((proyecto, i) => (
+              <Relato
+                proyecto={proyecto}
+                relato={relatos.find((r) => r.id === proyecto.id)!.data}
+                numero={i + 1}
+                total={destacados.length}
+                siguiente={destacados[i + 1]?.slug}
+                idioma={idioma}
+              />
+            ))}
+          </>
         ) : seccion.id === 'indice' ? (
           <Indice seccion={seccion} idioma={idioma} proyectos={proyectos} />
         ) : seccion.id === 'sobre-mi' ? (
@@ -65,17 +80,8 @@ const notas = secciones.some((s) => s.id === 'notas')
         ) : (
           <Contacto seccion={seccion} idioma={idioma} perfil={perfil} />
         )}
-        {(seccion.id === 'hero' || seccion.id === 'proyectos') && (
-          <div
-            data-reservado={
-              seccion.id === 'hero'
-                ? 'F6'
-                : seccion.id === 'proyectos'
-                  ? 'F5'
-                  : undefined
-            }
-            aria-hidden="true"
-          ></div>
+        {seccion.id === 'hero' && (
+          <div data-reservado="F6" aria-hidden="true"></div>
         )}
       </div>
     </section>
@@ -102,7 +108,7 @@ const notas = secciones.some((s) => s.id === 'notas')
     padding: 0;
   }
   .proyectos {
-    min-height: var(--stories-min);
+    padding-top: 0;
   }
   .indice {
     padding-top: var(--index-gap);
@@ -118,7 +124,8 @@ const notas = secciones.some((s) => s.id === 'notas')
     .seccion {
       padding-top: var(--section-gap-tablet);
     }
-    .hero {
+    .hero,
+    .proyectos {
       padding-top: 0;
     }
     .contacto {
@@ -133,7 +140,8 @@ const notas = secciones.some((s) => s.id === 'notas')
     .seccion {
       padding-top: var(--section-gap-mobile);
     }
-    .hero {
+    .hero,
+    .proyectos {
       padding-top: 0;
     }
     .contacto {

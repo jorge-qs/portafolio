@@ -256,3 +256,17 @@ html[data-movimiento="reducido"] {
   --dur-fast: 0ms; --dur: 0ms; --dur-layout: 0ms;
   scroll-behavior: auto !important;
 }
+
+:root {
+  /* F5 · relato */
+  --relato-top: 120px;
+  --relato-rail-h: 52px;
+  --relato-title: 34px;
+  --relato-ch: 96svh;
+  --relato-ch-pad: 22svh;
+  --relato-step: 52svh;
+  --relato-ch-mobile: 72svh;
+  --relato-step-mobile: 46svh;
+  --relato-mobile-h: 34svh;
+  --relato-mobile-max: 260px;
+}

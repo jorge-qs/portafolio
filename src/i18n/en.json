@@ -119,5 +119,22 @@
   "articulo.codigoRegion": "Illustrative code fragment",
   "articulo.tablaLectura": "Article table",
   "articulo.codigoNumerado": "Code {n}",
-  "articulo.tablaNumerada": "Table {n}"
+  "articulo.tablaNumerada": "Table {n}",
+  "relato.proyecto": "Project {n} of {total}",
+  "relato.completo": "Read the full project →",
+  "relato.siguiente": "Next project ↓",
+  "relato.saltar": "Skip stories ↓",
+  "relato.capitulos": "Chapters · Project {n} of {total}",
+  "relato.capitulo": "Chapter {n} of 4 · {nombre}",
+  "relato.problema": "Problem",
+  "relato.arquitectura": "Architecture",
+  "relato.funcionamiento": "How it works",
+  "relato.resultados": "Results",
+  "relato.formato": "Figure format",
+  "relato.diagrama": "Diagram",
+  "relato.texto": "Text",
+  "relato.figura": "Fig. {n}",
+  "relato.sin": "Without orchestrator",
+  "relato.con": "With orchestrator",
+  "relato.sinteticos": "Synthetic data · illustrative only"
 }

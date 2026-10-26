@@ -103,3 +103,22 @@ export function ordenarProyectos<T extends EntradaProyecto & { slug: string }>(
 export function codigoProyecto(posicion: number) {
   return String(posicion + 1).padStart(2, '0');
 }
+
+// Relación bidireccional por idioma y slug, también para los borradores.
+export function validarRelatos(
+  proyectos: EntradaProyecto[],
+  relatos: { id: string; filePath?: string }[],
+) {
+  for (const proyecto of proyectos) {
+    if (proyecto.data.destacado && !relatos.some((r) => r.id === proyecto.id))
+      throw new Error(
+        `${proyecto.filePath ?? `src/content/proyectos/${proyecto.id}.mdx`}: falta src/content/relatos/${proyecto.id}.json para el proyecto destacado`,
+      );
+  }
+  for (const relato of relatos) {
+    if (!proyectos.some((p) => p.id === relato.id && p.data.destacado))
+      throw new Error(
+        `${relato.filePath ?? `src/content/relatos/${relato.id}.json`}: no corresponde a un proyecto destacado`,
+      );
+  }
+}

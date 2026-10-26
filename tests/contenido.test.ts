@@ -55,14 +55,6 @@ describe('esquemas', () => {
         proyectoSchema.safeParse({ ...proyecto, ...cambios }).success,
       ).toBe(false);
     }
-    const error = proyectoSchema.safeParse({
-      ...proyecto,
-      destacado: true,
-      orden_destacado: 1,
-    });
-    expect(
-      error.error?.issues.some((i) => i.path.includes('capitulos_relato')),
-    ).toBe(true);
   });
   test('exigen exactamente cinco áreas', () => {
     expect(
@@ -87,7 +79,6 @@ describe('esquemas', () => {
       entrada('es/uno', {
         destacado: true,
         orden_destacado: 1,
-        capitulos_relato: ['‹…›'],
       }),
       entrada('es/dos', { orden_destacado: 1 }),
     ];
@@ -135,7 +126,6 @@ test('los archivados conservan su URL pero quedan fuera de los destacados', () =
   const archivado = entrada('es/uno', {
     destacado: true,
     orden_destacado: 1,
-    capitulos_relato: ['‹…›'],
     estado: 'archivado',
   });
   expect(seleccionarProyectos([archivado], 'es', ['es'])).toHaveLength(1);

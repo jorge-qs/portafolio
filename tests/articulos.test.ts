@@ -37,7 +37,6 @@ test('adyacentes siguen el orden único sin envolver extremos', () => {
         ...data,
         destacado: true,
         orden_destacado: 1,
-        capitulos_relato: ['Prueba'],
       },
     },
   ];

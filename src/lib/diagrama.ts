@@ -23,3 +23,8 @@ export interface EstadoDiagrama {
   aristasResaltadas?: [string, string][];
   posiciones?: Record<string, { x: number; y: number }>;
 }
+
+// F5: permite componer las dos topologías sin modificar el renderer compartido.
+export interface EstadoFiguraRelato extends EstadoDiagrama {
+  aristasVisibles?: [string, string][];
+}

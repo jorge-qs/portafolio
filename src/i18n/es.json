@@ -119,5 +119,22 @@
   "articulo.codigoRegion": "Código del fragmento ilustrativo",
   "articulo.tablaLectura": "Tabla del artículo",
   "articulo.codigoNumerado": "Código {n}",
-  "articulo.tablaNumerada": "Tabla {n}"
+  "articulo.tablaNumerada": "Tabla {n}",
+  "relato.proyecto": "Proyecto {n} de {total}",
+  "relato.completo": "Leer el proyecto completo →",
+  "relato.siguiente": "Siguiente proyecto ↓",
+  "relato.saltar": "Saltar relatos ↓",
+  "relato.capitulos": "Capítulos · Proyecto {n} de {total}",
+  "relato.capitulo": "Capítulo {n} de 4 · {nombre}",
+  "relato.problema": "Problema",
+  "relato.arquitectura": "Arquitectura",
+  "relato.funcionamiento": "Funcionamiento",
+  "relato.resultados": "Resultados",
+  "relato.formato": "Formato de la figura",
+  "relato.diagrama": "Diagrama",
+  "relato.texto": "Texto",
+  "relato.figura": "Fig. {n}",
+  "relato.sin": "Sin orquestador",
+  "relato.con": "Con orquestador",
+  "relato.sinteticos": "Datos sintéticos · solo demostrativos"
 }
