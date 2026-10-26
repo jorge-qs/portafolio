@@ -78,7 +78,11 @@ export function iniciarArticulo() {
           ? event.target.closest<HTMLAnchorElement>('a[data-capitulo]')
           : null;
       if (!enlace) return;
-      const destino = document.getElementById(enlace.hash.slice(1));
+      // El hash llega codificado (#8--evaluaci%C3%B3n): sin decodificar no se
+      // encuentra el capítulo y la página no se mueve.
+      const destino = document.getElementById(
+        decodeURIComponent(enlace.hash.slice(1)),
+      );
       if (!destino) return;
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -112,8 +116,10 @@ export function iniciarArticulo() {
     const linea = parseFloat(
       getComputedStyle(raiz).getPropertyValue('--anchor-offset'),
     );
+    // Tolerancia de 2 px: tras saltar a un ancla, el título queda en la línea
+    // (72,x px) y debe contar como alcanzado.
     for (const [i, titulo] of titulos.entries())
-      if (titulo.getBoundingClientRect().top <= linea) indice = i;
+      if (titulo.getBoundingClientRect().top <= linea + 2) indice = i;
     const id = titulos[indice]?.id;
     document
       .querySelectorAll<HTMLAnchorElement>('[data-capitulo]')

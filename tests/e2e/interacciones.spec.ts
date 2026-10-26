@@ -472,3 +472,23 @@ test('View Transitions entre documentos: Dawn antes de revelar, 120/200 ms y nin
     ).toEqual(reducedMotion === 'reduce' ? ['0s', '0s'] : ['0.12s', '0.2s']);
   }
 });
+
+test('Capítulos ▾ lleva a un capítulo con tilde y el contador lo marca', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(ing);
+  await page.getByRole('button', { name: /Capítulos/ }).click();
+  await page
+    .getByRole('dialog')
+    .getByRole('link', { name: /^8 · Evaluación/ })
+    .click();
+  const titulo = page.getByRole('heading', {
+    level: 2,
+    name: /^8 · Evaluación/,
+  });
+  await expect(titulo).toBeInViewport();
+  await expect(page.locator('[data-cuenta-capitulos]').first()).toHaveText(
+    /^8\/10$/,
+  );
+});

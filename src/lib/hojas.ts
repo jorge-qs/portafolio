@@ -76,7 +76,9 @@ export function iniciarHojas() {
         .forEach((enlace) => {
           enlace.addEventListener('click', () => {
             cerrar();
-            const destino = document.getElementById(enlace.hash.slice(1));
+            const destino = document.getElementById(
+              decodeURIComponent(enlace.hash.slice(1)),
+            );
             requestAnimationFrame(() => {
               destino?.focus({ preventScroll: true });
             });
