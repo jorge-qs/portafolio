@@ -76,7 +76,7 @@ Si dos fuentes se contradicen y esta lista no resuelve el conflicto, **detente y
 Astro con TypeScript estricto, MDX y colecciones de contenido con esquemas Zod. Los estilos son CSS con tokens y el alcance de Astro, sin Tailwind. La interactividad se hace con TS vanilla en `<script>`; para una isla de React o Preact hace falta que el encargo lo justifique. Se despliega en Cloudflare Pages. El detalle está en `docs/ARQUITECTURA.md`.
 
 ## Comandos
-> Scripts definidos en F0. Su verificación quedó bloqueada por permisos; ver el informe de `docs/encargos/F0-base.md`.
+> Node ≥ 24.22.1 (la CI usa la versión de `.nvmrc`; en local también sirve Node 26). La telemetría de Astro va desactivada en los propios scripts, porque escribe fuera del repositorio y el sandbox lo bloquea.
 
 | Comando | Qué hace |
 |---|---|
@@ -90,7 +90,9 @@ Astro con TypeScript estricto, MDX y colecciones de contenido con esquemas Zod. 
 
 ## Forma de trabajar
 1. Lee el encargo completo y los documentos que indica en «Leer antes». No leas `design/referencias/` enteras si el encargo te señala una sección.
-2. Trabaja en una rama `fN-<tema>`. Commits pequeños, con mensajes en español y en imperativo.
+2. Trabaja en la rama o worktree `fN-<tema>`. Commits pequeños, con mensajes en español y en imperativo.
+   - **Si el sandbox no te deja escribir en `.git`** (error `index.lock`), **no te detengas**: sigue implementando y verificando, deja los cambios sin commit y dilo en el informe. Claude hace los commits al revisar.
+   - Si un comando necesita escribir fuera del repositorio (cachés, configuración global), busca primero una opción local: variable de entorno, `--cache` o una carpeta dentro del repo ignorada por git. Solo si no hay ninguna, documenta el bloqueo y sigue con lo demás.
 3. Respeta el alcance: lo que esté en «No incluye» no se toca, aunque parezca fácil.
 4. Antes de entregar:
    - pasa `build`, `check` y `test`;

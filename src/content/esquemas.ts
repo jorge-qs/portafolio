@@ -15,7 +15,11 @@ export const proyectoSchema = z
     rol: texto,
     destacado: z.boolean(),
     orden_destacado: z.number().int().min(1).max(3).optional(),
-    enlaces: z.object({ repo: enlace.optional(), demo: enlace.optional(), pdf: enlace.optional() }),
+    enlaces: z.object({
+      repo: enlace.optional(),
+      demo: enlace.optional(),
+      pdf: enlace.optional(),
+    }),
     capitulos_relato: z.array(texto).min(1).optional(),
     estado: z.enum(['activo', 'terminado', 'archivado']).default('terminado'),
     borrador: z.boolean(),
@@ -24,7 +28,11 @@ export const proyectoSchema = z
     if (proyecto.destacado) {
       for (const campo of ['orden_destacado', 'capitulos_relato'] as const) {
         if (proyecto[campo] === undefined) {
-          ctx.addIssue({ code: 'custom', path: [campo], message: `Un proyecto destacado requiere ${campo}` });
+          ctx.addIssue({
+            code: 'custom',
+            path: [campo],
+            message: `Un proyecto destacado requiere ${campo}`,
+          });
         }
       }
     }
@@ -43,12 +51,24 @@ export const perfilSchema = z.object({
   preguntas: z.array(z.object({ tipo: texto, texto })),
   trayectoria: z.array(texto),
   cv: z.object({ url: enlace, fecha }),
-  contacto: z.object({ email: z.union([z.email(), z.string().regex(/‹[^‹›]+›/u)]), github: enlace, linkedin: enlace }),
+  contacto: z.object({
+    email: z.union([z.email(), z.string().regex(/‹[^‹›]+›/u)]),
+    github: enlace,
+    linkedin: enlace,
+  }),
   borrador: z.boolean(),
 });
 
 export const tecnologiasSchema = z.object({
-  areas: z.array(z.object({ id: texto, nombre: texto, herramientas: z.array(texto).min(1) })).length(5),
+  areas: z
+    .array(
+      z.object({
+        id: texto,
+        nombre: texto,
+        herramientas: z.array(texto).min(1),
+      }),
+    )
+    .length(5),
   borrador: z.boolean(),
 });
 

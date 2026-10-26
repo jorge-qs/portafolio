@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** listo para encargar F0
+**Actualizado:** 2026-10-25 · **Estado general:** F0 aprobada, pendiente de fusionar · F1 encargable
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -46,7 +46,7 @@ La v1 se publica cuando se cumple todo esto:
 
 | Fase | Tema | Depende de | Tamaño | Estado | Encargo |
 |---|---|---|---|---|---|
-| F0 | Base técnica | — | M | **encargable** | [F0-base.md](encargos/F0-base.md) |
+| F0 | Base técnica | — | M | **aprobada** (falta fusionar) | [F0-base.md](encargos/F0-base.md) |
 | F0.5 | Previsualizaciones en Cloudflare Pages | F0, cuentas (D7) | S | pendiente | — |
 | F1 | Barra global, menú móvil, pie y anclas | F0 | M | pendiente | — |
 | F2 | Portada estática: 03–07 | F1 | L | pendiente | — |

@@ -4,3 +4,6 @@ dist/
 design/
 docs/
 public/
+
+# Copia literal de design/docs/tokens.css: no se formatea
+src/styles/tokens.css

@@ -3,12 +3,18 @@ import { coloresTema } from './tokens-util';
 
 type Color = [number, number, number, number];
 function color(valor: string): Color {
-  if (valor.startsWith('#')) return [...[1, 3, 5].map((i) => parseInt(valor.slice(i, i + 2), 16)), 1] as Color;
+  if (valor.startsWith('#'))
+    return [
+      ...[1, 3, 5].map((i) => parseInt(valor.slice(i, i + 2), 16)),
+      1,
+    ] as Color;
   const componentes = valor.match(/[\d.]+/g)!.map(Number);
   return [componentes[0], componentes[1], componentes[2], componentes[3] ?? 1];
 }
 function componer(frente: Color, fondo: Color): Color {
-  return [0, 1, 2].map((i) => frente[i] * frente[3] + fondo[i] * (1 - frente[3])).concat(1) as Color;
+  return [0, 1, 2]
+    .map((i) => frente[i] * frente[3] + fondo[i] * (1 - frente[3]))
+    .concat(1) as Color;
 }
 function luminancia(c: Color) {
   const [r, g, b] = c.slice(0, 3).map((v) => {
@@ -23,12 +29,28 @@ function contraste(a: Color, b: Color) {
 }
 
 const pares: [string, string, number?][] = [
-  ...['text', 'heading', 'muted', 'accent', 'accent-hover', 'eng', 'res', 'link'].map((t): [string, string] => [t, 'bg']),
-  ...['surface', 'surface-2', 'surface-hover'].map((f): [string, string] => ['muted', f]),
-  ['text', 'surface-hover'], ['text', 'selected'],
-  ['on-accent', 'accent'], ['on-accent', 'accent-hover'],
-  ['accent', 'accent-tint'], ['pending-fg', 'pending-bg'],
-  ['heading', 'res', 0.08], ['text', 'accent', 0.08],
+  ...[
+    'text',
+    'heading',
+    'muted',
+    'accent',
+    'accent-hover',
+    'eng',
+    'res',
+    'link',
+  ].map((t): [string, string] => [t, 'bg']),
+  ...['surface', 'surface-2', 'surface-hover'].map((f): [string, string] => [
+    'muted',
+    f,
+  ]),
+  ['text', 'surface-hover'],
+  ['text', 'selected'],
+  ['on-accent', 'accent'],
+  ['on-accent', 'accent-hover'],
+  ['accent', 'accent-tint'],
+  ['pending-fg', 'pending-bg'],
+  ['heading', 'res', 0.08],
+  ['text', 'accent', 0.08],
 ];
 
 for (const tema of ['cosmos', 'dawn'] as const) {

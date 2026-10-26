@@ -15,7 +15,12 @@ const { proyecto } = Astro.props;
 const { Content } = await render(proyecto);
 ---
 
-<BaseLayout titulo={proyecto.data.titulo} descripcion={proyecto.data.resumen} idioma={proyecto.idioma} tema="elegible">
+<BaseLayout
+  titulo={proyecto.data.titulo}
+  descripcion={proyecto.data.resumen}
+  idioma={proyecto.idioma}
+  tema="elegible"
+>
   {proyecto.esRespaldo && <p>{t(proyecto.idioma, 'idiomaRespaldo')}</p>}
   <h1>{proyecto.data.titulo}</h1>
   <p>{proyecto.data.resumen}</p>

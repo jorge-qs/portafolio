@@ -7,7 +7,9 @@ test('es y en tienen exactamente las mismas claves', () => {
   expect(Object.keys(es).sort()).toEqual(Object.keys(en).sort());
 });
 test('las claves ausentes siempre fallan', () => {
-  expect(() => t('es', 'noExiste')).toThrow('Clave i18n inexistente: es.noExiste');
+  expect(() => t('es', 'noExiste')).toThrow(
+    'Clave i18n inexistente: es.noExiste',
+  );
 });
 test('es vive en la raíz y en está preparado con prefijo', () => {
   expect(ruta('es', '/')).toBe('/');

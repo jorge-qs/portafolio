@@ -9,12 +9,19 @@ const perfil = (await getEntry('perfil', IDIOMA_BASE))!;
 const proyectos = await obtenerProyectos(IDIOMA_BASE);
 ---
 
-<BaseLayout titulo={perfil.data.frase_hero} descripcion={perfil.data.presentacion} idioma={IDIOMA_BASE} tema="cosmos">
+<BaseLayout
+  titulo={perfil.data.frase_hero}
+  descripcion={perfil.data.presentacion}
+  idioma={IDIOMA_BASE}
+  tema="cosmos"
+>
   <h1>{perfil.data.frase_hero}</h1>
   <ul>
     {proyectos.map((proyecto) => (
       <li>
-        <a href={ruta(IDIOMA_BASE, `/proyectos/${proyecto.slug}`)}>{proyecto.data.titulo}</a>
+        <a href={ruta(IDIOMA_BASE, `/proyectos/${proyecto.slug}`)}>
+          {proyecto.data.titulo}
+        </a>
         <span>{proyecto.data.tipo}</span>
       </li>
     ))}
