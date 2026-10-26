@@ -4,6 +4,8 @@ import AxeBuilder from '@axe-core/playwright';
 const articulo = '/proyectos/coordinacion-multiagente/';
 // 44 px menos un margen de subpíxel: el layout puede dar 43,999… al cambiar el viewport.
 const TACTIL_MIN = 44 - 0.01;
+// Alto de la barra (56 px) menos medio píxel: el scroll al ancla puede quedar en 55,8.
+const BARRA_MIN = 56 - 0.5;
 const barra = (page: Page) => page.locator('[data-barra-global]');
 async function menuMovil(page: Page) {
   if (page.viewportSize()!.width >= 768) {
@@ -18,7 +20,7 @@ async function enfocadoVisible(page: Page, id: string, enfocado = true) {
   if (enfocado) await expect(titulo).toBeFocused();
   else await expect(titulo).not.toBeFocused();
   await expect(titulo).toBeInViewport();
-  expect((await titulo.boundingBox())!.y).toBeGreaterThanOrEqual(56);
+  expect((await titulo.boundingBox())!.y).toBeGreaterThanOrEqual(BARRA_MIN);
   await expect(barra(page)).not.toHaveAttribute('data-oculta');
 }
 
