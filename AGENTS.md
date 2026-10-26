@@ -98,7 +98,13 @@ Astro con TypeScript estricto, MDX y colecciones de contenido con esquemas Zod. 
    - pasa `build`, `check` y `test`;
    - compara con la referencia HTML a **1280, 834 y 390 px** (y verifica a 360);
    - prueba con `prefers-reduced-motion: reduce` activado.
-5. Entrega con el informe que pide el encargo: qué se hizo, cómo se verificó (comandos y resultados reales), capturas, desviaciones y preguntas abiertas. **No declares como verificado lo que no comprobaste.**
+5. **Escribe el informe mientras trabajas, no solo al final.** Al cerrar cada entregable, añade a la sección «Informe» del encargo una línea con lo hecho y lo verificado. Si la sesión se corta (por ejemplo, por capacidad del modelo), el informe parcial permite continuar sin rehacer nada.
+6. **Tests robustos:**
+   - nada que dependa de tiempos, de la carga de la máquina ni de decisiones opcionales del navegador (por ejemplo, que Chrome ejecute una View Transition);
+   - las medidas en píxeles llevan tolerancia de subpíxel (`44 - 0.01`, `56 - 0.5`);
+   - antes de dar por buena una prueba nueva, ejecútala varias veces: `npm run e2e -- -g "<nombre>" --repeat-each=5`.
+7. **Puertos y procesos:** usa el `PORTAFOLIO_E2E_PORT` que indique el prompt y **cierra al terminar** los servidores que hayas abierto (e2e, capturas, referencias). Otro agente puede estar trabajando en paralelo.
+8. Entrega con el informe que pide el encargo: qué se hizo, cómo se verificó (comandos y resultados reales), capturas, desviaciones y preguntas abiertas. **No declares como verificado lo que no comprobaste.**
 
 ## Mapa de `design/docs/`
 | Archivo | Contenido |

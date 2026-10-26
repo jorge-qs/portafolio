@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { defineCollection } from 'astro:content';
 import { glob, type Loader } from 'astro/loaders';
 import {
+  relatoSchema,
   notaSchema,
   perfilSchema,
   proyectoSchema,
@@ -58,4 +59,13 @@ const tecnologias = defineCollection({
   schema: tecnologiasSchema,
 });
 
-export const collections = { proyectos, notas, perfil, tecnologias };
+const relatos = defineCollection({
+  loader: glob({
+    pattern: '*/*.json',
+    base: './src/content/relatos',
+    generateId: ({ entry }) => entry.replace(/\.json$/, ''),
+  }),
+  schema: relatoSchema,
+});
+
+export const collections = { proyectos, notas, perfil, tecnologias, relatos };

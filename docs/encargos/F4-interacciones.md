@@ -1,6 +1,6 @@
 # F4 · Interacciones
 
-**Estado:** encargada
+**Estado:** aprobada
 **Rama:** `f4-interacciones` (worktree propio) · **Depende de:** F2 y F3 (en `main`) · **En paralelo con:** F5 · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F4-interacciones.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -148,7 +148,19 @@ Añádelo al final de este archivo, en la sección «Informe»:
 ---
 
 ## Informe
-‹Lo escribe Codex.›
+Codex no llegó a escribirlo: la sesión se cortó por capacidad del modelo durante la verificación final. Lo que hizo se reconstruyó desde el diff y está resumido en la revisión.
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-26.** El código de Codex cubre los puntos 1–12: filtro con `?tipo=`, 5b, acordeón, «Copiar» (oculto con placeholders), `diagrama-interactivo.ts` con `panel: 'fijo' | 'opuesto'`, la hoja del diagrama en móvil, la fórmula, el experimento, las View Transitions solo con CSS, la corrección del foco con hash y las capturas.
+
+### Correcciones de Claude
+1. **«Capítulos ▾» no llevaba a los capítulos con tilde.** El hash llega codificado (`#8--evaluaci%C3%B3n`) y `getElementById` no lo encontraba, así que la página no se movía. El fallo venía de F3. Ahora se decodifica, en `articulo.ts` y en `hojas.ts`, y hay una prueba de regresión.
+2. **El contador de capítulos iba uno por detrás** tras saltar a un ancla. La línea de detección tiene ahora 2 px de tolerancia.
+3. **Dos pruebas intermitentes.**
+   - La View Transition exigía que Chrome la ejecutara siempre, pero Chrome la omite con la máquina cargada. Ahora solo se exige su ausencia con reduced motion; la activación se comprueba por CSS.
+   - El ancla exigía ≥ 56 px exactos y salían 55,8. Ahora usa `BARRA_MIN = 56 - 0.5`.
+
+### Verificación (integrado con F5 en `main`)
+`check` limpio, 104/104 tests, build sin advertencias y 153/153 e2e.
+
+**Recomendación:** aprobada e integrada.

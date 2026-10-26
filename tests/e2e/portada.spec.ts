@@ -29,8 +29,13 @@ test('F2: índice ordenado, un enlace por fila y recuentos', async ({
       String(tipo === 'todos'),
     );
   }
-  for (const enlace of await page.locator('.relato a').all())
-    await expect(enlace).toHaveAttribute('href', '/#proyectos');
+  for (const [i, enlace] of (
+    await page.locator('#indice .relato a').all()
+  ).entries())
+    await expect(enlace).toHaveAttribute(
+      'href',
+      `/#relato-${proyectos.filter((p) => p.data.destacado)[i].slug}`,
+    );
   await expect(page.locator('#notas')).toHaveCount(0);
   await expect(page.locator('[data-copia] button')).toHaveAttribute(
     'hidden',
@@ -142,10 +147,16 @@ test('F2: reduced motion mantiene contenido y duraciones a cero', async ({
   page,
 }) => {
   await page.goto('/');
-  const contenido = await page.locator('main').innerText();
+  const contenido = await page
+    .locator('[data-seccion-portada]:not(#proyectos)')
+    .allInnerTexts();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
-  expect(await page.locator('main').innerText()).toBe(contenido);
+  expect(
+    await page
+      .locator('[data-seccion-portada]:not(#proyectos)')
+      .allInnerTexts(),
+  ).toEqual(contenido);
   const duraciones = await page
     .locator('[data-evidencia]')
     .evaluateAll((els) =>

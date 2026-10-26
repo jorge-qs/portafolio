@@ -33,3 +33,8 @@ export function vecinosDeNodo(modelo: ModeloDiagrama, id: string) {
     ...new Set(aristasDeNodo(modelo, id).map(([a, b]) => (a === id ? b : a))),
   ];
 }
+
+// F5: permite componer las dos topologías sin modificar el renderer compartido.
+export interface EstadoFiguraRelato extends EstadoDiagrama {
+  aristasVisibles?: [string, string][];
+}

@@ -128,5 +128,22 @@
   "interaccion.siguiente": "Siguiente",
   "interaccion.cerrar": "Cerrar ✕",
   "interaccion.pistaFormula": "Selecciona un término para ver qué significa",
-  "interaccion.pistaFormulaMovil": "Toca un término para ver qué significa"
+  "interaccion.pistaFormulaMovil": "Toca un término para ver qué significa",
+  "relato.proyecto": "Proyecto {n} de {total}",
+  "relato.completo": "Leer el proyecto completo →",
+  "relato.siguiente": "Siguiente proyecto ↓",
+  "relato.saltar": "Saltar relatos ↓",
+  "relato.capitulos": "Capítulos · Proyecto {n} de {total}",
+  "relato.capitulo": "Capítulo {n} de 4 · {nombre}",
+  "relato.problema": "Problema",
+  "relato.arquitectura": "Arquitectura",
+  "relato.funcionamiento": "Funcionamiento",
+  "relato.resultados": "Resultados",
+  "relato.formato": "Formato de la figura",
+  "relato.diagrama": "Diagrama",
+  "relato.texto": "Texto",
+  "relato.figura": "Fig. {n}",
+  "relato.sin": "Sin orquestador",
+  "relato.con": "Con orquestador",
+  "relato.sinteticos": "Datos sintéticos · solo demostrativos"
 }

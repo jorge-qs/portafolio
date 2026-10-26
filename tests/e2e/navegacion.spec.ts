@@ -45,7 +45,9 @@ test('hero → fija; umbral de descenso, subida y sección activa', async ({
   await page.goto('/');
   await expect(barra(page)).toHaveAttribute('data-estado', 'hero');
   await page.evaluate(() =>
-    window.scrollTo({ top: innerHeight + 40, behavior: 'instant' }),
+    document
+      .getElementById('indice-titulo')!
+      .scrollIntoView({ behavior: 'instant' }),
   );
   await expect(barra(page)).toHaveAttribute('data-estado', 'fija');
   await page.evaluate(() => window.scrollBy({ top: 8, behavior: 'instant' }));
@@ -67,7 +69,9 @@ test('bajar con flechas o espacio no hace parpadear la barra', async ({
 }) => {
   await page.goto('/');
   await page.evaluate(() =>
-    window.scrollTo({ top: innerHeight + 40, behavior: 'instant' }),
+    document
+      .getElementById('indice-titulo')!
+      .scrollIntoView({ behavior: 'instant' }),
   );
   await expect(barra(page)).toHaveAttribute('data-estado', 'fija');
   await page.evaluate(() => window.scrollBy({ top: 40, behavior: 'instant' }));
@@ -101,7 +105,9 @@ test('ancla Índice, foco al h2 y barra visible durante el salto', async ({
       .click();
   } else {
     await page.evaluate(() =>
-      window.scrollTo({ top: innerHeight + 40, behavior: 'instant' }),
+      document
+        .getElementById('indice-titulo')!
+        .scrollIntoView({ behavior: 'instant' }),
     );
     await expect(barra(page)).toHaveAttribute('data-estado', 'fija');
     await barra(page).locator('a[href="#indice"]').click();
@@ -132,9 +138,10 @@ test('foco de teclado mantiene visible la barra y no anima', async ({
 }) => {
   await page.goto('/#indice');
   await enfocadoVisible(page, 'indice', false);
-  await page.locator('#indice-titulo').focus();
-  await page.keyboard.press('Shift+Tab');
-  // El foco vuelve a la barra, también si el enlace del CV está desactivado.
+  // F5 añade los controles del relato antes del índice: se activa el modo
+  // teclado y se enfoca la barra directamente.
+  await page.keyboard.press('Tab');
+  await barra(page).locator('a').first().focus();
   expect(
     await barra(page).evaluate((el) => el.contains(document.activeElement)),
   ).toBe(true);

@@ -1,6 +1,6 @@
 # F5 · Scrollytelling (relatos destacados)
 
-**Estado:** encargada
+**Estado:** aprobada
 **Rama:** `f5-relato` (worktree propio) · **Depende de:** F2 y F3 (en `main`) · **En paralelo con:** F4 · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F5-relato.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -137,7 +137,25 @@ Añádelo al final de este archivo, en la sección «Informe»:
 ---
 
 ## Informe
-‹Lo escribe Codex.›
+Codex no llegó a escribirlo: la sesión se cortó por capacidad del modelo. Lo que hizo se reconstruyó desde el diff y está resumido en la revisión.
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-26.** Una entrega completa:
+- la colección `relatos` con su validación cruzada y los tres JSON semilla, el primero con los textos exactos del prototipo y los otros dos con `‹…›`;
+- `Relato.astro` + `FiguraRelato.astro` y el motor `relato.ts` (activación al 40 %);
+- el rail C9, el segmentado Diagrama/Texto de 44 px y la barra global en estado `relato`;
+- reduced motion sin *pinning* y contenido completo sin JS;
+- «ver relato ↑» apunta a `#relato-<slug>`;
+- e2e para los bugs 2, 3 y 7, y capturas de los 4 capítulos junto al prototipo.
+
+Las barras del capítulo 4 están marcadas «Datos sintéticos · solo demostrativos».
+
+### Integración con F4
+- Conflictos en i18n (147 claves, con paridad), `diagrama.ts` (se conservan las funciones de vecinos de F4 y `EstadoFiguraRelato` de F5) y `navegacion.spec.ts`.
+- Una prueba del relato esperaba foco al cargar con hash. Con la regla de F4 (alinear sin enfocar) ahora comprueba que el capítulo esté visible y sin foco.
+- **Verificación sobre `main`:** `check` limpio, 104/104 tests, build sin advertencias y 153/153 e2e.
+
+### Pendiente para F5.1
+Conectar `activarDiagrama(raiz, { panel: 'opuesto' })` en la figura del relato (`data-relato-figura`): selección de nodos, la pista «Selecciona un componente… Esc» solo en modo Diagrama (bug 5) y los nodos atenuados inertes (bug 6). El bug 4 lo cubre ya el modo `'opuesto'`.
+
+**Recomendación:** aprobada e integrada.
