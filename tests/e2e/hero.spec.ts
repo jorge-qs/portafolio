@@ -315,3 +315,30 @@ test('CLS de la carga y entrada bajo 0,01', async ({ page }) => {
   );
   expect(cls).toBeLessThan(0.01);
 });
+
+test('escritorio: las 26 ventanas muestran su nombre y ninguna línea desborda', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const nombres = page.locator('[data-hero-arte] .ventana-nombre');
+  await expect(nombres).toHaveCount(26);
+  for (const nombre of await nombres.all()) await expect(nombre).toBeVisible();
+  await expect(page.locator('.ventana--punta .ventana-nombre')).toHaveText(
+    'coder',
+  );
+  // Cada línea visible cabe entera dentro de su ventana (nl de la referencia).
+  const desbordes = await page.locator('[data-hero-arte] .ventana').evaluateAll(
+    (ventanas) =>
+      ventanas.filter((v) => {
+        const caja = v.getBoundingClientRect();
+        return [...v.querySelectorAll('.ventana-lineas span')].some((s) => {
+          if (getComputedStyle(s).display === 'none') return false;
+          const linea = s.getBoundingClientRect();
+          return linea.height > 0 && linea.bottom > caja.bottom + 1;
+        });
+      }).length,
+  );
+  expect(desbordes).toBe(0);
+});

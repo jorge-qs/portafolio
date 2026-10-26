@@ -148,5 +148,6 @@
   "relato.sinteticos": "Synthetic data · illustrative only",
   "hero.descripcion": "A painted human hand and a hand made of terminal windows approach without touching.",
   "hero.verProyectos": "View projects ↓",
-  "hero.proyectoNdeM": "Project {n} of {total}"
+  "hero.proyectoNdeM": "Project {n} of {total}",
+  "hero.capitulo": "Chapter {n} · {titulo}"
 }

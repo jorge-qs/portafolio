@@ -1,6 +1,6 @@
 # F6 · Hero: las dos manos, su entrada y la transición al relato
 
-**Estado:** en revisión
+**Estado:** aprobada
 **Rama:** solicitada `f6-hero` (no se pudo crear porque `.git` está fuera de las rutas escribibles; cambios en checkout `F6`, sin commits) · **Depende de:** F5 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F6-hero.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -438,4 +438,22 @@ Ve rellenándolo **durante** el trabajo (una línea por paso de § 2) y complét
 - No se creó ni verificó una rama Git separada por la restricción de escritura en `.git`; todas las verificaciones listadas sí se ejecutaron en el checkout actual.
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-26.** Una entrega excelente para el modelo usado: siguió el orden de § 2 y fue registrando en el informe cada paso con su verificación. Geometría, composición y animación son puras y tienen tests, y la composición final coincide con `hero-final.html` casi al píxel.
+
+### Correcciones de Claude
+1. **Nombres de las ventanas ocultos en escritorio.** Las reglas `data-nombre-t='false'` y `data-nombre-m='false'` habían quedado fuera de sus media queries, así que ocultaban también en escritorio el nombre de todas las ventanas pequeñas, incluida la punta «coder». Se quitaron del ámbito global.
+2. **Límite de líneas (`nl` de la referencia) sin aplicar**, con las líneas encogidas una encima de otra (`flex-shrink`). Ahora cada línea lleva `data-linea-d/t/m` según la fórmula de `renderVals()` (`calcularLineas`) y `flex: none`.
+3. **Cabecera del antebrazo** alineada a la derecha (`justify-content: flex-end`), como en la referencia: ahora se leen «traza · run 4f2a» y «memoria · episodios».
+4. **El anticipo repetía el título del proyecto.** Ahora usa la clave `hero.capitulo` («Capítulo 1 · Varios agentes, nadie coordina»), como en el diseño.
+5. **Prueba de regresión:** las 26 ventanas muestran su nombre en escritorio y ninguna línea visible se desborda.
+
+Las capturas se regeneraron con las correcciones.
+
+### Verificación
+`check` limpio, 117/117 tests, build sin advertencias, 169/169 e2e y `-g "hero" --repeat-each=3` estable. Revisión visual en el navegador a 1280 × 800, en reposo y a p = 1: la barra sigue en `hero` durante toda la fijación.
+
+### Para Jorge
+- **Los textos de las terminales son ilustrativos** (por ejemplo `acc 0.874`): `contenido:pendientes` los cuenta y bloquean el lanzamiento hasta que se sustituyan (F8).
+- **La mano sigue siendo la provisional** de 540 × 320 (licencia pendiente, F8).
+
+**Recomendación:** aprobada.

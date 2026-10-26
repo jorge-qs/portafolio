@@ -65,6 +65,14 @@ function estiloVentana(ventana: (typeof ventanas)[number]) {
 function calcularCabecera(alto: number, escala: number) {
   return Math.max(4, Math.min((12 * 1.15) / escala, alto * 0.3));
 }
+
+// Líneas que caben en la ventana (nl de renderVals): sin texto si es ilegible.
+function calcularLineas(alto: number, escala: number) {
+  const fs = Math.max(4.5, Math.min((8.5 * 1.15) / escala, alto * 0.24));
+  if (fs * escala < 3.6) return 0;
+  const cabecera = calcularCabecera(alto, escala);
+  return Math.max(0, Math.floor((alto - cabecera - 4) / (fs * 1.3)));
+}
 ---
 
 <div class="hero-raiz" data-hero-raiz style="--p:0">
@@ -116,8 +124,14 @@ function calcularCabecera(alto: number, escala: number) {
               </div>
               <div class="ventana-cuerpo">
                 <div class="ventana-lineas">
-                  {ventana.texto?.slice(1).map((linea) => (
-                    <span>{linea}</span>
+                  {ventana.texto?.slice(1).map((linea, i) => (
+                    <span
+                      data-linea-d={i < calcularLineas(ventana.h, 1.2)}
+                      data-linea-t={i < calcularLineas(ventana.h, 0.8)}
+                      data-linea-m={i < calcularLineas(ventana.h, 0.44)}
+                    >
+                      {linea}
+                    </span>
                   ))}
                 </div>
                 {ventana.punta && <span class="cursor">▍</span>}
@@ -148,10 +162,7 @@ function calcularCabecera(alto: number, escala: number) {
         <span>{t(idioma, 'hero.proyectoNdeM', { n: 1, total })}</span>
       </span>
       <h2>{proyecto.titulo}</h2>
-      <p>
-        {t(idioma, 'relato.capitulo', { n: 1, nombre: proyecto.titulo })} ·{' '}
-        {destacado}
-      </p>
+      <p>{t(idioma, 'hero.capitulo', { n: 1, titulo: destacado })}</p>
     </div>
   </div>
 </div>
@@ -231,7 +242,8 @@ function calcularCabecera(alto: number, escala: number) {
   .grupo-estrellas[data-estrellas='d'] {
     display: block;
   }
-  .ventana[data-nombre-d='false'] .ventana-nombre {
+  .ventana[data-nombre-d='false'] .ventana-nombre,
+  .ventana-lineas span[data-linea-d='false'] {
     display: none;
   }
   .grupo-estrellas i {
@@ -358,6 +370,9 @@ function calcularCabecera(alto: number, escala: number) {
     padding: 0.25em 0.5em;
     color: var(--text);
   }
+  .ventana--brazo .ventana-cabecera {
+    justify-content: flex-end;
+  }
   .ventana--brazo .ventana-cuerpo {
     text-align: right;
   }
@@ -374,6 +389,7 @@ function calcularCabecera(alto: number, escala: number) {
     overflow: hidden;
   }
   .ventana-lineas span {
+    flex: none;
     overflow: hidden;
   }
   .cursor {
@@ -466,12 +482,6 @@ function calcularCabecera(alto: number, escala: number) {
   }
   .ventana--punta .ventana-lineas {
     display: inline;
-  }
-  .ventana[data-nombre-t='false'] .ventana-nombre {
-    display: none;
-  }
-  .ventana[data-nombre-m='false'] .ventana-nombre {
-    display: none;
   }
   .anticipo {
     opacity: calc(
@@ -569,10 +579,12 @@ function calcularCabecera(alto: number, escala: number) {
     .grupo-estrellas[data-estrellas='d'] {
       display: none;
     }
-    .ventana[data-nombre-d] .ventana-nombre {
+    .ventana[data-nombre-d] .ventana-nombre,
+    .ventana-lineas span[data-linea-d] {
       display: initial;
     }
-    .ventana[data-nombre-t='false'] .ventana-nombre {
+    .ventana[data-nombre-t='false'] .ventana-nombre,
+    .ventana-lineas span[data-linea-t='false'] {
       display: none;
     }
     .grupo-estrellas[data-estrellas='t'] {
