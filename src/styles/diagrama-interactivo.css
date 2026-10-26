@@ -60,3 +60,16 @@
   border: 0;
   color: var(--accent);
 }
+/* Relato en móvil (INTERACCIONES.md § Scrollytelling): la ficha pasa a hoja inferior. */
+@media (max-width: 767px) {
+  .ficha-diagrama[data-panel='opuesto'] {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: var(--z-nav);
+    width: auto;
+    max-height: 60svh;
+    overflow: auto;
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+  }
+}

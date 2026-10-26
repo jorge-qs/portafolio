@@ -150,5 +150,6 @@
   "hero.verProyectos": "Ver proyectos ↓",
   "hero.proyectoNdeM": "Proyecto {n} de {total}",
   "hero.capitulo": "Capítulo {n} · {titulo}",
-  "idioma.etiqueta": "Idioma"
+  "idioma.etiqueta": "Idioma",
+  "relato.pista": "Selecciona un componente para ver su responsabilidad · Esc para cerrar"
 }

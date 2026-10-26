@@ -87,6 +87,9 @@ const salida = siguiente ? `#relato-${siguiente}` : '#indice';
           dinamica
         />
       </div>
+      <p class="pista" data-relato-pista hidden>
+        {t(idioma, 'relato.pista')}
+      </p>
       {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- La versión textual se desplaza con el teclado. */}
       <div class="equivalente" data-relato-texto tabindex="0" hidden inert>
         <ul>
@@ -292,6 +295,13 @@ const salida = siguiente ? `#relato-${siguiente}` : '#indice';
   .visual-fija {
     flex: 1;
     min-height: 0;
+  }
+  /* Solo en modo Diagrama y con diagrama en pantalla (bug 5 del prototipo). */
+  .pista {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    color: var(--muted);
+    font-size: var(--text-kicker);
   }
   .equivalente {
     overflow: auto;

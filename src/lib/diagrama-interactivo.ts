@@ -87,7 +87,7 @@ export function activarDiagrama(raiz: HTMLElement, opciones: OpcionesDiagrama) {
       b.disabled = inerte;
       b.hidden = inerte;
     });
-    if (seleccionado && atenuado(seleccionado)) cerrar();
+    if (seleccionado && atenuado(seleccionado)) cerrar(false);
   }
   function pintar(id?: string) {
     raiz.querySelectorAll<SVGGElement>('[data-nodo]').forEach((g) => {
@@ -153,14 +153,17 @@ export function activarDiagrama(raiz: HTMLElement, opciones: OpcionesDiagrama) {
     }
     alCambiar?.(nodo);
   }
-  function cerrar() {
+  // Sin devolver el foco cuando cierra el propio relato al cambiar de capítulo:
+  // mover el foco durante un scroll provocaría saltos.
+  function cerrar(devolverFoco = true) {
     seleccionado = undefined;
     pintar();
     paneles.forEach((p) => {
       p.hidden = true;
       p.inert = true;
     });
-    if (ultimo && !ultimo.inert) ultimo.focus({ preventScroll: true });
+    if (devolverFoco && ultimo && !ultimo.inert)
+      ultimo.focus({ preventScroll: true });
     alCambiar?.(undefined);
   }
   modelo.nodos.forEach((n) => {
@@ -206,7 +209,7 @@ export function activarDiagrama(raiz: HTMLElement, opciones: OpcionesDiagrama) {
   );
   raiz
     .querySelectorAll('[data-cerrar-ficha]')
-    .forEach((b) => b.addEventListener('click', cerrar, { signal }));
+    .forEach((b) => b.addEventListener('click', () => cerrar(), { signal }));
   const resize = new ResizeObserver(colocar);
   resize.observe(lienzo);
   const cambios = new MutationObserver(colocar);

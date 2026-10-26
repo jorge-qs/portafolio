@@ -1,6 +1,7 @@
 import type { Relato } from '../content/esquemas';
 import type { EstadoFiguraRelato } from './diagrama';
 import { bloquesRelato } from './relato-estado';
+import { activarDiagrama } from './diagrama-interactivo';
 
 export function iniciarRelatos() {
   document
@@ -21,6 +22,8 @@ function activarRelato(raiz: HTMLElement) {
   const visual = raiz.querySelector<HTMLElement>('[data-relato-visual]')!;
   const equivalente = raiz.querySelector<HTMLElement>('[data-relato-texto]')!;
   const svg = visual.querySelector<SVGSVGElement>('.diagrama-svg')!;
+  const dibujo = visual.querySelector<HTMLElement>('[data-relato-figura]')!;
+  const pista = raiz.querySelector<HTMLElement>('[data-relato-pista]')!;
   const reducir = matchMedia('(prefers-reduced-motion: reduce)');
   const botones = Array.from(
     raiz.querySelectorAll<HTMLButtonElement>('[data-relato-ir]'),
@@ -113,6 +116,8 @@ function activarRelato(raiz: HTMLElement) {
   function activar(indice: number, inmediato = false) {
     if (indice === actual && !inmediato) return;
     actual = indice;
+    // El nuevo estado repinta los nodos: la ficha abierta dejaría de corresponder.
+    interaccion.cerrar(false);
     const bloque = estados[indice];
     raiz.dataset.capituloActivo = String(bloque.capitulo);
     raiz.dataset.pasoActivo = String(bloque.paso);
@@ -126,6 +131,7 @@ function activarRelato(raiz: HTMLElement) {
       '[data-visual-capitulo]',
     )!.dataset.visualCapitulo = String(bloque.capitulo);
     pintar(bloque.estado, inmediato);
+    actualizarInteraccion();
   }
   function actualizar() {
     // Último en orden del documento, independiente del orden de las entradas IO.
@@ -177,8 +183,7 @@ function activarRelato(raiz: HTMLElement) {
       boton.addEventListener('click', () => {
         texto = boton.dataset.relatoModo === 'texto';
         visual.hidden = texto;
-        visual.inert = true;
-        visual.setAttribute('aria-hidden', 'true');
+        actualizarInteraccion();
         equivalente.hidden = !texto;
         equivalente.inert = !texto;
         raiz
@@ -202,6 +207,23 @@ function activarRelato(raiz: HTMLElement) {
       });
     pintar(topologia, true);
     observar();
+    actualizarInteraccion();
+  }
+  // F5.1 · Selección de nodos con la ficha en el lado opuesto (bugs 4–6 del
+  // prototipo). El SVG sigue aria-hidden: los botones del módulo son lo accesible.
+  visual.removeAttribute('aria-hidden');
+  dibujo.removeAttribute('aria-hidden');
+  const interaccion = activarDiagrama(dibujo, {
+    modelo: datos.diagrama,
+    panel: 'opuesto',
+  });
+  function actualizarInteraccion() {
+    const conDiagrama =
+      !texto && !reducir.matches && Number(raiz.dataset.capituloActivo) < 4;
+    if (!conDiagrama) interaccion.cerrar(false);
+    visual.inert = texto;
+    dibujo.inert = !conDiagrama;
+    pista.hidden = !conDiagrama;
   }
   raiz.dataset.mejorado = '';
   observar();

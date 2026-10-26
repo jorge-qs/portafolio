@@ -150,5 +150,6 @@
   "hero.verProyectos": "View projects ↓",
   "hero.proyectoNdeM": "Project {n} of {total}",
   "hero.capitulo": "Chapter {n} · {titulo}",
-  "idioma.etiqueta": "Language"
+  "idioma.etiqueta": "Language",
+  "relato.pista": "Select a component to see its responsibility · Esc to close"
 }

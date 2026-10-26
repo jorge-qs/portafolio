@@ -50,6 +50,11 @@ test('capítulos y recorrido al 40 %, rail, barra global, axe en cada capítulo'
     await expect
       .poll(() => barra.evaluate((el) => el.getBoundingClientRect().bottom))
       .toBeLessThanOrEqual(0);
+    // Desde F5.1 la figura es accesible: axe mide su texto, así que se espera
+    // a que termine el fundido de entrada para no medir colores a medio camino.
+    await page.waitForFunction(() =>
+      document.getAnimations().every((a) => a.playState !== 'running'),
+    );
     expect((await analizarAxe(page)).violations).toEqual([]);
   }
   await capitulo(page, 3, 2);
@@ -88,8 +93,9 @@ test('bug 3: Texto vuelve inert la figura, sin elementos enfocables; axe', async
   await capitulo(page, 2);
   await page.locator(`${selector} [data-relato-modo="texto"]`).click();
   const visual = page.locator(`${selector} [data-relato-visual]`);
+  // Desde F5.1 la figura no lleva aria-hidden (sus botones de nodo son
+  // accesibles); en modo Texto la protegen hidden + inert.
   await expect(visual).toHaveJSProperty('inert', true);
-  await expect(visual).toHaveAttribute('aria-hidden', 'true');
   await expect(visual).toBeHidden();
   expect(
     await visual.evaluate((el) =>
