@@ -22,3 +22,6 @@ test-results/
 
 # Playwright MCP
 .playwright-mcp/
+
+# Cachés locales (navegadores de Playwright, etc.)
+.cache/

@@ -48,7 +48,7 @@ La v1 se publica cuando se cumple todo esto:
 |---|---|---|---|---|---|
 | F0 | Base técnica | — | M | **aprobada** (falta fusionar) | [F0-base.md](encargos/F0-base.md) |
 | F0.5 | Previsualizaciones en Cloudflare Pages | F0, cuentas (D7) | S | pendiente | — |
-| F1 | Barra global, menú móvil, pie y anclas | F0 | M | pendiente | — |
+| F1 | Barra global, menú móvil, pie y anclas | F0 | M | **encargada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
 | F2 | Portada estática: 03–07 | F1 | L | pendiente | — |
 | F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | pendiente | — |
 | F4 | Interacciones de la portada y de los artículos | F2, F3 | L | pendiente | — |
@@ -307,7 +307,7 @@ Cada una indica qué fase bloquea y se resuelve antes de escribir ese encargo.
 | D7 | **Cuentas de GitHub y Cloudflare** | F0.5 | Las crea Jorge |
 | D8 | **Contenido real** | F8 | Ver § 5 |
 | D9 | **Isla de React o TS vanilla** para diagramas y relato | F4 | TS vanilla con SVG |
-| D10 | **«Tema» en el pie de la portada.** `PAGINAS.md` § 07 lo incluye, pero la regla dice que la portada siempre es Cosmos | F1 | Quitarlo de la portada y dejarlo solo en el pie de los artículos |
+| D10 | **«Tema» en el pie de la portada** (aplicada en F1 según la propuesta; falta la confirmación de Jorge). `PAGINAS.md` § 07 lo incluye, pero la regla dice que la portada siempre es Cosmos | F1 | Quitarlo de la portada y dejarlo solo en el pie de los artículos |
 
 ## 9. Riesgos
 
