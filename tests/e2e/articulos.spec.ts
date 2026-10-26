@@ -14,7 +14,7 @@ for (const slug of slugs)
       await page.goto(url(slug));
       await expect(page.locator('html')).toHaveAttribute('data-theme', tema);
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-      await expect(page.locator('article h2')).toHaveCount(10);
+      await expect(page.locator('article h2:not(dialog h2)')).toHaveCount(10);
       await expect(page.locator('[data-plantilla]')).toHaveAttribute(
         'data-plantilla',
         slug === 'proyecto-02' ? 'B' : 'A',
@@ -24,7 +24,7 @@ for (const slug of slugs)
         for (const control of await page
           .locator('.experimento input, .experimento button')
           .all())
-          await expect(control).toBeDisabled();
+          await expect(control).toBeEnabled();
         await expect(page.locator('.citar button')).toHaveAttribute(
           'hidden',
           '',
@@ -32,7 +32,7 @@ for (const slug of slugs)
       } else {
         expect(
           await page
-            .locator('.nodos')
+            .locator('.lienzo .nodos')
             .evaluate((el) =>
               el.previousElementSibling?.classList.contains('aristas'),
             ),
@@ -81,10 +81,10 @@ test('índice activo, progreso calculado en el artículo y miga según tipo', as
     );
     if (page.viewportSize()!.width >= 768) await expect(miga).toBeVisible();
   }
-  const quinto = page.locator('article h2').nth(4);
+  const quinto = page.locator('article h2:not(dialog h2)').nth(4);
   await quinto.evaluate((el) =>
     window.scrollTo({
-      top: el.getBoundingClientRect().top + scrollY - 100,
+      top: el.getBoundingClientRect().top + scrollY - 70,
       behavior: 'instant',
     }),
   );

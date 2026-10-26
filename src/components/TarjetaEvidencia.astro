@@ -15,6 +15,7 @@ const { proyecto, codigo, activa, idioma } = Astro.props;
   class:list={['evidencia', { activa }]}
   href={ruta(idioma, `proyectos/${proyecto.slug}/`)}
   data-evidencia={proyecto.slug}
+  data-herramientas={JSON.stringify(proyecto.data.herramientas)}
 >
   <span class="codigo num">
     <i class={proyecto.data.tipo} aria-hidden="true"></i>

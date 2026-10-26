@@ -218,6 +218,7 @@ export function iniciarNavegacion() {
     window.scrollTo({
       top,
       behavior:
+        !actualizarUrl ||
         reducir.matches ||
         raiz.dataset.movimiento === 'reducido' ||
         raiz.hasAttribute('data-teclado')
@@ -243,7 +244,10 @@ export function iniciarNavegacion() {
       requestAnimationFrame(comprobar);
     });
     if (operacion !== operacionAncla) return;
-    titulo.focus({ preventScroll: true });
+    if (actualizarUrl) titulo.focus({ preventScroll: true });
+    // El navegador puede enfocar por sí solo un destino con tabindex al cargar
+    // el fragmento. En cargas e historial solo alineamos; el foco es del usuario.
+    else if (document.activeElement === titulo) titulo.blur();
     ultimoY = scrollY;
     navegando = false;
     mostrarBarra();
@@ -282,7 +286,14 @@ export function iniciarNavegacion() {
   addEventListener('hashchange', () => {
     if (location.hash) void irAncla(location.hash, false);
   });
-  if (location.hash) {
+  if (
+    location.hash &&
+    (
+      performance.getEntriesByType(
+        'navigation',
+      )[0] as PerformanceNavigationTiming
+    )?.type !== 'back_forward'
+  ) {
     if (document.readyState === 'complete') void irAncla(location.hash, false);
     else
       addEventListener('load', () => void irAncla(location.hash, false), {

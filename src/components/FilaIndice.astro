@@ -17,7 +17,7 @@ const {
 const herramientas = p.herramientas.slice(0, 3);
 ---
 
-<li class:list={['fila', { destacado: p.destacado }]}>
+<li data-tipo={p.tipo} class:list={['fila', { destacado: p.destacado }]}>
   <a
     class="fila-indice"
     data-proyecto={slug}

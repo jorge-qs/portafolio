@@ -26,7 +26,18 @@ const { titulo, recuento, abierto = false } = Astro.props;
 </details>
 <style>
   details {
+    interpolate-size: allow-keywords;
     border-top: var(--line-width) solid var(--line);
+  }
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height var(--dur) var(--ease-inout),
+      content-visibility var(--dur) allow-discrete;
+  }
+  details[open]::details-content {
+    height: auto;
   }
   summary {
     list-style: none;

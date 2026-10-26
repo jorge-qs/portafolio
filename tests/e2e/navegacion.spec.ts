@@ -13,9 +13,10 @@ async function menuMovil(page: Page) {
   await page.getByRole('button', { name: 'Menú' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
 }
-async function enfocadoVisible(page: Page, id: string) {
+async function enfocadoVisible(page: Page, id: string, enfocado = true) {
   const titulo = page.locator(`#${id}-titulo`);
-  await expect(titulo).toBeFocused();
+  if (enfocado) await expect(titulo).toBeFocused();
+  else await expect(titulo).not.toBeFocused();
   await expect(titulo).toBeInViewport();
   expect((await titulo.boundingBox())!.y).toBeGreaterThanOrEqual(56);
   await expect(barra(page)).not.toHaveAttribute('data-oculta');
@@ -109,7 +110,7 @@ test('ancla Índice, foco al h2 y barra visible durante el salto', async ({
 
 test('carga con hash y enlace de artículo a Índice', async ({ page }) => {
   await page.goto('/#sobre-mi');
-  await enfocadoVisible(page, 'sobre-mi');
+  await enfocadoVisible(page, 'sobre-mi', false);
   await expect(barra(page)).toHaveAttribute('data-estado', 'fija');
   await page.goto(articulo);
   await expect(barra(page)).toHaveAttribute('data-estado', 'articulo');
@@ -121,14 +122,15 @@ test('carga con hash y enlace de artículo a Índice', async ({ page }) => {
       .getByRole('link', { name: 'Proyectos' })
       .click();
   }
-  await enfocadoVisible(page, 'indice');
+  await enfocadoVisible(page, 'indice', false);
 });
 
 test('foco de teclado mantiene visible la barra y no anima', async ({
   page,
 }) => {
   await page.goto('/#indice');
-  await enfocadoVisible(page, 'indice');
+  await enfocadoVisible(page, 'indice', false);
+  await page.locator('#indice-titulo').focus();
   await page.keyboard.press('Shift+Tab');
   // El foco vuelve a la barra, también si el enlace del CV está desactivado.
   expect(
@@ -145,7 +147,7 @@ test('menú: inert, scroll bloqueado, ciclos Tab y Shift+Tab, Esc y foco devuelt
   page,
 }) => {
   await page.goto('/#sobre-mi');
-  await enfocadoVisible(page, 'sobre-mi');
+  await enfocadoVisible(page, 'sobre-mi', false);
   const posicion = await page.evaluate(() => scrollY);
   await menuMovil(page);
   const dialogo = page.getByRole('dialog');

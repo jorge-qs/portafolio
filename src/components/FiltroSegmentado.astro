@@ -17,7 +17,13 @@ const opciones = [
 ] as const;
 ---
 
-<div class="filtro" role="group" aria-label={t(idioma, 'portada.filtro')}>
+<div
+  data-filtro
+  data-resumen={t(idioma, 'interaccion.proyectos', { n: '{n}' })}
+  class="filtro"
+  role="group"
+  aria-label={t(idioma, 'portada.filtro')}
+>
   {opciones.map(([tipo, clave]) => (
     <button
       type="button"
@@ -31,6 +37,11 @@ const opciones = [
     </button>
   ))}
 </div>
+<p class="visualmente-oculto" data-resumen-filtro aria-live="polite"></p>
+<script>
+  import { iniciarFiltro } from '../lib/filtro';
+  iniciarFiltro();
+</script>
 <style>
   .filtro {
     display: flex;

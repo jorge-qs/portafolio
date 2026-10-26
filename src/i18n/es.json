@@ -119,5 +119,14 @@
   "articulo.codigoRegion": "Código del fragmento ilustrativo",
   "articulo.tablaLectura": "Tabla del artículo",
   "articulo.codigoNumerado": "Código {n}",
-  "articulo.tablaNumerada": "Tabla {n}"
+  "articulo.tablaNumerada": "Tabla {n}",
+  "interaccion.proyectos": "{n} proyectos",
+  "interaccion.copiado": "Copiado ✓",
+  "interaccion.errorCopiar": "No se pudo copiar",
+  "interaccion.componente": "Componente {n} de {total}",
+  "interaccion.anterior": "Anterior",
+  "interaccion.siguiente": "Siguiente",
+  "interaccion.cerrar": "Cerrar ✕",
+  "interaccion.pistaFormula": "Selecciona un término para ver qué significa",
+  "interaccion.pistaFormulaMovil": "Toca un término para ver qué significa"
 }

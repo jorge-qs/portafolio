@@ -103,12 +103,17 @@ export function iniciarArticulo() {
     },
     true,
   );
-  const titulos = [...articulo.querySelectorAll<HTMLElement>('h2[id]')];
+  const titulos = [
+    ...articulo.querySelectorAll<HTMLElement>('h2[id]:not(dialog h2)'),
+  ];
   let observador: IntersectionObserver;
   function activo() {
     let indice = 0;
+    const linea = parseFloat(
+      getComputedStyle(raiz).getPropertyValue('--anchor-offset'),
+    );
     for (const [i, titulo] of titulos.entries())
-      if (titulo.getBoundingClientRect().top <= innerHeight * 0.4) indice = i;
+      if (titulo.getBoundingClientRect().top <= linea) indice = i;
     const id = titulos[indice]?.id;
     document
       .querySelectorAll<HTMLAnchorElement>('[data-capitulo]')
@@ -157,7 +162,7 @@ export function iniciarArticulo() {
   if (filtro && ['ing', 'inv', 'hib'].includes(filtro)) {
     document
       .querySelectorAll<HTMLAnchorElement>(
-        '[data-enlace-proyectos], .volver-indice, [data-anterior], [data-siguiente]',
+        '[data-enlace-proyectos], .miga a, .volver-indice, [data-anterior], [data-siguiente]',
       )
       .forEach((a) => {
         const url = new URL(a.href);

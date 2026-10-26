@@ -32,7 +32,7 @@ test('F2: índice ordenado, un enlace por fila y recuentos', async ({
   for (const enlace of await page.locator('.relato a').all())
     await expect(enlace).toHaveAttribute('href', '/#proyectos');
   await expect(page.locator('#notas')).toHaveCount(0);
-  await expect(page.locator('[data-copiar-correo]')).toHaveAttribute(
+  await expect(page.locator('[data-copia] button')).toHaveAttribute(
     'hidden',
     '',
   );

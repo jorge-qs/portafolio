@@ -26,7 +26,13 @@ const seleccionados = proyectosDeHerramienta(proyectos, seleccionada);
   idioma={idioma}
   titulo={t(idioma, 'portada.tecnologiasTitulo')}
 />
-<div class="tecnologias-escritorio">
+<div
+  class="tecnologias-escritorio"
+  data-evidencia-mensaje={t(idioma, 'portada.evidencia', {
+    herramienta: '{herramienta}',
+    n: '{n}',
+  })}
+>
   <div class="areas">
     {tecnologias.areas.map((area, i) => (
       <div class="area">
@@ -46,7 +52,7 @@ const seleccionados = proyectosDeHerramienta(proyectos, seleccionada);
     ))}
   </div>
   <div class="franja">
-    <p>
+    <p data-anuncio-herramienta aria-live="polite">
       {t(idioma, 'portada.evidencia', {
         herramienta: seleccionada,
         n: seleccionados.length,
@@ -97,6 +103,10 @@ const seleccionados = proyectosDeHerramienta(proyectos, seleccionada);
     </Acordeon>
   ))}
 </div>
+<script>
+  import { iniciarHerramientas } from '../../lib/herramientas';
+  iniciarHerramientas();
+</script>
 <style>
   .tecnologias-escritorio {
     display: flex;

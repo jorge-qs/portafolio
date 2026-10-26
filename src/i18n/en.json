@@ -119,5 +119,14 @@
   "articulo.codigoRegion": "Illustrative code fragment",
   "articulo.tablaLectura": "Article table",
   "articulo.codigoNumerado": "Code {n}",
-  "articulo.tablaNumerada": "Table {n}"
+  "articulo.tablaNumerada": "Table {n}",
+  "interaccion.proyectos": "{n} projects",
+  "interaccion.copiado": "Copied ✓",
+  "interaccion.errorCopiar": "Could not copy",
+  "interaccion.componente": "Component {n} of {total}",
+  "interaccion.anterior": "Previous",
+  "interaccion.siguiente": "Next",
+  "interaccion.cerrar": "Close ✕",
+  "interaccion.pistaFormula": "Select a term to see its meaning",
+  "interaccion.pistaFormulaMovil": "Tap a term to see its meaning"
 }

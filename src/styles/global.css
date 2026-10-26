@@ -144,3 +144,50 @@ html[data-teclado] *::after {
   transition: none !important;
   animation: none !important;
 }
+
+/* F4 · navegación entre documentos. Las páginas conservan sus cargas completas. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: f4-salir var(--dur-salida) var(--ease-inout) both;
+}
+::view-transition-new(root) {
+  animation: f4-entrar var(--dur) var(--ease-out) both;
+}
+@keyframes f4-salir {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes f4-entrar {
+  from {
+    opacity: 0;
+  }
+}
+.lista-indice > li:not([hidden]) {
+  animation: f4-entrar var(--dur) var(--ease-out);
+}
+.termino-activo {
+  outline: var(--active-line) solid var(--accent);
+  outline-offset: var(--underline-offset);
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--dur) !important;
+    transition-duration: var(--dur) !important;
+  }
+}
+html[data-movimiento='reducido'] {
+  view-transition-name: none;
+}
+html[data-movimiento='reducido']::view-transition-group(*),
+html[data-movimiento='reducido']::view-transition-old(*),
+html[data-movimiento='reducido']::view-transition-new(*) {
+  animation: none !important;
+}

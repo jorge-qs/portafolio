@@ -11,10 +11,14 @@ const { parametro, leyenda, idioma = 'es' } = Astro.props;
 const datos = generarHistograma();
 ---
 
-<figure class="experimento ancho">
+<figure class="experimento ancho" data-experimento>
   <div class="controles">
     <p>{t(idioma, 'articulo.controles')}</p>
-    <span class="visualmente-oculto" id="experimento-proximamente">
+    <span
+      data-proximamente
+      class="visualmente-oculto"
+      id="experimento-proximamente"
+    >
       {t(idioma, 'articulo.proximamente')}
     </span>
     <label for="parametro">
@@ -73,6 +77,10 @@ const datos = generarHistograma();
     </figcaption>
   </div>
 </figure>
+<script>
+  import { iniciarExperimentos } from '../../lib/experimento';
+  iniciarExperimentos();
+</script>
 <style>
   figure {
     margin: 0;
