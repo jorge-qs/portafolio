@@ -70,4 +70,6 @@ Registro de lo aprobado, con su motivo y lo que se descartó. Si una implementac
 | Curvas de animación | Las cúbicas de `tokens.css`: ease-out (.215, .61, .355, 1) y ease-in-out (.645, .045, .355, 1). Elegidas por Jorge el 2026-10-25 frente a las del Personal OS |
 | «Tema» en el pie de la portada | Se quita: la portada es siempre Cosmos. El control de tema solo existe en los artículos. Confirmado por Jorge el 2026-10-25 |
 | Evidencia atenuada (5b) | El texto de las tarjetas que no aplican va en `--muted` y solo el punto decorativo usa el 30 %. Atenuar toda la tarjeta dejaba el texto en 1,6:1 (incumple AA). 2026-10-26 |
+| Selector de idioma (D2) | Texto «ES · EN» a 14 px en la barra, a la izquierda de CV, con el activo en `--heading`. En móvil, en el menú y en la hoja «Aa». Sin recordar la elección ni redirigir. Jorge, 2026-10-26 |
+| Idiomas de la v1 (D3) | Español + inglés. Más idiomas, después, sin tocar componentes. Jorge, 2026-10-26 |
 | Idiomas | Español como base y el sitio preparado para varios idiomas. Ver `docs/ARQUITECTURA.md` § Enmiendas. Decidido el 2026-10-25 |

@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** F0–F6 en `main` (H4 alcanzado) · F7 por encargar · F5.1 pendiente
+**Actualizado:** 2026-10-25 · **Estado general:** F0–F6 en `main` · F7 encargada · F5.1 pendiente
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -55,7 +55,7 @@ La v1 se publica cuando se cumple todo esto:
 | F5 | Scrollytelling | F2, F3 (en paralelo con F4) | L | **aprobada** | [F5-relato.md](encargos/F5-relato.md) |
 | F5.1 | Selección de nodos dentro del relato (bugs 4, 5 y 6) | F4, F5 | S | pendiente | — |
 | F6 | Hero y transición | F5 | L | **aprobada** | [F6-hero.md](encargos/F6-hero.md) |
-| F7 | Segundo idioma (EN) | F3, D2 | M | pendiente | — |
+| F7 | Segundo idioma (EN) | F6 | L | **encargada** | [F7-idiomas.md](encargos/F7-idiomas.md) |
 | F8 | Pulido UX/UI y lanzamiento | todas, contenido real | L | pendiente | — |
 
 **Tamaño:** S = una sesión corta del agente · M = una sesión · L = una o dos sesiones, posiblemente con un encargo de corrección.
@@ -313,8 +313,6 @@ Cada una indica qué fase bloquea y se resuelve antes de escribir ese encargo.
 | # | Decisión | Bloquea | Propuesta |
 |---|---|---|---|
 | D1 | **Bronce de Ingeniería en Dawn.** En `tokens.css`, `--eng` de Dawn es igual a `--accent` (#7A5824), así que en Dawn la etiqueta y las acciones tienen el mismo color | F3 | #7A6448, un bronce más apagado (5,1:1 sobre `--bg`). Conviene verlo junto a un botón |
-| D2 | **Selector de idioma.** No aparece en las maquetas | F7 | «ES · EN» a 14 px en la barra, junto a CV, con el activo en `--heading`. En móvil, en el menú y en la hoja «Aa». Necesita una maqueta rápida |
-| D3 | **Idiomas además del inglés** | F7 | Empezar con ES + EN |
 | D4 | **Valores de Dawn sin validar visualmente**: `--surface-hover`, `--selected` y el tinte de `‹pendiente›` | F3 | Revisarlos en la previsualización de F3 |
 | D5 | **Dominio** | F8 | — |
 | D6 | **Repositorio público o privado** | F0.5 | Público: la CI es gratis y el código sirve de muestra. **Nada privado en el historial** |
