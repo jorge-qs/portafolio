@@ -79,3 +79,27 @@ export function seleccionarDestacados<T extends EntradaProyecto>(
     .filter((p) => p.data.destacado && p.data.estado !== 'archivado')
     .sort((a, b) => a.data.orden_destacado! - b.data.orden_destacado!);
 }
+
+// Orden único del sitio: índice (03), franja de evidencia (05) y Anterior/Siguiente
+// de los artículos. Destacados por orden_destacado, luego por año descendente
+// (los años placeholder al final), luego por slug; los archivados, al final.
+export function ordenarProyectos<T extends EntradaProyecto & { slug: string }>(
+  proyectos: T[],
+) {
+  const anio = (p: T) =>
+    typeof p.data.anio === 'number' ? p.data.anio : -Infinity;
+  const grupo = (p: T) =>
+    p.data.estado === 'archivado' ? 2 : p.data.destacado ? 0 : 1;
+  return [...proyectos].sort(
+    (a, b) =>
+      grupo(a) - grupo(b) ||
+      (a.data.orden_destacado ?? 0) - (b.data.orden_destacado ?? 0) ||
+      anio(b) - anio(a) ||
+      a.slug.localeCompare(b.slug),
+  );
+}
+
+// Código visible de un proyecto («01»…): su posición en ordenarProyectos.
+export function codigoProyecto(posicion: number) {
+  return String(posicion + 1).padStart(2, '0');
+}

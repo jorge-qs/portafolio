@@ -1,6 +1,6 @@
 # Plan de realización
 
-**Actualizado:** 2026-10-25 · **Estado general:** F0 aprobada, pendiente de fusionar · F1 encargable
+**Actualizado:** 2026-10-25 · **Estado general:** F0 y F1 en `main` · F2 y F3 encargadas, en paralelo
 **Stack confirmado:** Astro (estático) + TypeScript + MDX, CSS con tokens y despliegue en Cloudflare Pages. Ver `docs/ARQUITECTURA.md` § Enmiendas.
 
 Este es el mapa de todo el proyecto: qué se construye, en qué orden, qué necesita cada fase de Jorge y cómo se sabe que está terminada. Los encargos detallados (`docs/encargos/Fn-*.md`) se escriben a partir de este plan cuando le llega el turno a cada fase, para incorporar lo aprendido en la anterior.
@@ -46,11 +46,11 @@ La v1 se publica cuando se cumple todo esto:
 
 | Fase | Tema | Depende de | Tamaño | Estado | Encargo |
 |---|---|---|---|---|---|
-| F0 | Base técnica | — | M | **aprobada** (falta fusionar) | [F0-base.md](encargos/F0-base.md) |
+| F0 | Base técnica | — | M | **aprobada** | [F0-base.md](encargos/F0-base.md) |
 | F0.5 | Previsualizaciones en Cloudflare Pages | F0, cuentas (D7) | S | pendiente | — |
-| F1 | Barra global, menú móvil, pie y anclas | F0 | M | **encargada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
-| F2 | Portada estática: 03–07 | F1 | L | pendiente | — |
-| F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | pendiente | — |
+| F1 | Barra global, menú móvil, pie y anclas | F0 | M | **aprobada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
+| F2 | Portada estática: 03–07 | F1 | L | **encargada** | [F2-portada.md](encargos/F2-portada.md) |
+| F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | **encargada** | [F3-articulos.md](encargos/F3-articulos.md) |
 | F4 | Interacciones de la portada y de los artículos | F2, F3 | L | pendiente | — |
 | F5 | Scrollytelling | F4 | L | pendiente | — |
 | F6 | Hero y transición | F5 | L | pendiente | — |
@@ -307,7 +307,6 @@ Cada una indica qué fase bloquea y se resuelve antes de escribir ese encargo.
 | D7 | **Cuentas de GitHub y Cloudflare** | F0.5 | Las crea Jorge |
 | D8 | **Contenido real** | F8 | Ver § 5 |
 | D9 | **Isla de React o TS vanilla** para diagramas y relato | F4 | TS vanilla con SVG |
-| D10 | **«Tema» en el pie de la portada** (aplicada en F1 según la propuesta; falta la confirmación de Jorge). `PAGINAS.md` § 07 lo incluye, pero la regla dice que la portada siempre es Cosmos | F1 | Quitarlo de la portada y dejarlo solo en el pie de los artículos |
 
 ## 9. Riesgos
 
