@@ -4,6 +4,7 @@ import { defineConfig } from '@playwright/test';
 // Evita el aviso de Node por la colisión de ambas opciones.
 delete process.env.NO_COLOR;
 
+const baseURL = `http://127.0.0.1:${process.env.E2E_PORT ?? 4321}`;
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -11,7 +12,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
-  use: { baseURL: 'http://127.0.0.1:4321', trace: 'retain-on-failure' },
+  use: { baseURL, trace: 'retain-on-failure' },
   projects: [
     {
       name: 'escritorio',
@@ -33,7 +34,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'node scripts/servidor-e2e.mjs',
-    url: 'http://127.0.0.1:4321',
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
   },
 });

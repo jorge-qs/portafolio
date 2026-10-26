@@ -33,4 +33,6 @@ createServer(async (peticion, respuesta) => {
     respuesta.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     respuesta.end('404');
   }
-}).listen(4321, '127.0.0.1', () => console.log('E2E: http://127.0.0.1:4321'));
+}).listen(Number(process.env.E2E_PORT ?? 4321), '127.0.0.1', () =>
+  console.log(`E2E: http://127.0.0.1:${process.env.E2E_PORT ?? 4321}`),
+);

@@ -19,6 +19,23 @@
   --selected: #2A2418;        /* nodo de diagrama seleccionado */
   --pending-bg: rgba(176, 140, 92, .16);
   --pending-fg: #B08C5C;
+  /* F3 · artículos */
+  --article-pending-bg: #252120; /* pending-bg compuesto sobre bg, evita doble tinte */
+  --chapter-current: rgba(232, 220, 196, .06);
+  --minute-bg: rgba(201, 160, 106, .08);
+  --question-bg: rgba(111, 157, 227, .08);
+  --formula-prob: rgba(111, 157, 227, .12);
+  --formula-weight: rgba(201, 160, 106, .16);
+  --formula-hidden: rgba(140, 146, 157, .12);
+  --edge: rgba(140, 146, 157, .4);
+  --plot-a: #6F9DE3;
+  --plot-b: #B08C5C;
+  --code-text: #E8DCC4;
+  --code-muted: #8C929D;
+  --code-keyword: #6F9DE3;
+  --code-string: #B08C5C;
+  --code-number: #C9A06A;
+  --sheet-backdrop: rgba(10, 13, 20, .6);
 }
 [data-theme="dawn"] {
   --bg: #F7F3EA;
@@ -39,6 +56,23 @@
   --selected: #EFE9DC;
   --pending-bg: rgba(122, 88, 36, .12);
   --pending-fg: #7A5824;
+  /* F3 · artículos */
+  --article-pending-bg: #E8E0D2; /* pending-bg compuesto sobre bg */
+  --chapter-current: rgba(20, 28, 48, .06);
+  --minute-bg: rgba(122, 88, 36, .08);
+  --question-bg: rgba(46, 84, 135, .08);
+  --formula-prob: rgba(46, 84, 135, .12);
+  --formula-weight: rgba(122, 88, 36, .16);
+  --formula-hidden: rgba(78, 88, 111, .12);
+  --edge: rgba(78, 88, 111, .4);
+  --plot-a: #2E5487;
+  --plot-b: #7A5824;
+  --code-text: #141C30;
+  --code-muted: #4E586F;
+  --code-keyword: #2E5487;
+  --code-string: #7A5824;
+  --code-number: #7A5824;
+  --sheet-backdrop: rgba(20, 28, 48, .35);
 }
 :root {
   --font-sans: 'Geist', system-ui, sans-serif;
@@ -106,4 +140,55 @@
   --technologies-min: 800px;
   --notes-min: 450px;
   --contact-min: 880px;
+}
+
+:root {
+  /* F3 · artículos */
+  --article-max: 1152px;
+  --article-rail: 180px;
+  --article-reading: 632px;
+  --article-margin: 260px;
+  --article-gap: 40px;
+  --article-title: 52px;
+  --article-title-mobile: 32px;
+  --article-title-leading: 1.1;
+  --article-title-tracking: -.025em;
+  --article-deck: 20px;
+  --article-deck-mobile: 17px;
+  --article-deck-leading: 1.45;
+  --article-body-leading: 1.65;
+  --chapter-title: 26px;
+  --chapter-title-mobile: 22px;
+  --chapter-leading: 1.3;
+  --code-size: 13px;
+  --code-leading: 1.75;
+  --formula-size: 30px;
+  --diagram-panel: 280px;
+  --diagram-height: 440px;
+  --diagram-mobile-height: 250px;
+  --sheet-handle-width: 40px;
+  --sheet-handle-height: 4px;
+  --sheet-entry: 32px;
+  --switch-height: 26px;
+  --switch-thumb: 20px;
+  --switch-inset: 3px;
+  --switch-travel: 18px;
+  --plot-opacity-a: .55;
+  --plot-opacity-b: .35;
+  --astro-code-color-text: var(--code-text);
+  --astro-code-color-background: var(--surface);
+  --astro-code-token-constant: var(--code-number);
+  --astro-code-token-string: var(--code-string);
+  --astro-code-token-comment: var(--code-muted);
+  --astro-code-token-keyword: var(--code-keyword);
+  --astro-code-token-parameter: var(--code-text);
+  --astro-code-token-function: var(--code-text);
+  --astro-code-token-string-expression: var(--code-string);
+  --astro-code-token-punctuation: var(--code-text);
+  --astro-code-token-link: var(--code-keyword);
+}
+html[data-movimiento="reducido"] {
+  /* F3 · artículos */
+  --dur-fast: 0ms; --dur: 0ms; --dur-layout: 0ms;
+  scroll-behavior: auto !important;
 }

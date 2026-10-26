@@ -1,0 +1,109 @@
+---
+interface Props {
+  definiciones: string[];
+}
+const { definiciones } = Astro.props;
+---
+
+<div class="formula ancho">
+  <div class="expresion">
+    <slot />
+  </div>
+  <div class="definiciones">
+    {definiciones.map((d, i) => (
+      <p>
+        <span class:list={['termino', `termino-${i}`]}>
+          {['p(y | x)', 'W', 'h'][i]}
+        </span>{' '}
+        · {d}
+      </p>
+    ))}
+  </div>
+</div>
+<style>
+  .formula {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+  }
+  .expresion {
+    font-size: var(--formula-size);
+    color: var(--heading);
+    overflow-x: auto;
+  }
+  .expresion :global(.katex) {
+    font-size: 1em;
+  }
+  .expresion :global(.katex-display) {
+    margin: 0;
+    text-align: left;
+  }
+  .expresion :global(.katex-display > .katex) {
+    text-align: left;
+  }
+  .expresion :global(.formula-prob),
+  .expresion :global(.formula-weight),
+  .expresion :global(.formula-hidden) {
+    border-radius: var(--radius-tag);
+    padding-inline: var(--space-1);
+  }
+  .expresion :global(.formula-prob) {
+    background: var(--formula-prob);
+  }
+  .expresion :global(.formula-weight) {
+    background: var(--formula-weight);
+  }
+  .expresion :global(.formula-hidden) {
+    background: var(--formula-hidden);
+  }
+  .definiciones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+    font-size: var(--text-meta);
+  }
+  .termino {
+    border-radius: var(--radius-tag);
+    padding: var(--space-1);
+  }
+  .termino-0 {
+    background: var(--formula-prob);
+    color: var(--res);
+  }
+  .termino-1 {
+    background: var(--formula-weight);
+    color: var(--eng);
+  }
+  .termino-2 {
+    background: var(--formula-hidden);
+    color: var(--muted);
+  }
+  @media (max-width: 767px) {
+    .formula {
+      padding: var(--space-4);
+    }
+    .expresion {
+      font-size: var(--chapter-title-mobile);
+    }
+    .expresion :global(.formula-prob),
+    .expresion :global(.formula-weight),
+    .expresion :global(.formula-hidden) {
+      border-radius: var(--radius-tag);
+      padding-inline: var(--space-1);
+    }
+    .expresion :global(.formula-prob) {
+      background: var(--formula-prob);
+    }
+    .expresion :global(.formula-weight) {
+      background: var(--formula-weight);
+    }
+    .expresion :global(.formula-hidden) {
+      background: var(--formula-hidden);
+    }
+    .definiciones {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

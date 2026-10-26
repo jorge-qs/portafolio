@@ -218,7 +218,9 @@ export function iniciarNavegacion() {
     window.scrollTo({
       top,
       behavior:
-        reducir.matches || raiz.hasAttribute('data-teclado')
+        reducir.matches ||
+        raiz.dataset.movimiento === 'reducido' ||
+        raiz.hasAttribute('data-teclado')
           ? 'instant'
           : 'smooth',
     });

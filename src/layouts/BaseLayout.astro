@@ -16,6 +16,8 @@ interface Props {
   tema: 'cosmos' | 'elegible';
   portada?: boolean;
   tipo?: 'ing' | 'inv' | 'hib';
+  nota?: boolean;
+  capitulos?: { slug: string; text: string }[];
 }
 const {
   titulo,
@@ -24,6 +26,8 @@ const {
   tema,
   portada = false,
   tipo,
+  nota = false,
+  capitulos = [],
 } = Astro.props;
 const perfil = (await getEntry('perfil', 'es'))!.data;
 const hayNotas = await hayNotasPublicadas(idioma);
@@ -33,9 +37,11 @@ const hayNotas = await hayNotasPublicadas(idioma);
 <html lang={idioma} data-theme="cosmos">
   <head>
     <meta charset="UTF-8" />
-    {tema === 'elegible' && <script is:inline>
+    <script is:inline define:vars={{ elegible: tema === 'elegible' }}>
       try {
-        const preferencia = localStorage.getItem('tema');
+        if (localStorage.getItem('movimiento') === 'reducido')
+          document.documentElement.dataset.movimiento = 'reducido';
+        const preferencia = elegible ? localStorage.getItem('tema') : 'cosmos';
         const tema =
           preferencia === 'sistema'
             ? matchMedia('(prefers-color-scheme: light)').matches
@@ -48,7 +54,7 @@ const hayNotas = await hayNotasPublicadas(idioma);
       } catch {
         document.documentElement.dataset.theme = 'cosmos';
       }
-    </script>}
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={descripcion} />
     <title>{titulo}</title>
@@ -79,6 +85,8 @@ const hayNotas = await hayNotasPublicadas(idioma);
           hayNotas={hayNotas}
           portada={portada}
           tipo={tipo}
+          nota={nota}
+          capitulos={capitulos}
         />
       </slot>
     </header>

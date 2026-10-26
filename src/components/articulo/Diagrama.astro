@@ -1,0 +1,157 @@
+---
+import { t } from '../../i18n';
+import type { Idioma } from '../../i18n/config';
+import type { ModeloDiagrama } from '../../lib/diagrama';
+import Enlace from '../Enlace.astro';
+interface Props {
+  modelo: ModeloDiagrama;
+  descripcion: string;
+  idioma?: Idioma;
+}
+const { modelo, descripcion, idioma = 'es' } = Astro.props;
+const seleccionado =
+  modelo.nodos.find((n) => n.id === modelo.seleccionado) ?? modelo.nodos[0];
+const porId = new Map(modelo.nodos.map((n) => [n.id, n]));
+---
+
+<figure class="diagrama ancho">
+  <div class="miniatura">
+    <svg viewBox="-12 0 490 400" aria-hidden="true">
+      <g class="aristas">
+        {modelo.aristas.map(([a, b]) => (
+          <line
+            x1={porId.get(a)!.x}
+            y1={porId.get(a)!.y}
+            x2={porId.get(b)!.x}
+            y2={porId.get(b)!.y}
+          />
+        ))}
+      </g>
+      <g class="nodos">
+        {modelo.nodos.map((n) => (
+          <g
+            class:list={['nodo', { seleccionado: n.id === seleccionado.id }]}
+            data-nodo={n.id}
+          >
+            <rect x={n.x - 52} y={n.y - 20} width="104" height="40" rx="8" />
+            <text
+              x={n.x}
+              y={n.y}
+              text-anchor="middle"
+              dominant-baseline="central"
+            >
+              {n.etiqueta}
+            </text>
+          </g>
+        ))}
+      </g>
+    </svg>
+    <figcaption>{t(idioma, 'articulo.diagrama', { n: 1 })}</figcaption>
+    <button type="button" hidden>
+      {t(idioma, 'articulo.explorar')}
+    </button>
+    <span class="visualmente-oculto">{descripcion}</span>
+  </div>
+  <div class="panel">
+    <p class="kicker">{t(idioma, 'articulo.seleccionado')}</p>
+    <h3>{seleccionado.etiqueta}</h3>
+    <dl>
+      {(['responsabilidad', 'entradas_salidas', 'cumple'] as const).map((k) => (
+        <div>
+          <dt>
+            {t(idioma, `articulo.${k === 'entradas_salidas' ? 'entradas' : k}`)}
+          </dt>
+          <dd>{seleccionado[k]}</dd>
+        </div>
+      ))}
+    </dl>
+    {seleccionado.codigo && (
+      <Enlace href={seleccionado.codigo} idioma={idioma}>
+        {t(idioma, 'articulo.verCodigo')}
+      </Enlace>
+    )}
+  </div>
+</figure>
+<style>
+  figure {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--diagram-panel);
+    margin: 0;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .miniatura {
+    position: relative;
+    min-width: 0;
+    padding: var(--space-4);
+  }
+  svg {
+    width: 100%;
+    height: calc(var(--diagram-height) - 2 * var(--space-4));
+  }
+  figcaption {
+    position: absolute;
+    bottom: var(--space-4);
+    left: var(--space-4);
+  }
+  .aristas line {
+    stroke: var(--edge);
+    stroke-width: var(--line-width);
+  }
+  .nodo rect {
+    fill: var(--surface-2);
+    stroke: none;
+  }
+  .nodo text {
+    fill: var(--text);
+    font: var(--text-kicker) var(--font-sans);
+  }
+  .seleccionado rect {
+    fill: var(--selected);
+    stroke: var(--accent);
+    stroke-width: var(--line-width);
+  }
+  .seleccionado text {
+    fill: var(--heading);
+    font-weight: 600;
+  }
+  .panel {
+    background: var(--surface-2);
+    padding: var(--space-5);
+    font-size: var(--text-meta);
+  }
+  .panel h3 {
+    font-size: var(--article-deck);
+    margin-block: var(--space-3);
+    font-weight: 600;
+  }
+  .kicker,
+  dt,
+  figcaption {
+    color: var(--muted);
+  }
+  .kicker,
+  figcaption {
+    font-size: var(--text-kicker);
+  }
+  dl {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+  dd {
+    margin: 0;
+  }
+  @media (max-width: 767px) {
+    figure {
+      display: block;
+    }
+    svg {
+      height: calc(var(--diagram-mobile-height) - 2 * var(--space-4));
+    }
+    .panel {
+      display: none;
+    }
+  }
+</style>

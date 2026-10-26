@@ -12,6 +12,16 @@ export const proyectoSchema = z
     anio: z.union([z.number().int(), placeholder]),
     resumen: texto,
     herramientas: z.array(texto).min(1),
+    fecha: texto.optional(),
+    lectura_min: z.union([z.number().int().positive(), placeholder]).optional(),
+    investigacion: z
+      .object({
+        autores: texto,
+        afiliacion: texto,
+        publicado: texto,
+        bibtex: texto.optional(),
+      })
+      .optional(),
     rol: texto,
     destacado: z.boolean(),
     orden_destacado: z.number().int().min(1).max(3).optional(),
