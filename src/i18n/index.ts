@@ -26,6 +26,11 @@ export function ruta(idioma: Idioma, camino = '/') {
   return idioma === IDIOMA_BASE ? normalizado : `/${idioma}${normalizado}`;
 }
 
+export function rutaEquivalente(rutaActual: string, idiomaDestino: Idioma) {
+  const sinIdioma = rutaActual.replace(/^\/en(?=\/|$)/, '') || '/';
+  return ruta(idiomaDestino, sinIdioma);
+}
+
 export function formatearFecha(idioma: Idioma, fecha: string | Date) {
   return new Intl.DateTimeFormat(idioma, {
     dateStyle: 'long',

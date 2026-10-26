@@ -1,15 +1,9 @@
 ---
-import Codigo from '../../components/articulo/Codigo.astro';
-import Tabla from '../../components/articulo/Tabla.astro';
-import { render } from 'astro:content';
-import ArticuloLayout from '../../layouts/ArticuloLayout.astro';
-import Capitulo from '../../components/articulo/Capitulo.astro';
 import { obtenerProyectos } from '../../content/consultas';
 import { ordenarProyectos } from '../../content/validacion';
-import { IDIOMA_BASE } from '../../i18n/config';
-import { t } from '../../i18n';
+import Proyecto from '../../vistas/Proyecto.astro';
 export async function getStaticPaths() {
-  const proyectos = ordenarProyectos(await obtenerProyectos(IDIOMA_BASE));
+  const proyectos = ordenarProyectos(await obtenerProyectos('es'));
   return proyectos.map((proyecto, i) => ({
     params: { slug: proyecto.slug },
     props: {
@@ -20,20 +14,6 @@ export async function getStaticPaths() {
   }));
 }
 const { proyecto, anterior, siguiente } = Astro.props;
-const { Content, headings } = await render(proyecto);
 ---
 
-<ArticuloLayout
-  titulo={proyecto.data.titulo}
-  descripcion={proyecto.data.resumen}
-  idioma={proyecto.idioma}
-  tipo={proyecto.data.tipo}
-  fecha={proyecto.data.fecha}
-  lectura={proyecto.data.lectura_min}
-  capitulos={headings.filter((h) => h.depth === 2)}
-  anterior={anterior}
-  siguiente={siguiente}
->
-  {proyecto.esRespaldo && <p>{t(proyecto.idioma, 'idiomaRespaldo')}</p>}
-  <Content components={{ h2: Capitulo, pre: Codigo, table: Tabla }} />
-</ArticuloLayout>
+<Proyecto proyecto={proyecto} anterior={anterior} siguiente={siguiente} />

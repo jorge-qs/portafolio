@@ -1,11 +1,13 @@
 ---
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   idioma?: Idioma;
   definiciones: string[];
 }
-const { definiciones, idioma = 'es' } = Astro.props;
+const { definiciones, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 <div class="formula ancho" data-formula>

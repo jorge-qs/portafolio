@@ -6,6 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import { IDIOMA_BASE, IDIOMAS_ACTIVOS } from './src/i18n/config';
 
 export default defineConfig({
+  site: 'https://example.com', // TODO(F8): dominio real (D5)
   output: 'static',
   markdown: {
     processor: unified({

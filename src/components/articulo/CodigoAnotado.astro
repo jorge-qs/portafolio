@@ -2,13 +2,15 @@
 import { Code } from 'astro:components';
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   codigo: string;
   archivo: string;
   anotaciones: { linea: number; texto: string }[];
   idioma?: Idioma;
 }
-const { codigo, archivo, anotaciones, idioma = 'es' } = Astro.props;
+const { codigo, archivo, anotaciones, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 const lineas = codigo.split('\n');
 ---
 

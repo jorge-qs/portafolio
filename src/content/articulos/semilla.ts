@@ -81,3 +81,61 @@ export const referencias = [
   '‹Autor, B. (año). Título. Conferencia.›',
 ];
 export const bibtex = '‹BibTeX pendiente›';
+
+const traduccionesEn: Record<string, string> = {
+  '‹pendiente›': '‹pending›',
+  '‹mes · año›': '‹month · year›',
+  '‹autor›': '‹author›',
+  '‹coautores›': '‹coauthors›',
+  '‹código›': '‹code›',
+  '‹una línea›': '‹one line›',
+  '‹métrica pendiente›': '‹pending metric›',
+  '‹pregunta en una sola oración›': '‹question in a single sentence›',
+  '‹hipótesis›': '‹hypothesis›',
+  '‹hipótesis nula›': '‹null hypothesis›',
+  '‹tema›': '‹topic›',
+  '‹opción elegida›': '‹chosen option›',
+  '‹alternativa›': '‹alternative›',
+  '‹razón›': '‹reason›',
+  Usuario: 'User',
+  Orquestador: 'Orchestrator',
+  'Agente A': 'Agent A',
+  'Agente B': 'Agent B',
+  'Agente C': 'Agent C',
+  Memoria: 'Memory',
+  Herramientas: 'Tools',
+  'El plan se arma completo antes de actuar.':
+    'The plan is built in full before any action.',
+  'Toda salida pasa por un verificador.':
+    'Every output passes through a verifier.',
+  '‹Autor, A. (año). Título. Revista.›': '‹Author, A. (year). Title. Journal.›',
+  '‹Autor, B. (año). Título. Conferencia.›':
+    '‹Author, B. (year). Title. Conference.›',
+  '‹BibTeX pendiente›': '‹BibTeX pending›',
+};
+
+function traducirEn<T>(valor: T): T {
+  if (typeof valor === 'string') return (traduccionesEn[valor] ?? valor) as T;
+  if (Array.isArray(valor)) return valor.map(traducirEn) as T;
+  if (valor && typeof valor === 'object')
+    return Object.fromEntries(
+      Object.entries(valor).map(([clave, item]) => [clave, traducirEn(item)]),
+    ) as T;
+  return valor;
+}
+
+export function semilla(idioma: 'es' | 'en') {
+  const datos = {
+    fichaA,
+    fichaB,
+    minuto,
+    pregunta,
+    diagrama,
+    decisiones,
+    codigo,
+    anotaciones,
+    referencias,
+    bibtex,
+  };
+  return idioma === 'es' ? datos : traducirEn(datos);
+}

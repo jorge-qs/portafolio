@@ -149,5 +149,6 @@
   "hero.descripcion": "Una mano humana pintada y una mano hecha de ventanas de terminal se acercan sin llegar a tocarse.",
   "hero.verProyectos": "Ver proyectos ↓",
   "hero.proyectoNdeM": "Proyecto {n} de {total}",
-  "hero.capitulo": "Capítulo {n} · {titulo}"
+  "hero.capitulo": "Capítulo {n} · {titulo}",
+  "idioma.etiqueta": "Idioma"
 }

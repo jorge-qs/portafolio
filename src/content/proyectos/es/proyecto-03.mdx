@@ -22,7 +22,8 @@ import Figura from '../../../components/articulo/Figura.astro';
 import NotaMargen from '../../../components/articulo/NotaMargen.astro';
 import Pregunta from '../../../components/articulo/Pregunta.astro';
 import Referencias from '../../../components/articulo/Referencias.astro';
-import {
+import { semilla } from '../../articulos/semilla';
+export const {
   fichaA,
   minuto,
   diagrama,
@@ -31,7 +32,7 @@ import {
   anotaciones,
   pregunta,
   referencias,
-} from '../../articulos/semilla';
+} = semilla('es');
 
 ## 1 · Resumen
 

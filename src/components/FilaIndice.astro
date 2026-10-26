@@ -5,7 +5,7 @@ import { ruta, t } from '../i18n';
 import type { Idioma } from '../i18n/config';
 import type { EntradaProyecto } from '../content/validacion';
 interface Props {
-  proyecto: EntradaProyecto & { slug: string };
+  proyecto: EntradaProyecto & { slug: string; esRespaldo?: boolean };
   codigo: string;
   idioma: Idioma;
 }
@@ -15,6 +15,7 @@ const {
   idioma,
 } = Astro.props;
 const herramientas = p.herramientas.slice(0, 3);
+const esRespaldo = Astro.props.proyecto.esRespaldo === true;
 ---
 
 <li data-tipo={p.tipo} class:list={['fila', { destacado: p.destacado }]}>
@@ -25,11 +26,20 @@ const herramientas = p.herramientas.slice(0, 3);
   >
     <span class="codigo num">{codigo}</span>
     <span class="proyecto">
-      <span class="titulo">{p.titulo}</span>
-      <span class="resumen">{p.resumen}</span>
+      <span class="titulo" lang={esRespaldo ? 'es' : undefined}>
+        {p.titulo}
+      </span>
+      <span class="resumen" lang={esRespaldo ? 'es' : undefined}>
+        {p.resumen}
+      </span>
     </span>
     <span class="tipo">
       <EtiquetaTipo tipo={p.tipo} idioma={idioma} />
+      {esRespaldo && (
+        <span class="etiqueta-idioma-respaldo" lang="es">
+          ES
+        </span>
+      )}
     </span>
     <span class="anio num">
       {typeof p.anio === 'number'
@@ -109,6 +119,11 @@ const herramientas = p.herramientas.slice(0, 3);
   }
   .herramientas {
     overflow-wrap: anywhere;
+  }
+  .etiqueta-idioma-respaldo {
+    margin-inline-start: var(--space-2);
+    color: var(--muted);
+    font-size: var(--text-kicker);
   }
   .accion {
     justify-self: end;

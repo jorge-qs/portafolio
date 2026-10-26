@@ -1,13 +1,15 @@
 ---
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   pregunta: string;
   h1: string;
   h0: string;
   idioma?: Idioma;
 }
-const { pregunta, h1, h0, idioma = 'es' } = Astro.props;
+const { pregunta, h1, h0, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 <div class="pregunta">

@@ -35,7 +35,8 @@ import Figura from '../../../components/articulo/Figura.astro';
 import NotaMargen from '../../../components/articulo/NotaMargen.astro';
 import Referencias from '../../../components/articulo/Referencias.astro';
 import Citar from '../../../components/articulo/Citar.astro';
-import { fichaB, pregunta, referencias, bibtex } from '../../articulos/semilla';
+import { semilla } from '../../articulos/semilla';
+export const { fichaB, pregunta, referencias, bibtex } = semilla('es');
 
 <Ficha {...fichaB} investigacion />
 

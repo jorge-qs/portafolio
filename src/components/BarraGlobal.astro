@@ -1,5 +1,6 @@
 ---
 import SelectorTema from './articulo/SelectorTema.astro';
+import SelectorIdioma from './SelectorIdioma.astro';
 import { seccionesBarra, enlaceSeccion } from '../config/secciones';
 import type { CollectionEntry } from 'astro:content';
 import type { Idioma } from '../i18n/config';
@@ -74,6 +75,7 @@ const marca = perfil.nombre.split(' ')[0].toLocaleUpperCase(idioma);
         <SelectorTema idioma={idioma} />
       </div>
     )}
+    <SelectorIdioma idioma={idioma} />
     <a
       class="cv"
       href={destinoPerfil(perfil.cv.url)}

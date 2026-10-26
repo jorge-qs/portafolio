@@ -7,6 +7,29 @@ export interface EntradaProyecto {
   data: Proyecto;
 }
 
+export function seleccionarConRespaldo<T extends { id: string }>(
+  entradas: T[],
+  idioma: Idioma,
+) {
+  const actual = entradas.find((entrada) => entrada.id === idioma);
+  const entrada = actual ?? entradas.find((candidata) => candidata.id === 'es');
+  if (!entrada)
+    throw new Error(`Falta el contenido base en español (${idioma})`);
+  return { entrada, esRespaldo: !actual && idioma !== 'es' };
+}
+
+export function seleccionarRelato<T extends { id: string }>(
+  entradas: T[],
+  slug: string,
+  idioma: Idioma,
+) {
+  const actual = entradas.find((entrada) => entrada.id === `${idioma}/${slug}`);
+  const entrada =
+    actual ?? entradas.find((candidata) => candidata.id === `es/${slug}`);
+  if (!entrada) throw new Error(`Falta el relato ${slug} en español`);
+  return { entrada, esRespaldo: !actual && idioma !== 'es' };
+}
+
 export function identidad(id: string) {
   const [idioma, ...partes] = id.split('/');
   return { idioma, slug: partes.join('/') };
@@ -110,13 +133,23 @@ export function validarRelatos(
   relatos: { id: string; filePath?: string }[],
 ) {
   for (const proyecto of proyectos) {
-    if (proyecto.data.destacado && !relatos.some((r) => r.id === proyecto.id))
+    const { slug } = identidad(proyecto.id);
+    if (
+      proyecto.data.destacado &&
+      !relatos.some((r) => identidad(r.id).slug === slug)
+    )
       throw new Error(
         `${proyecto.filePath ?? `src/content/proyectos/${proyecto.id}.mdx`}: falta src/content/relatos/${proyecto.id}.json para el proyecto destacado`,
       );
   }
   for (const relato of relatos) {
-    if (!proyectos.some((p) => p.id === relato.id && p.data.destacado))
+    if (
+      !proyectos.some(
+        (p) =>
+          identidad(p.id).slug === identidad(relato.id).slug &&
+          p.data.destacado,
+      )
+    )
       throw new Error(
         `${relato.filePath ?? `src/content/relatos/${relato.id}.json`}: no corresponde a un proyecto destacado`,
       );

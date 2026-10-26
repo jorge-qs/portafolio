@@ -1,11 +1,13 @@
 ---
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   entradas: string[];
   idioma?: Idioma;
 }
-const { entradas, idioma = 'es' } = Astro.props;
+const { entradas, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 <ol class="referencias">

@@ -5,6 +5,7 @@ import { seccionesVisibles, enlaceSeccion } from '../config/secciones';
 import { t, ruta } from '../i18n';
 import Boton from './Boton.astro';
 import Enlace from './Enlace.astro';
+import SelectorIdioma from './SelectorIdioma.astro';
 interface Props {
   perfil: CollectionEntry<'perfil'>['data'];
   idioma: Idioma;
@@ -82,6 +83,10 @@ const secciones = seccionesVisibles(hayNotas).filter((s) => s.ancla);
       >
         {t(idioma, 'correo')}
       </Enlace>
+    </div>
+    <div class="idioma-menu">
+      <span>{t(idioma, 'idioma.etiqueta')}</span>
+      <SelectorIdioma idioma={idioma} tactil />
     </div>
   </div>
 </dialog>
@@ -208,5 +213,13 @@ const secciones = seccionesVisibles(hayNotas).filter((s) => s.ancla);
   }
   .sociales :global(.enlace) {
     color: var(--muted);
+  }
+  .idioma-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-3);
+    color: var(--muted);
+    font-size: var(--text-meta);
   }
 </style>

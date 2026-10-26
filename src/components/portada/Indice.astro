@@ -3,7 +3,7 @@ import type { Seccion } from '../../config/secciones';
 import type { Idioma } from '../../i18n/config';
 import type { EntradaProyecto } from '../../content/validacion';
 import { codigoProyecto } from '../../content/validacion';
-import contenido from '../../content/portada/es.json';
+import { obtenerConRespaldo } from '../../content/consultas';
 import { t } from '../../i18n';
 import EncabezadoSeccion from '../EncabezadoSeccion.astro';
 import FiltroSegmentado from '../FiltroSegmentado.astro';
@@ -14,6 +14,7 @@ interface Props {
   proyectos: (EntradaProyecto & { slug: string })[];
 }
 const { seccion, idioma, proyectos } = Astro.props;
+const { data: contenido } = await obtenerConRespaldo('portada', idioma);
 ---
 
 <div class="cabecera">

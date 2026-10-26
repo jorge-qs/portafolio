@@ -2,11 +2,13 @@
 import Copiar from '../Copiar.astro';
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   bibtex: string;
   idioma?: Idioma;
 }
-const { bibtex, idioma = 'es' } = Astro.props;
+const { bibtex, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Región desplazable accesible con teclado, exigida por F3. */}

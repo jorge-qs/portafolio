@@ -9,6 +9,8 @@ import {
   seleccionarDestacados,
   seleccionarProyectos,
   validarRelaciones,
+  seleccionarConRespaldo,
+  seleccionarRelato,
 } from '../src/content/validacion';
 import type { EntradaProyecto } from '../src/content/validacion';
 import perfil from '../src/content/perfil/es.json';
@@ -130,4 +132,37 @@ test('los archivados conservan su URL pero quedan fuera de los destacados', () =
   });
   expect(seleccionarProyectos([archivado], 'es', ['es'])).toHaveLength(1);
   expect(seleccionarDestacados([archivado])).toEqual([]);
+});
+
+test('el respaldo genérico sirve perfil, tecnologías, portada y hero', () => {
+  for (const coleccion of ['perfil', 'tecnologias', 'portada', 'hero']) {
+    expect(
+      seleccionarConRespaldo(
+        [
+          { id: 'es', data: 'Spanish' },
+          { id: 'en', data: 'English' },
+        ],
+        'en',
+      ),
+    ).toMatchObject({ entrada: { data: 'English' }, esRespaldo: false });
+    expect(
+      seleccionarConRespaldo([{ id: 'es', data: coleccion }], 'en'),
+    ).toMatchObject({ entrada: { data: coleccion }, esRespaldo: true });
+    expect(
+      seleccionarConRespaldo([{ id: 'es', data: coleccion }], 'es'),
+    ).toMatchObject({ entrada: { data: coleccion }, esRespaldo: false });
+  }
+});
+
+test('el relato inglés usa el relato español cuando falta la traducción', () => {
+  expect(
+    seleccionarRelato(
+      [{ id: 'es/relato', data: 'Spanish story' }],
+      'relato',
+      'en',
+    ),
+  ).toEqual({
+    entrada: { id: 'es/relato', data: 'Spanish story' },
+    esRespaldo: true,
+  });
 });

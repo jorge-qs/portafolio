@@ -9,6 +9,7 @@ import {
   proyectoSchema,
   tecnologiasSchema,
   heroSchema,
+  portadaSchema,
 } from './content/esquemas';
 
 // Notas es opcional (la sección 06 no se renderiza sin notas): sin archivos, la colección queda
@@ -74,6 +75,11 @@ const hero = defineCollection({
   schema: heroSchema,
 });
 
+const portada = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/portada' }),
+  schema: portadaSchema,
+});
+
 export const collections = {
   proyectos,
   notas,
@@ -81,4 +87,5 @@ export const collections = {
   tecnologias,
   relatos,
   hero,
+  portada,
 };

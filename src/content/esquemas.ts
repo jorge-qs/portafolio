@@ -96,6 +96,13 @@ export const tecnologiasSchema = z.object({
   borrador: z.boolean(),
 });
 
+export const portadaSchema = z.object({
+  indice_entradilla: texto,
+  sobre_mi_titulo: texto,
+  notas_todas_url: texto,
+  borrador: z.boolean(),
+});
+
 export type Proyecto = z.infer<typeof proyectoSchema>;
 export type Tecnologias = z.infer<typeof tecnologiasSchema>;
 

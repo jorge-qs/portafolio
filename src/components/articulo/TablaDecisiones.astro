@@ -1,11 +1,13 @@
 ---
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 interface Props {
   filas: string[][];
   idioma?: Idioma;
 }
-const { filas, idioma = 'es' } = Astro.props;
+const { filas, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Tabla desplazable accesible con teclado. */}

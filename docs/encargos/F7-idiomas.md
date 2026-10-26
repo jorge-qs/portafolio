@@ -1,7 +1,7 @@
 # F7 · Segundo idioma (inglés)
 
-**Estado:** encargada
-**Rama:** `f7-idiomas` (worktree propio) · **Depende de:** F6 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
+**Estado:** en revisión
+**Rama solicitada:** `f7-idiomas`, desde `main` · **Checkout de trabajo:** `F7` (Git no permitió crear la rama) · **Depende de:** F6 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-26
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F7-idiomas.md. Implementa solo ese encargo y termina con el informe que pide.»*
 
@@ -237,6 +237,62 @@ Ve rellenándolo **durante** el trabajo (una línea por paso del § 3) y complé
 
 ## Informe
 ‹Lo escribe Codex, paso a paso.›
+
+- Paso 1: añadí `idiomaDe`, quité el idioma español fijado de los 14 componentes de artículo, cambié el perfil de `BaseLayout` a la locale actual y agregué el test de guardia; `npm run check && npm test` pasó (0 errores/advertencias, 118 tests).
+- Paso 2: añadí respaldo genérico para perfil, tecnologías, portada y hero, respaldo por slug para relatos y notas, incorporé la colección tipada de portada y adapté las validaciones por idioma; `npm run check && npm test` pasó (0 errores/advertencias, 120 tests).
+- Paso 3: extraje `Portada`, `Proyecto` y `Nota` a vistas compartidas, activé `es/en` y añadí envoltorios en inglés para portada, proyectos y notas; `npm run check && npm test` pasó (0 errores/advertencias, 120 tests).
+- Paso 4: añadí contenido inglés borrador para perfil, tecnologías, portada, hero, tres relatos y seis proyectos, y convertí los datos compartidos de artículo en `semilla(idioma)`; `npm run check && npm test` pasó (0 errores/advertencias, 120 tests).
+- Paso 5: añadí `SelectorIdioma`, `rutaEquivalente` y tests, e inserté el selector en la barra, menú móvil y hoja «Aa»; `npm run check && npm test` pasó (0 errores/advertencias, 121 tests).
+- Paso 6: añadí canonical y alternates `hreflang` absolutos con `Astro.site`, respaldo sin alternativa inglesa, aviso accesible y `lang="es"` en el artículo respaldado y en sus filas; `npm run check && npm test` pasó (0 errores/advertencias, 121 tests).
+- Paso 7: añadí `tests/e2e/idiomas.spec.ts`, actualicé la prueba de foco modal para incluir el nuevo enlace EN, y generé 12 capturas más `docs/encargos/capturas/F7/comparacion.html`; la suite completa pasó (192/192) y `npm run e2e -- -g "idioma" --repeat-each=5` pasó (105/105).
+
+### Informe final
+
+**Hecho:** se implementó el sitio inglés bajo `/en/`, las rutas de los 7 proyectos y las vistas compartidas; respaldo español, selector «ES · EN», metadatos SEO por página, idioma del contenido y reportes/capturas.
+
+**Archivos traducidos para revisión de Jorge:**
+
+- `src/content/perfil/en.json`
+- `src/content/tecnologias/en.json`
+- `src/content/portada/en.json`
+- `src/content/hero/en.json` (copia literal del contenido ilustrativo)
+- `src/content/relatos/en/coordinacion-multiagente.json`
+- `src/content/relatos/en/proyecto-02.json`
+- `src/content/relatos/en/proyecto-03.json`
+- `src/content/proyectos/en/coordinacion-multiagente.mdx`
+- `src/content/proyectos/en/proyecto-02.mdx`
+- `src/content/proyectos/en/proyecto-03.mdx`
+- `src/content/proyectos/en/proyecto-04.mdx`
+- `src/content/proyectos/en/proyecto-05.mdx`
+- `src/content/proyectos/en/proyecto-06.mdx`
+- Datos compartidos localizados en `src/content/articulos/semilla.ts`.
+
+`proyecto-07` no tiene archivo inglés para ejercitar el respaldo. Todos los archivos de contenido inglés tienen `borrador: true`.
+
+**Verificación ejecutada:**
+
+- `npm ci`: correcto; 522 paquetes instalados, 0 vulnerabilidades.
+- `npm run e2e:instalar`: Chromium, FFmpeg y Chromium Headless Shell instalados en `.cache/ms-playwright`.
+- `npm run check`: correcto; 0 errores, 0 advertencias, tokens válidos y Prettier correcto.
+- `npm test`: correcto; 13 archivos y 121 tests.
+- `npm run build`: correcto; 17 páginas generadas, incluidas `/en/` y `/en/proyectos/` para los 7 proyectos; sin errores ni advertencias.
+- `PORTAFOLIO_E2E_PORT=4401 npm run e2e`: correcto; 192/192.
+- `PORTAFOLIO_E2E_PORT=4401 npm run e2e -- -g "idioma" --repeat-each=5`: correcto; 105/105.
+- Verificación enfocada de foco modal y cambio de idioma: 6/6.
+- Capturas: 12 PNG en `docs/encargos/capturas/F7/` y su galería `comparacion.html`.
+- Comparé visualmente la portada de referencia y las capturas del sitio a 1280, 834 y 390 px; a 360 px la prueba e2e confirma que no hay desplazamiento horizontal. La referencia se inspeccionó en los tres anchos indicados; las capturas de entrega cubren hero, barra, menú, hoja Aa y respaldo.
+- Servidores de prueba, capturas y referencia: cerrados; no quedaron escuchas en 4401, 4402 ni 4403.
+
+**Desviaciones:**
+
+- Git negó la escritura de `.git/worktrees/F7/index.lock`, así que no pude crear `f7-idiomas` desde `main` ni hacer commits. El checkout F7 partía del mismo commit que `main`; todos los cambios quedan sin commit en F7 para revisión.
+- `astro.config.ts` usa `site: 'https://example.com'` con `// TODO(F8): dominio real (D5)`, tal como indica el encargo.
+- Nueva clave i18n: `idioma.etiqueta` en `src/i18n/es.json` y `src/i18n/en.json`. Se reutiliza `idiomaRespaldo`. No añadí tokens de diseño.
+- La primera ejecución e2e dentro del sandbox no pudo iniciar Chromium (bloqueo de MachPort de macOS). La ejecución con permiso de Chromium pasó. La primera regresión completa tuvo fallos de foco/selector y otros fallos temporales; corregí el supuesto de foco y la prueba del selector móvil, y la regresión final pasó 192/192.
+
+**Preguntas abiertas:** ninguna. El dominio real se mantiene para F8/D5, fuera del alcance de F7.
+
+**No verificado:** no se probó un contenido real de la colección `notas` porque está vacía; el helper admite notas y respaldo por idioma. La revisión editorial de las traducciones queda pendiente para Jorge.
 
 ## Revisión
 ‹Lo escribe Claude.›

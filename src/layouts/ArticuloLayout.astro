@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Boton from '../components/Boton.astro';
 import HojaInferior from '../components/HojaInferior.astro';
 import SelectorTema from '../components/articulo/SelectorTema.astro';
+import SelectorIdioma from '../components/SelectorIdioma.astro';
 import type { Idioma } from '../i18n/config';
 import { t, ruta, formatearFecha } from '../i18n';
 import '../styles/articulo.css';
@@ -18,6 +19,10 @@ interface Props {
   capitulos?: { slug: string; text: string }[];
   anterior?: { slug: string; data: { titulo: string } };
   siguiente?: { slug: string; data: { titulo: string } };
+  idiomaContenido?: Idioma;
+  esRespaldo?: boolean;
+  canonical?: string;
+  alternativos?: Idioma[];
 }
 const {
   titulo,
@@ -30,6 +35,10 @@ const {
   capitulos = [],
   anterior,
   siguiente,
+  idiomaContenido,
+  esRespaldo = false,
+  canonical,
+  alternativos,
 } = Astro.props;
 ---
 
@@ -41,6 +50,8 @@ const {
   tipo={tipo}
   nota={nota}
   capitulos={capitulos}
+  canonical={canonical}
+  alternativos={alternativos}
 >
   <div class:list={['articulo-reticula', { nota }]}>
     {!nota && (
@@ -70,9 +81,15 @@ const {
     )}
     <article
       class="articulo"
+      lang={idiomaContenido}
       data-articulo
       data-plantilla={tipo === 'inv' ? 'B' : 'A'}
     >
+      {esRespaldo && (
+        <p class="aviso-respaldo" role="note">
+          {t(idioma, 'idiomaRespaldo')}
+        </p>
+      )}
       <header class="cabecera-articulo">
         <p class="metadatos">
           <span class:list={['etiqueta-tipo', tipo]}>
@@ -165,8 +182,20 @@ const {
       </span>
     </label>
     <p class="preferencia-ayuda">{t(idioma, 'articulo.recordar')}</p>
+    <p class="opciones-etiqueta">{t(idioma, 'idioma.etiqueta')}</p>
+    <SelectorIdioma idioma={idioma} tactil />
   </HojaInferior>
 </BaseLayout>
+<style>
+  .aviso-respaldo {
+    margin-block: 0 var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    padding: var(--space-3) var(--space-4);
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+</style>
 <script>
   import { iniciarArticulo } from '../lib/articulo';
   iniciarArticulo();

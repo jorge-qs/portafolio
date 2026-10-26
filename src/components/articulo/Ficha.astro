@@ -1,6 +1,7 @@
 ---
 import { t, formatearFecha } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 import Enlace from '../Enlace.astro';
 interface Props {
   campos: { clave: string; valor: string }[];
@@ -8,7 +9,13 @@ interface Props {
   investigacion?: boolean;
   idioma?: Idioma;
 }
-const { campos, recursos, investigacion = false, idioma = 'es' } = Astro.props;
+const {
+  campos,
+  recursos,
+  investigacion = false,
+  idioma: idiomaProp,
+} = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 ---
 
 <dl class:list={['ficha', { investigacion, ancho: investigacion }]}>

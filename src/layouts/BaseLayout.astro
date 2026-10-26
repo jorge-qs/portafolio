@@ -1,10 +1,9 @@
 ---
 import '../styles/tokens.css';
 import '../styles/global.css';
-import { t } from '../i18n';
+import { t, rutaEquivalente } from '../i18n';
 import type { Idioma } from '../i18n/config';
-import { getEntry } from 'astro:content';
-import { hayNotasPublicadas } from '../content/consultas';
+import { obtenerConRespaldo, hayNotasPublicadas } from '../content/consultas';
 import BarraGlobal from '../components/BarraGlobal.astro';
 import MenuMovil from '../components/MenuMovil.astro';
 import PiePagina from '../components/PiePagina.astro';
@@ -18,6 +17,8 @@ interface Props {
   tipo?: 'ing' | 'inv' | 'hib';
   nota?: boolean;
   capitulos?: { slug: string; text: string }[];
+  canonical?: string;
+  alternativos?: Idioma[];
 }
 const {
   titulo,
@@ -28,9 +29,16 @@ const {
   tipo,
   nota = false,
   capitulos = [],
+  canonical,
+  alternativos = ['es', 'en'],
 } = Astro.props;
-const perfil = (await getEntry('perfil', 'es'))!.data;
+const { data: perfil } = await obtenerConRespaldo('perfil', idioma);
 const hayNotas = await hayNotasPublicadas(idioma);
+const rutaCanonica = canonical ?? Astro.url.pathname;
+const rutaEs = rutaEquivalente(Astro.url.pathname, 'es');
+const rutaEn = rutaEquivalente(Astro.url.pathname, 'en');
+const urlEs = new URL(rutaEs, Astro.site);
+const urlEn = new URL(rutaEn, Astro.site);
 ---
 
 <!doctype html>
@@ -58,6 +66,16 @@ const hayNotas = await hayNotasPublicadas(idioma);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={descripcion} />
     <title>{titulo}</title>
+    <link rel="canonical" href={new URL(rutaCanonica, Astro.site)} />
+    {alternativos.includes('es') && (
+      <link rel="alternate" hreflang="es" href={urlEs} />
+    )}
+    {alternativos.includes('en') && (
+      <link rel="alternate" hreflang="en" href={urlEn} />
+    )}
+    {alternativos.includes('es') && (
+      <link rel="alternate" hreflang="x-default" href={urlEs} />
+    )}
     <link
       rel="preload"
       href="/fonts/geist-latin-400-normal.woff2"

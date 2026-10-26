@@ -1,6 +1,7 @@
 ---
 import { t } from '../../i18n';
 import type { Idioma } from '../../i18n/config';
+import { idiomaDe } from '../../i18n/actual';
 import type { ModeloDiagrama } from '../../lib/diagrama';
 import PanelDiagrama from './PanelDiagrama.astro';
 import HojaInferior from '../HojaInferior.astro';
@@ -10,7 +11,8 @@ interface Props {
   descripcion: string;
   idioma?: Idioma;
 }
-const { modelo, descripcion, idioma = 'es' } = Astro.props;
+const { modelo, descripcion, idioma: idiomaProp } = Astro.props;
+const idioma = idiomaProp ?? idiomaDe(Astro);
 const id = `diagrama-${crypto.randomUUID()}`;
 const seleccionado =
   modelo.nodos.find((n) => n.id === modelo.seleccionado) ?? modelo.nodos[0];

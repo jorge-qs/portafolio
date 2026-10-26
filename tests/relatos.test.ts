@@ -63,9 +63,9 @@ test('cada destacado exige relato y cada relato exige destacado con su archivo e
       [{ id: proyecto.id, filePath: 'archivo.json' }],
     ),
   ).toThrow('archivo.json');
-  expect(() => validarRelatos([proyecto], [{ id: 'en/ejemplo' }])).toThrow(
-    'falta',
-  );
+  expect(() =>
+    validarRelatos([proyecto], [{ id: 'es/ejemplo' }, { id: 'en/ejemplo' }]),
+  ).not.toThrow();
 });
 
 test('el recorrido y sus aristas se acumulan sin mutar los datos ni perder las posiciones', () => {

@@ -141,7 +141,9 @@ test('Aa: foco modal, reducción persistida antes de pintar y Sistema', async ({
     'inert',
     true,
   );
-  const controles = hoja.locator('button,input');
+  const controles = hoja.locator(
+    'button:not([disabled]), a[href], input:not([disabled])',
+  );
   await controles.last().focus();
   await page.keyboard.press('Tab');
   await expect(controles.first()).toBeFocused();
