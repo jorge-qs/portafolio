@@ -1,6 +1,6 @@
 # F1 · Navegación global
 
-**Estado:** en revisión
+**Estado:** aprobada por Claude, pendiente de fusionar (Jorge)
 **Rama:** `f1-navegacion` · **Depende de:** F0 (en `main`) · **Escrito por:** Claude · **Fecha:** 2026-10-25
 
 > Cómo lanzarlo en Codex: *«Lee AGENTS.md y docs/encargos/F1-navegacion.md. Implementa solo ese encargo y termina con el informe que pide.»*
@@ -229,4 +229,26 @@ Durante la implementación se corrigieron la advertencia de colección Notas vac
 
 
 ## Revisión
-‹Lo escribe Claude.›
+**Claude, 2026-10-25.** Entrega sólida y bien verificada: cumple el alcance, respeta «No incluye» y el informe coincide con lo que se puede reproducir. Codex no pudo escribir en `.git`, así que Claude creó `f1-navegacion` desde `main` (que era el mismo commit que `f0-base`), hizo los commits y corrigió dos fallos.
+
+### Verificación (comandos reales, Node 26.11.1)
+- Antes de corregir: `npm run check` (0 errores, 0 advertencias), `npm test` (61/61), `npm run build` (9 páginas) y `npm run e2e` (33/33). Coincide con el informe.
+- Después de corregir: `check` limpio, `npm test` 62/62 y `npm run e2e` 36/36 en **tres ejecuciones seguidas**.
+- Prueba manual con Playwright sobre `astro dev` a 1280 px: al bajar con flechas y espacio desde Sobre mí, la barra registraba `visible → oculta` en cada pulsación. Con la rueda se quedaba oculta, como debe.
+
+### Correcciones de Claude
+1. **Orden de la barra.** Se renderizaba Proyectos · Sobre mí · Notas · Contacto, el orden de la portada. El encargo y la Maqueta 3 piden Proyectos · Notas · Sobre mí · Contacto. Sin notas no se notaba, por eso ningún test lo cazó. Ahora `seccionesBarra()` en `src/config/secciones.ts` fija el orden, con su test unitario.
+2. **La barra parpadeaba al bajar con el teclado.** Cualquier flecha, Enter o espacio la mostraba, y el scroll siguiente la volvía a ocultar. Ahora solo Tab la muestra, que es lo necesario para poder llegar a ella. Nuevo e2e: «bajar con flechas o espacio no hace parpadear la barra».
+3. **Test intermitente de 44 px.** En una ejecución el menú midió 43,999… px a 834 → 390. Las comprobaciones de objetivos táctiles usan ahora `TACTIL_MIN = 44 - 0.01`.
+
+### Observaciones (no bloquean)
+- Con teclado (`data-teclado`) el salto a un ancla es instantáneo aunque no haya reduced motion, y la barra no anima. Es una interpretación razonable del «nunca al recibir foco por teclado», pero el encargo no lo pedía: queda anotado como desviación aceptada.
+- El enlace «Proyectos» de la barra apunta a `#proyectos` en estado `hero` y a `#indice` en `fija`, y se marca activo en 03. Tiene sentido mientras 02 es un bloque reservado. Revisarlo en F5, cuando exista el relato.
+- Falta lo que el informe declara no verificado: la CI remota y Safari/iOS físico (bloqueo de scroll del menú).
+
+### Pendiente de Jorge
+- **D10:** confirmar que el pie de la portada va sin «Tema».
+- **Perfil:** `anio_copyright` y los enlaces de GitHub, LinkedIn, correo y CV siguen como placeholders (se ven desactivados, sin `href` roto).
+- Probar en el navegador y, si está conforme, fusionar `f1-navegacion` en `main`.
+
+**Recomendación:** fusionar en `main`.
