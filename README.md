@@ -47,3 +47,9 @@ Solo el español está activo. Los datos semilla de la maqueta son borradores, n
 Las fuentes estáticas de Fontsource están en `public/fonts/`, con sus licencias OFL. No necesitan conexión a un CDN en ejecución.
 
 Estos comandos están definidos pero no se han validado de extremo a extremo: el primer `npm run check` se detuvo con `EPERM` al crear la configuración de telemetría de Astro fuera del repositorio. El informe de F0 detalla las comprobaciones pendientes.
+
+## Despliegue
+- **Sitio:** https://portafoliojorge.jorge-quenta.workers.dev (con `noindex` hasta el lanzamiento).
+- **Cómo se publica:** cada push a `main` que pasa la CI (`verificar` + `e2e`) se publica solo en Cloudflare Workers (trabajo `desplegar` de `.github/workflows/ci.yml`).
+- **Secretos del repo necesarios:** `CLOUDFLARE_API_TOKEN` (plantilla «Edit Cloudflare Workers») y `CLOUDFLARE_ACCOUNT_ID`.
+- **Despliegue manual** (emergencia): `npm run build && npx wrangler deploy`.
