@@ -47,7 +47,7 @@ La v1 se publica cuando se cumple todo esto:
 | Fase | Tema | Depende de | Tamaño | Estado | Encargo |
 |---|---|---|---|---|---|
 | F0 | Base técnica | — | M | **aprobada** | [F0-base.md](encargos/F0-base.md) |
-| F0.5 | Previsualizaciones en Cloudflare Pages | F0, cuentas (D7) | S | **en curso**: repo creado; falta conectar Pages | — |
+| F0.5 | Despliegue en Cloudflare (Workers con assets estáticos) | F0, cuentas (D7) | S | **aprobada**: https://portafoliojorge.jorge-quenta.workers.dev | — |
 | F1 | Barra global, menú móvil, pie y anclas | F0 | M | **aprobada** | [F1-navegacion.md](encargos/F1-navegacion.md) |
 | F2 | Portada estática: 03–07 | F1 | L | **aprobada** | [F2-portada.md](encargos/F2-portada.md) |
 | F3 | Artículos y notas: plantillas, tema y lectura | F1 | L | **aprobada** | [F3-articulos.md](encargos/F3-articulos.md) |
@@ -256,6 +256,9 @@ F8 tiene dos partes, en este orden: **primero el pulido y después el lanzamient
 - **Criterio de salida:** Jorge, mirando el sitio en su teléfono y en su ordenador, lo da por terminado.
 
 **Parte B · Lanzamiento.**
+- **Antes de publicar:**
+  - quitar la regla `X-Robots-Tag: noindex` de `public/_headers`;
+  - cambiar `site` en `astro.config.ts` por el dominio real.
 - **Entregables:**
   - **SEO:** título y descripción por página, canonical, `sitemap.xml` con los idiomas y `robots.txt`;
   - el **favicon** y las **imágenes OG** generadas en el build (propuesta: el detalle de la punta con el cursor sobre Cosmos);

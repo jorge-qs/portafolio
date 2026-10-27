@@ -1,0 +1,4 @@
+# Hasta el lanzamiento (F8): el sitio aún tiene contenido placeholder y el canonical
+# apunta a un dominio provisional. Quitar esta regla al publicar con el dominio real.
+/*
+  X-Robots-Tag: noindex

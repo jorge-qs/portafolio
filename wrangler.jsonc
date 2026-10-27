@@ -1,0 +1,12 @@
+// Cloudflare Workers con assets estáticos (A12). El build lo hace `npm run build` (dist/).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portafoliojorge",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Sirve dist/404.html (bilingüe) con estado 404 para cualquier ruta inexistente.
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
