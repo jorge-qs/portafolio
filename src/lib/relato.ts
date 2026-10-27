@@ -166,14 +166,13 @@ function activarRelato(raiz: HTMLElement) {
           parseFloat(getComputedStyle(raiz).getPropertyValue('--space-4')),
       );
       history.pushState(null, '', `#${raiz.id}-capitulo-${capitulo}`);
-      window.scrollTo({
-        top,
-        behavior:
-          reducir.matches ||
-          document.documentElement.hasAttribute('data-teclado')
-            ? 'instant'
-            : 'smooth',
-      });
+      const inmediato =
+        reducir.matches ||
+        document.documentElement.hasAttribute('data-teclado');
+      window.scrollTo({ top, behavior: inmediato ? 'instant' : 'smooth' });
+      // Tras un salto inmediato, el capítulo elegido se activa sin depender de que
+      // su bloque cruce la línea del 40 % por unos píxeles.
+      if (inmediato) activar(bloques.indexOf(destino));
       // Mantener el foco en el rail permite seguir saltando capítulos con teclado.
     }),
   );
@@ -223,7 +222,10 @@ function activarRelato(raiz: HTMLElement) {
     if (!conDiagrama) interaccion.cerrar(false);
     visual.inert = texto;
     dibujo.inert = !conDiagrama;
-    pista.hidden = !conDiagrama;
+    // visibility y no display: mostrarla u ocultarla no debe cambiar la altura de
+    // la figura fija (movería el texto y la línea de activación del 40 %).
+    pista.hidden = false;
+    pista.toggleAttribute('data-oculta', !conDiagrama);
   }
   raiz.dataset.mejorado = '';
   observar();

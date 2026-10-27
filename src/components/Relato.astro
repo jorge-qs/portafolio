@@ -303,6 +303,15 @@ const salida = siguiente ? `#relato-${siguiente}` : '#indice';
     color: var(--muted);
     font-size: var(--text-kicker);
   }
+  .pista[data-oculta] {
+    visibility: hidden;
+  }
+  /* En móvil no hay Esc ni puntero: la pista no aporta y quita alto a la figura. */
+  @media (max-width: 767px) {
+    .pista {
+      display: none;
+    }
+  }
   .equivalente {
     overflow: auto;
     padding: var(--space-4);
